@@ -89,7 +89,7 @@ let playlist: Array<string> = skeleton
 2. Run a file witht he containing code:
 
 ```typescript
-  import Skeleton from "@smultronbusken/skeleton-discord-app/src/Skeleton";
+  import Skeleton from "base-app-for-discordjs/src/Skeleton"
 
     const intents = { intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] }
     const skeleton = new Skeleton(
