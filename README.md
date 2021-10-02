@@ -86,7 +86,7 @@ let playlist: Array<string> = skeleton
 ## Set up
 
 1. Install with `npm i base-app-for-discordjs`
-2. Run a file witht he containing code:
+2. Run a file with the following code:
 
 ```typescript
   import Skeleton from "base-app-for-discordjs/src/Skeleton"
@@ -94,11 +94,11 @@ let playlist: Array<string> = skeleton
     const intents = { intents: [...all intents you need] }
     const skeleton = new Skeleton(
       {},
-      "YOUR_APP_PRIVATE_KEY",
-      "YOUR_APP_TOKEN",
+      "APP_TOKEN",  // You get this from the Discord developer portal
+      "APP_ID", // You get this from the Discord developer portal
       intents,
-      "DEV_GUILD_ID"
+      "ID_OF_A_GUILD_WHERE_YOU_TEST_YOUR_COMMANDS" // this is optional, but without it it takes up to an hour to register commands
     );
-    skeleton.client.login("YOUR_APP_PRIVATE_KEY");
+    skeleton.client.login("APP_TOKEN");
   })
 ```
