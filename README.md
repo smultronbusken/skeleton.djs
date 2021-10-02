@@ -93,7 +93,7 @@ let playlist: Array<string> = skeleton
 
     const intents = { intents: [...all intents you need] }
     const skeleton = new Skeleton(
-      {}, // This object will get passed to commands
+      {}, // This object will get passed to commands, it can be any type or variable
       "APP_TOKEN",  // You get this from the Discord developer portal
       "APP_ID", // You get this from the Discord developer portal
       intents,
