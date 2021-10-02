@@ -52,6 +52,9 @@ There are 4 types of commands of which all are registered automatically:
 
 ## Storage files
 
+
+Creating a file which ends in `.storage.json` with a "name" property will make it accessable in your code byt calling `Skeleton.getStorage(name)`
+
 In the above example you can see a `playlists.storage.json` file which has the content
 
 ```json
@@ -78,6 +81,7 @@ let playlist: Array<string> = skeleton
   .get(playlistName)
   .value();
 ```
+
 
 ## Set up
 
