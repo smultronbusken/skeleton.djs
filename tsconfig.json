@@ -31,7 +31,8 @@
   "include": [
     "./data/**/*",
     "./src/**/*",
-    "./data/storage/*.json"
+    "./data/storage/*.json",
+    "./README.md"
   ],
   "exclude": [
     "node_modules"

@@ -7,11 +7,11 @@ if (require.main === module) {
     const intents = { intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] }
     const skeleton = new Skeleton(
       {}, 
-      config["APP_PRIVATE_KEY"],
       config["APP_TOKEN"],
+      config["APP_ID"],
       intents,
       config["DEV_GUILD_ID"]
     );
-    skeleton.client.login("APP_TOKEN");
+    skeleton.client.login(config["APP_TOKEN"]);
   })
 }
