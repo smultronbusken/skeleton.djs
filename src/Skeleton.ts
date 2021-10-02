@@ -84,7 +84,7 @@ export default class Skeleton<T> {
       this.subCommands.push(command);
     })
 
-    await this.jobRegister.loadAndRegister(true, false)
+    await this.jobRegister.loadAndRegister(true)
   }
 
   async importStorages() {

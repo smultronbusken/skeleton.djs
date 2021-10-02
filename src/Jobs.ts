@@ -16,11 +16,11 @@ export default class JobRegister {
     /**
      * Imports all job files and registers them.
      */
-    async loadAndRegister(importUserJobs?: boolean, importDefaultJobs?: boolean) {
+    async loadAndRegister(importUserJobs?: boolean, importDefaultJobs: boolean = false) {
         let defaultConstructors = []
         let userConstructors = []
         try {
-            if (importUserJobs) userConstructors = await this.importConstructorsInFolder("**/*.job.(js|ts)", { ignore: ['node_modules'] }, "../../../../")
+            if (importUserJobs) userConstructors = await this.importConstructorsInFolder("**/*.job.(js|ts)", { ignore: ['node_modules'] }, "../../../")
         } catch (ignore) {}
         if (importDefaultJobs) defaultConstructors = await this.getDefaultConstructors();
         let constructors = userConstructors.concat(defaultConstructors)

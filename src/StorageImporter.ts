@@ -17,7 +17,7 @@ export default class StorageImporter {
         let userStorageFiles = await this.importFileInFolder("**/*.storage.json",{ cwd: __dirname.replace(/\\/g, '/'), ignore: ['built'] }, "")
         let localStorageFiles = [];
         try {
-            localStorageFiles = await this.importFileInFolder("**/*.storage.json", { ignore: ['node_modules'] }, "../../../../" )
+            localStorageFiles = await this.importFileInFolder("**/*.storage.json", { ignore: ['node_modules'] }, "../../../" )
         } catch (error) {
             console.log("Could not user defined storage files.")
         }

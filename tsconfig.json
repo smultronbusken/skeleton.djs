@@ -3,7 +3,7 @@
     "target": "ES2021",
     "allowJs": true,
     "checkJs": false,
-    "outDir": "./built/src",
+    "outDir": "./built",
     "esModuleInterop": true,
     "allowUnreachableCode": true,
     "allowUnusedLabels": false,
@@ -31,8 +31,7 @@
   "include": [
     "./data/**/*",
     "./src/**/*",
-    "./data/storage/*.json",
-    "./README.md"
+    "./data/storage/*.json"
   ],
   "exclude": [
     "node_modules"
