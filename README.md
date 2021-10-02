@@ -50,7 +50,7 @@ There are 4 types of commands of which all are registered automatically:
 - `MessageCommand`
   ![](https://i.imgur.com/mSdkaLw.png)
 
-## Storage files, JSON based databaose
+## Storage files
 
 In the above example you can see a `playlists.storage.json` file which has the content
 
