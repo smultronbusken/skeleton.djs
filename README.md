@@ -11,7 +11,7 @@ This projects is a made using [discord.js](https://discord.js.org/#/). It is use
 
 ## Command creation
 
-Command files are file which ends in `.job.ts` and define one command. All of these files are imported automatically. Here is a music app of mine. As you can see we have 5 command files under the command folder.
+Command files are file which ends in `.job.ts` and define one command. All of these files are imported automatically. Here is a (music app)[https://github.com/smultronbusken/discord-music-app] of mine. As you can see we have 5 command files under the command folder.
 
 ![](https://i.imgur.com/IXJaqDc.png)
 
