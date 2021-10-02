@@ -1,4 +1,4 @@
-# Skeleton (This README and project is WIP)
+# Base app for discord.js (This README and project is WIP)
 
 This projects is a made using [discord.js](https://discord.js.org/#/). It is used as a base app and includes a couple of handy features
 
