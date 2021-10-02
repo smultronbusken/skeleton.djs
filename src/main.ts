@@ -12,6 +12,6 @@ if (require.main === module) {
       intents,
       config["DEV_GUILD_ID"]
     );
-    skeleton.client.login("ODMyNzM0OTk4OTYzNDIxMjE0.YHoG5w.GKZv2rxLt-P1ZhCU5nGG_LJUpj0");
+    skeleton.client.login("APP_TOKEN");
   })
 }

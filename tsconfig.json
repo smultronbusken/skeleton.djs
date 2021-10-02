@@ -27,9 +27,6 @@
       "esnext",
       "dom"
     ],
-    "types": [
-      "reflect-metadata"
-    ]
   },
 
   "include": [
