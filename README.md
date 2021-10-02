@@ -81,7 +81,7 @@ let playlist: Array<string> = skeleton
 
 ## Set up
 
-1. Install from npm
+1. Install with `npm i base-app-for-discordjs`
 2. Run a file witht he containing code:
 
 ```typescript

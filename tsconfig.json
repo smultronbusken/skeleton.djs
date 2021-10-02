@@ -28,10 +28,10 @@
       "dom"
     ],
   },
-
   "include": [
+    "./data/**/*",
     "./src/**/*",
-    "./src/data/storage/*.json"
+    "./data/storage/*.json"
   ],
   "exclude": [
     "node_modules"

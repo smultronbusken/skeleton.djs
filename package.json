@@ -1,7 +1,7 @@
 {
-  "name": "@smultronbusken/skeleton-discord-app",
-  "version": "1.1.10",
-  "description": "",
+  "name": "base-app-for-discordjs",
+  "version": "0.1.0",
+  "description": "A base app for discord.js",
   "main": "src/main.ts",
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
@@ -18,17 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smultronbusken/skeleton-discord-app.git"
+    "url": "git+https://github.com/smultronbusken/skeleton-for-discordjs.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "smultron",
   "bugs": {
-    "url": "https://github.com/smultronbusken/skeleton-discord-app/issues"
+    "url": "https://github.com/smultronbusken/skeleton-for-discordjs/issues"
   },
-  "homepage": "https://github.com/smultronbusken/skeleton-discord-app#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
+  "homepage": "https://github.com/smultronbusken/skeleton-for-discordjs#readme",
   "devDependencies": {
     "@types/node": "^16.3.3",
     "nodemon": "^2.0.7"
