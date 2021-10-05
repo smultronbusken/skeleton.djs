@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord-api-types";
 import { CommandInteraction, ContextMenuInteraction } from "discord.js";
 import fg from "fast-glob";
+import path from "path";
 import "reflect-metadata";
 
 interface TConstructable<T> {
@@ -19,11 +20,9 @@ export class JobRegister {
     let userConstructors = [];
     try {
       if (importUserJobs)
-        userConstructors = await this.importConstructorsInFolder(
-          "**/*.job.(js|ts)",
-          { ignore: ["node_modules"] },
-          "../../../",
-        );
+        userConstructors = await this.importConstructorsInFolder("**/*.job.(js|ts)", {
+          ignore: ["node_modules"],
+        });
     } catch (ignore) {}
     if (importDefaultJobs) defaultConstructors = await this.getDefaultConstructors();
     let constructors = userConstructors.concat(defaultConstructors);
@@ -88,15 +87,11 @@ export class JobRegister {
    * Imports the default export from the filepath whos name matches with the search string
    * The default export is expected to be a class extending T.
    */
-  async importConstructorsInFolder(
-    searchString: string,
-    fgConfig: any = {},
-    importPrefix: string = "",
-  ): Promise<Array<Job>> {
+  async importConstructorsInFolder(searchString: string, fgConfig: any = {}): Promise<Array<Job>> {
     const entries = await fg(searchString, fgConfig);
     let jobs = [];
     for (const file of entries) {
-      let jobClass: Job = await this.importConstructor(importPrefix + file);
+      let jobClass: Job = await this.importConstructor(path.join(process.cwd(), "" + file));
       jobs.push(jobClass);
     }
     return jobs;
@@ -107,6 +102,7 @@ export class JobRegister {
    * The default export is expected to be a class extending T.
    */
   async importConstructor(filePath: string): Promise<Job> {
+    console.log(filePath);
     let { default: jobClass } = await import(filePath);
     return jobClass;
   }
