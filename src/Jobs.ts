@@ -8,7 +8,7 @@ interface TConstructable<T> {
   prototype: T;
 }
 
-export default class JobRegister {
+export class JobRegister {
   private onRegisterFunctions: Map<string, [(job: Job) => void]> = new Map();
   private static metadataKey: string = "jobClass";
   /**

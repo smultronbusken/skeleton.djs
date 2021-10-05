@@ -1,6 +1,6 @@
 import { Intents } from "discord.js";
 import path from "path";
-import Skeleton from "./Skeleton";
+import { Skeleton } from "./Skeleton";
 
 export * from "./Skeleton";
 export * from "./Jobs";

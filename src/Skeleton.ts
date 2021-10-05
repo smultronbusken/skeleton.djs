@@ -10,7 +10,8 @@ import { Routes, Snowflake } from "discord-api-types/v9";
 import { Client, ClientOptions, Collection } from "discord.js";
 import StormDB from "stormdb";
 import { EventEmitter } from "stream";
-import JobRegister, {
+import {
+  JobRegister,
   CommandBase,
   CommandOption,
   CommandOptionType,
@@ -23,7 +24,7 @@ import JobRegister, {
 } from "./Jobs";
 import StorageImporter from "./StorageImporter";
 
-export default class Skeleton<T> {
+export class Skeleton<T> {
   public commands: Collection<string, CommandBase<T>> = new Collection();
   public subCommands: Array<SubCommand<T>> = new Array();
   public storages: Collection<any, StormDB> = new Collection();
