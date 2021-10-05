@@ -1,4 +1,4 @@
-# Skeleton (This README and project is WIP)
+# Base app for discord.js (This README and project is WIP)
 
 This projects is a made using [discord.js](https://discord.js.org/#/). It is used as a base app and includes a couple of handy features
 
@@ -11,7 +11,7 @@ This projects is a made using [discord.js](https://discord.js.org/#/). It is use
 
 ## Command creation
 
-Command files are file which ends in `.job.ts` and define one command. All of these files are imported automatically. Here is a music app of mine. As you can see we have 5 command files under the command folder.
+Command files are file which ends in `.job.ts` and define one command. All of these files are imported automatically. Here is a [music app](https://github.com/smultronbusken/discord-music-app) of mine. As you can see we have 5 command files under the command folder.
 
 ![](https://i.imgur.com/IXJaqDc.png)
 
@@ -50,7 +50,10 @@ There are 4 types of commands of which all are registered automatically:
 - `MessageCommand`
   ![](https://i.imgur.com/mSdkaLw.png)
 
-## Storage files, JSON based databaose
+## Storage files
+
+
+Creating a file which ends in `.storage.json` with a "name" property will make it accessable in your code byt calling `Skeleton.getStorage(name)`
 
 In the above example you can see a `playlists.storage.json` file which has the content
 
@@ -79,22 +82,23 @@ let playlist: Array<string> = skeleton
   .value();
 ```
 
+
 ## Set up
 
 1. Install with `npm i base-app-for-discordjs`
-2. Run a file witht he containing code:
+2. Run a file with the following code:
 
 ```typescript
-  import Skeleton from "@smultronbusken/skeleton-discord-app/src/Skeleton";
+  import Skeleton from "base-app-for-discordjs/src/Skeleton"
 
-    const intents = { intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] }
+    const intents = { intents: [...all intents you need] }
     const skeleton = new Skeleton(
-      {},
-      "YOUR_APP_PRIVATE_KEY",
-      "YOUR_APP_TOKEN",
+      {}, // This object will get passed to commands, it can be anything
+      "APP_TOKEN",  // You get this from the Discord developer portal
+      "APP_ID", // You get this from the Discord developer portal
       intents,
-      "DEV_GUILD_ID"
+      "ID_OF_A_GUILD_WHERE_YOU_TEST_YOUR_COMMANDS" // this is optional, but without it it takes up to an hour to register commands
     );
-    skeleton.client.login("YOUR_APP_PRIVATE_KEY");
+    skeleton.client.login("APP_TOKEN");
   })
 ```
