@@ -22,7 +22,7 @@ import {
   SubCommand,
   UserCommand,
 } from "./Jobs";
-import StorageImporter from "./StorageImporter";
+import { StorageImporter } from "./StorageImporter";
 
 export class Skeleton<T> {
   public commands: Collection<string, CommandBase<T>> = new Collection();

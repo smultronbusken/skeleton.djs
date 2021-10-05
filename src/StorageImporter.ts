@@ -2,7 +2,7 @@ import fg from "fast-glob";
 import StormDB from "stormdb";
 import { Skeleton } from "./Skeleton";
 
-export default class StorageImporter {
+export class StorageImporter {
   public constructor(private app: Skeleton<any>) {}
 
   /**
