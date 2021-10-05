@@ -2,19 +2,34 @@
   "name": "base-app-for-discordjs",
   "version": "0.1.0",
   "description": "A base app for discord.js",
-  "main": "src/main.ts",
+  "main": "out/main.js",
+  "types": "out/main.d.ts",
+  "scripts": {
+    "watch": "pnpm build -- --watch",
+    "build": "rimraf out && pnpm format && tsc",
+    "lint": "prettier --check src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "0.1.0-canary.0",
     "discord-api-types": "^0.22.0",
-    "discord.js": "^13.1.0",
+    "discord.js": "^13.2.0",
     "fast-glob": "^3.2.7",
     "node-cron": "^3.0.0",
     "reflect-metadata": "^0.1.13",
-    "stormdb": "^0.5.1"
+    "stormdb": "^0.5.2"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "peerDependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "discord-api-types": "^0.22.0",
+    "discord.js": "^13.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.10.2",
+    "nodemon": "^2.0.13",
+    "prettier": "^2.4.1",
+    "rimraf": "^3.0.2"
   },
   "repository": {
     "type": "git",
@@ -24,9 +39,5 @@
   "bugs": {
     "url": "https://github.com/smultronbusken/skeleton-for-discordjs/issues"
   },
-  "homepage": "https://github.com/smultronbusken/skeleton-for-discordjs#readme",
-  "devDependencies": {
-    "@types/node": "^16.3.3",
-    "nodemon": "^2.0.7"
-  }
+  "homepage": "https://github.com/smultronbusken/skeleton-for-discordjs#readme"
 }

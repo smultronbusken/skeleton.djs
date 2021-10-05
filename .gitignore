@@ -1,5 +1,4 @@
-built/*
-built
+out
 
 app-config.json
 todo.md
