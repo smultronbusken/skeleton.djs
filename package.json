@@ -1,6 +1,6 @@
 {
   "name": "base-app-for-discordjs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A base app for discord.js",
   "main": "out/main.js",
   "types": "out/main.d.ts",
@@ -36,7 +36,9 @@
     "type": "git",
     "url": "git+https://github.com/smultronbusken/skeleton-for-discordjs.git"
   },
-  "files": ["out"],
+  "files": [
+    "out"
+  ],
   "author": "smultron",
   "bugs": {
     "url": "https://github.com/smultronbusken/skeleton-for-discordjs/issues"
