@@ -36,6 +36,7 @@
     "type": "git",
     "url": "git+https://github.com/smultronbusken/skeleton-for-discordjs.git"
   },
+  "files": ["out"],
   "author": "smultron",
   "bugs": {
     "url": "https://github.com/smultronbusken/skeleton-for-discordjs/issues"
