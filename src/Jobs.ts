@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, Snowflake } from "discord-api-types";
+import { ApplicationCommandOptionType } from "discord-api-types";
 import { CommandInteraction, ContextMenuInteraction } from "discord.js";
 import fg from "fast-glob";
 import path from "path";
@@ -100,7 +100,7 @@ export const CommandOptionType = {
   String: ApplicationCommandOptionType.String,
   User: ApplicationCommandOptionType.User,
 } as const;
-type CommandOptionType = typeof CommandOptionType[keyof typeof CommandOptionType];
+type CommandOptionType = (typeof CommandOptionType)[keyof typeof CommandOptionType];
 
 export interface CommandOptionChoice {
   name: string;
