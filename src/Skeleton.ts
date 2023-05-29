@@ -1,24 +1,13 @@
-import {
-  SlashCommandBuilder,
-  SlashCommandIntegerOption,
-  SlashCommandStringOption,
-  SlashCommandSubcommandBuilder,
-} from "@discordjs/builders";
-import { SlashCommandOptionBase } from "@discordjs/builders/dist/interactions/slashCommands/mixins/CommandOptionBase";
-import { REST } from "@discordjs/rest";
-import { Routes, Snowflake } from "discord-api-types/v9";
-import { Client, ClientOptions, Collection } from "discord.js";
+import { Snowflake } from "discord-api-types/v9";
+import { Client, ClientOptions, Collection, Interaction } from "discord.js";
 import StormDB from "stormdb";
 import { EventEmitter } from "stream";
+import { convertCommandsToJson, registerCommands } from "./CommandRegistration";
 import {
-  JobRegister,
   CommandBase,
-  CommandOption,
-  CommandOptionType,
-  CommandType,
+  JobRegister,
   MessageCommand,
   SlashCommand,
-  SlashCommandBase,
   SubCommand,
   UserCommand,
 } from "./Jobs";
@@ -31,6 +20,7 @@ export class Skeleton<T> {
   public client: Client;
   private emitter: EventEmitter = new EventEmitter();
   public jobRegister: JobRegister;
+  public storage: StorageImporter;
 
   constructor(
     public app: T,
@@ -40,24 +30,9 @@ export class Skeleton<T> {
     private guildId?: Snowflake,
   ) {
     this.client = new Client(clientOptions);
-    this.client.on("interactionCreate", async interaction => {
-      if (interaction.isCommand()) {
-        let subCommandName = interaction.options.getSubcommand(false);
-        if (subCommandName) {
-          let subCommand = this.subCommands.find(
-            subCommand =>
-              subCommand.masterCommand === interaction.commandName &&
-              subCommand.name === subCommandName,
-          );
-          if (subCommand) subCommand.execute(interaction, app);
-        } else {
-          this.commands.get(interaction.commandName).execute(interaction, app);
-        }
-      }
-      if (interaction.isContextMenu()) {
-        this.commands.get(interaction.commandName).execute(interaction, app);
-      }
-    });
+    this.client.on("interactionCreate", async i => this.onInteraction(i));
+    this.jobRegister = new JobRegister();
+    this.storage = new StorageImporter(this);
     this.init();
   }
 
@@ -75,12 +50,14 @@ export class Skeleton<T> {
 
   async init() {
     await this.importStorages();
-    await this.importJobs(), await this.setUpSlashCommands(), this.emitter.emit("ready");
+    await this.importJobs();
+    let JSONCommands = convertCommandsToJson(this.commands, this.subCommands);
+    console.log(JSONCommands);
+    registerCommands(JSONCommands, this.token, this.clientId, this.guildId, true);
+    this.emitter.emit("ready");
   }
 
   async importJobs() {
-    this.jobRegister = new JobRegister();
-
     this.jobRegister.onRegister(SlashCommand, command => {
       this.commands.set(command.name, command);
     });
@@ -97,125 +74,30 @@ export class Skeleton<T> {
       this.subCommands.push(command);
     });
 
-    await this.jobRegister.loadAndRegister(true);
+    await this.jobRegister.loadAndRegister();
   }
 
   async importStorages() {
-    let storage: StorageImporter = new StorageImporter(this);
-    storage.loadAndRegister();
+    this.storage.loadAndRegister();
   }
 
-  async setUpSlashCommands() {
-    const commands = [];
-
-    let createOption = <T extends SlashCommandOptionBase>(
-      optionBuilder: T,
-      option: CommandOption,
-    ): T => {
-      optionBuilder.setName(option.name).setDescription(option.description);
-      if (option.required) optionBuilder.setRequired(option.required);
-
-      if (optionBuilder instanceof SlashCommandStringOption) {
-        if (option.choices) {
-          option.choices.forEach(choice => optionBuilder.addChoice(choice.name, choice.value));
-        }
-      }
-
-      if (optionBuilder instanceof SlashCommandIntegerOption) {
-        if (option.choices) {
-          option.choices.forEach(choice => optionBuilder.addChoice(choice.name, choice.value));
-        }
-      }
-
-      return optionBuilder;
-    };
-
-    let addOptions = <K extends SlashCommandSubcommandBuilder | SlashCommandBuilder>(
-      command: SlashCommandBase<any>,
-      commandBuilder: K,
-    ) => {
-      let options = command.options;
-      if (options) {
-        options.forEach(option => {
-          switch (option.type) {
-            case CommandOptionType.Boolean:
-              commandBuilder.addBooleanOption(optionBuilder => createOption(optionBuilder, option));
-              break;
-            case CommandOptionType.Channel:
-              commandBuilder.addChannelOption(optionBuilder => createOption(optionBuilder, option));
-              break;
-            case CommandOptionType.Integer:
-              commandBuilder.addIntegerOption(optionBuilder => createOption(optionBuilder, option));
-              break;
-            case CommandOptionType.Mentionable:
-              commandBuilder.addMentionableOption(optionBuilder =>
-                createOption(optionBuilder, option),
-              );
-              break;
-            case CommandOptionType.Number:
-              commandBuilder.addNumberOption(optionBuilder => createOption(optionBuilder, option));
-              break;
-            case CommandOptionType.Role:
-              commandBuilder.addRoleOption(optionBuilder => createOption(optionBuilder, option));
-              break;
-            case CommandOptionType.String:
-              commandBuilder.addStringOption(optionBuilder => createOption(optionBuilder, option));
-              break;
-            case CommandOptionType.User:
-              commandBuilder.addBooleanOption(optionBuilder => createOption(optionBuilder, option));
-              break;
-          }
-        });
-      }
-      return commandBuilder;
-    };
-
-    this.commands.forEach(command => {
-      if (command.type === CommandType.Message || command.type === CommandType.User) {
-        commands.push(command);
-        return;
-      }
-
-      let slashCommand = new SlashCommandBuilder()
-        .setName(command.name)
-        .setDescription(command.info ? command.info : "-");
-
-      addOptions(command, slashCommand);
-
-      let subCommands = this.subCommands.filter(
-        subCommand => subCommand.masterCommand == command.name,
-      );
-      subCommands.forEach(subCommand => {
-        slashCommand.addSubcommand(s => {
-          s.setName(subCommand.name).setDescription(subCommand.info);
-          return addOptions(subCommand, s);
-        });
-      });
-      let json = slashCommand.toJSON();
-
-      json["type"] = command.type;
-
-      commands.push(json);
-    });
-
-    console.log("Setting up " + commands.length + " commands for slash commands.");
-
-    const rest = new REST({ version: "9" }).setToken(this.token);
-    try {
-      console.log("Started refreshing application (/) commands.");
-      if (this.guildId) {
-        await rest.put(Routes.applicationGuildCommands(this.clientId, this.guildId), {
-          body: commands,
-        });
+  private onInteraction(interaction: Interaction) {
+    if (interaction.isCommand()) {
+      let subCommandName = interaction.options.getSubcommand(false);
+      if (subCommandName) {
+        let subCommand = this.subCommands.find(
+          subCommand =>
+            subCommand.masterCommand === interaction.commandName &&
+            subCommand.name === subCommandName,
+        );
+        if (subCommand) subCommand.execute(interaction, this.app);
       } else {
-        await rest.put(Routes.applicationCommands(this.clientId), {
-          body: commands,
-        });
+        this.commands.get(interaction.commandName).execute(interaction, this.app);
       }
+    }
 
-      console.log("Successfully reloaded application (/) commands.");
-    } catch (error) {
-      console.error(error);
+    if (interaction.isContextMenu()) {
+      this.commands.get(interaction.commandName).execute(interaction, this.app);
     }
   }
 }

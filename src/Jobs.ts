@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord-api-types";
+import { ApplicationCommandOptionType, Snowflake } from "discord-api-types";
 import { CommandInteraction, ContextMenuInteraction } from "discord.js";
 import fg from "fast-glob";
 import path from "path";
@@ -12,21 +12,15 @@ interface TConstructable<T> {
 export class JobRegister {
   private onRegisterFunctions: Map<string, [(job: Job) => void]> = new Map();
   private static metadataKey: string = "jobClass";
+
   /**
    * Imports all job files and registers them.
    */
-  async loadAndRegister(importUserJobs?: boolean, importDefaultJobs: boolean = false) {
-    let defaultConstructors = [];
-    let userConstructors = [];
-    try {
-      if (importUserJobs)
-        userConstructors = await this.importConstructorsInFolder("**/*.job.(js|ts)", {
-          ignore: ["node_modules"],
-        });
-    } catch (ignore) {}
-    if (importDefaultJobs) defaultConstructors = await this.getDefaultConstructors();
-    let constructors = userConstructors.concat(defaultConstructors);
-    constructors.forEach((job: Job) => {
+  async loadAndRegister() {
+    let jobs = await this.importJobsInFolder("**/*.job.(js|ts)", {
+      ignore: ["node_modules"],
+    });
+    jobs.forEach((job: Job) => {
       this.registerJob(job);
     });
   }
@@ -64,18 +58,6 @@ export class JobRegister {
     });
   }
 
-  private async getDefaultConstructors(): Promise<Job[]> {
-    let messagecommand = await this.importConstructor(
-      "../data/jobs/dev_commands/messagecommand.job",
-    );
-    let usercommand = await this.importConstructor("../data/jobs/dev_commands/usercommand.job");
-    let sub = await this.importConstructor("../data/jobs/dev_commands/subcommand.job");
-    let master = await this.importConstructor("../data/jobs/dev_commands/mastercommand.job");
-
-    let constructors: Job[] = [messagecommand, usercommand, sub, master];
-    return constructors;
-  }
-
   /**
    * Decorator for marking classes as job classes. It adds meta data to the class which is used internally for easier type inference.
    */
@@ -87,11 +69,11 @@ export class JobRegister {
    * Imports the default export from the filepath whos name matches with the search string
    * The default export is expected to be a class extending T.
    */
-  async importConstructorsInFolder(searchString: string, fgConfig: any = {}): Promise<Array<Job>> {
+  async importJobsInFolder(searchString: string, fgConfig: any = {}): Promise<Array<Job>> {
     const entries = await fg(searchString, fgConfig);
     let jobs = [];
     for (const file of entries) {
-      let jobClass: Job = await this.importConstructor(path.join(process.cwd(), "" + file));
+      let jobClass: Job = await this.importJob(path.join(process.cwd(), "" + file));
       jobs.push(jobClass);
     }
     return jobs;
@@ -101,7 +83,7 @@ export class JobRegister {
    * Imports the default export from the filepath
    * The default export is expected to be a class extending T.
    */
-  async importConstructor(filePath: string): Promise<Job> {
+  async importJob(filePath: string): Promise<Job> {
     console.log(filePath);
     let { default: jobClass } = await import(filePath);
     return jobClass;
@@ -149,11 +131,10 @@ export interface JobInput extends Job {}
 export class Job {
   name: string;
   info: string;
-  hidden?: boolean;
+
   constructor(input: JobInput) {
     this.name = input.name;
     this.info = input.info;
-    this.hidden = input.hidden;
   }
 }
 
@@ -166,6 +147,7 @@ export interface SlashCommandBaseInput<T> extends JobInput {
   options?: Array<CommandOption>;
   execute?: (interaction: CommandInteraction, app: T) => void;
 }
+
 export abstract class SlashCommandBase<T> extends CommandBase<T> {
   options?: Array<CommandOption>;
   execute?: (interaction: CommandInteraction, app: T) => void;
@@ -218,6 +200,7 @@ export class SlashCommand<T> extends SlashCommandBase<T> {
 export interface SubCommandBaseInput<T> extends SlashCommandBaseInput<T> {
   masterCommand: string;
 }
+
 @JobRegister.JobClass
 export class SubCommand<T> extends SlashCommandBase<T> {
   masterCommand: string;

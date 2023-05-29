@@ -4,6 +4,7 @@ import { Skeleton } from "./Skeleton";
 
 export * from "./Skeleton";
 export * from "./Jobs";
+export * from "./CommandRegistration";
 
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {

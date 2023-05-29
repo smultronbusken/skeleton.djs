@@ -9,21 +9,11 @@ export class StorageImporter {
    * Imports all job files and registers them.
    */
   async loadAndRegister() {
-    let userStorageFiles = await this.importFileInFolder(
+    await this.importFileInFolder(
       "**/*.storage.json",
       { cwd: __dirname.replace(/\\/g, "/"), ignore: ["built"] },
       "",
     );
-    let localStorageFiles = [];
-    try {
-      localStorageFiles = await this.importFileInFolder(
-        "**/*.storage.json",
-        { ignore: ["node_modules"] },
-        "../../../",
-      );
-    } catch (error) {
-      console.log("Could not user defined storage files.");
-    }
   }
 
   /**
