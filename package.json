@@ -12,13 +12,14 @@
   },
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
-    "@discordjs/rest": "0.1.0-canary.0",
+    "@discordjs/rest": "1.7.1",
     "discord-api-types": "^0.22.0",
-    "discord.js": "^13.2.0",
-    "fast-glob": "^3.2.7",
-    "node-cron": "^3.0.0",
+    "discord.js": "^13.16.0",
+    "fast-glob": "^3.2.12",
+    "node-cron": "^3.0.2",
+    "package": "^1.0.1",
     "reflect-metadata": "^0.1.13",
-    "stormdb": "^0.5.2"
+    "stormdb": "^0.6.0"
   },
   "peerDependencies": {
     "@discordjs/builders": "^0.6.0",
@@ -26,10 +27,10 @@
     "discord.js": "^13.2.0"
   },
   "devDependencies": {
-    "@types/node": "^16.10.2",
-    "nodemon": "^2.0.13",
-    "prettier": "^2.4.1",
-    "rimraf": "^3.0.2"
+    "@types/node": "^20.2.5",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
+    "rimraf": "^5.0.1"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,3 @@
-import Collection from ".pnpm/@discordjs+collection@0.2.1/node_modules/@discordjs/collection";
 import {
   SlashCommandStringOption,
   SlashCommandIntegerOption,
@@ -16,6 +15,7 @@ import {
   CommandType,
   SubCommand,
 } from "./Jobs";
+import { Collection } from "discord.js";
 
 export async function registerCommands(
   JSONCommands: string[],
