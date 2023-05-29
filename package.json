@@ -20,11 +20,13 @@
     "package": "^1.0.1",
     "reflect-metadata": "^0.1.13",
     "stormdb": "^0.6.0"
+    
   },
   "peerDependencies": {
     "@discordjs/builders": "^0.6.0",
     "discord-api-types": "^0.22.0",
-    "discord.js": "^13.2.0"
+    "discord.js": "^13.2.0",
+    "stormdb": "^0.6.0"
   },
   "devDependencies": {
     "@types/node": "^20.2.5",
