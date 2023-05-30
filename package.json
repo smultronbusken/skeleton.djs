@@ -2,8 +2,8 @@
   "name": "base-app-for-discordjs",
   "version": "0.4.2",
   "description": "A base app for discord.js",
-  "main": "out/main.js",
-  "types": "out/main.d.ts",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "scripts": {
     "watch": "pnpm build -- --watch",
     "build": "rimraf out && pnpm format && tsc",
