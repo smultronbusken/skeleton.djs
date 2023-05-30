@@ -1,6 +1,6 @@
 {
   "name": "base-app-for-discordjs",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A base app for discord.js",
   "main": "out/main.js",
   "types": "out/main.d.ts",
@@ -20,7 +20,6 @@
     "package": "^1.0.1",
     "reflect-metadata": "^0.1.13",
     "stormdb": "^0.6.0"
-    
   },
   "peerDependencies": {
     "@discordjs/builders": "^1.6.3",
