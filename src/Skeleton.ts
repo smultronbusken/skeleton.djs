@@ -82,7 +82,7 @@ export class Skeleton<T> {
   }
 
   private onInteraction(interaction: Interaction) {
-    if (interaction.isCommand()) {
+    if (interaction.isChatInputCommand()) {
       let subCommandName = interaction.options.getSubcommand(false);
       if (subCommandName) {
         let subCommand = this.subCommands.find(
@@ -96,7 +96,7 @@ export class Skeleton<T> {
       }
     }
 
-    if (interaction.isContextMenu()) {
+    if (interaction.isContextMenuCommand()) {
       this.commands.get(interaction.commandName).execute(interaction, this.app);
     }
   }

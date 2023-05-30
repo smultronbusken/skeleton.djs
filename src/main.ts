@@ -1,4 +1,4 @@
-import { Intents } from "discord.js";
+import { GatewayIntentBits } from "discord.js";
 import path from "path";
 import { Skeleton } from "./Skeleton";
 
@@ -10,9 +10,9 @@ if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
     const intents = {
       intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_VOICE_STATES,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildVoiceStates,
       ],
     };
     const skeleton = new Skeleton(

@@ -3,8 +3,9 @@ import {
   SlashCommandIntegerOption,
   SlashCommandSubcommandBuilder,
   SlashCommandBuilder,
+  SlashCommandOptionsOnlyBuilder,
+  ApplicationCommandOptionBase,
 } from "@discordjs/builders";
-import { SlashCommandOptionBase } from "@discordjs/builders/dist/interactions/slashCommands/mixins/CommandOptionBase";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import {
@@ -50,7 +51,7 @@ export function convertCommandsToJson<T>(
 ): string[] {
   const commandsAsJson = [];
 
-  let createOption = <T extends SlashCommandOptionBase>(
+  let createOption = <T extends ApplicationCommandOptionBase>(
     optionBuilder: T,
     option: CommandOption,
   ): T => {
@@ -59,13 +60,13 @@ export function convertCommandsToJson<T>(
 
     if (optionBuilder instanceof SlashCommandStringOption) {
       if (option.choices) {
-        option.choices.forEach(choice => optionBuilder.addChoice(choice.name, choice.value));
+        (option).choices.forEach(choice => optionBuilder.addChoices(choice));
       }
     }
 
     if (optionBuilder instanceof SlashCommandIntegerOption) {
       if (option.choices) {
-        option.choices.forEach(choice => optionBuilder.addChoice(choice.name, choice.value));
+        option.choices.forEach(choice => optionBuilder.addChoices(choice));
       }
     }
 
@@ -135,7 +136,7 @@ export function convertCommandsToJson<T>(
     });
     let json = slashCommand.toJSON();
 
-    json["type"] = command.type;
+    //json["type"] = command.type;
 
     commandsAsJson.push(json);
   });

@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionType } from "discord-api-types";
-import { CommandInteraction, ContextMenuInteraction } from "discord.js";
+
+import { CommandInteraction, APIContextMenuInteraction, ApplicationCommandOptionType } from "discord.js";
 import fg from "fast-glob";
 import path from "path";
 import "reflect-metadata";
@@ -161,13 +161,13 @@ export abstract class SlashCommandBase<T> extends CommandBase<T> {
 
 export interface ContextMenuCommandInput<T> {
   name: string;
-  execute?: (interaction: ContextMenuInteraction, app: T) => void;
+  execute?: (interaction: APIContextMenuInteraction, app: T) => void;
 }
 
 @JobRegister.JobClass
 export class MessageCommand<T> extends CommandBase<T> {
   type = CommandType.Message;
-  execute?: (interaction: ContextMenuInteraction, app: T) => void;
+  execute?: (interaction: APIContextMenuInteraction, app: T) => void;
   constructor(input: ContextMenuCommandInput<T>) {
     super({
       info: undefined,
@@ -180,7 +180,7 @@ export class MessageCommand<T> extends CommandBase<T> {
 @JobRegister.JobClass
 export class UserCommand<T> extends CommandBase<T> {
   type = CommandType.User;
-  execute?: (interaction: ContextMenuInteraction, app: T) => void;
+  execute?: (interaction: APIContextMenuInteraction, app: T) => void;
   constructor(input: ContextMenuCommandInput<T>) {
     super({
       info: undefined,

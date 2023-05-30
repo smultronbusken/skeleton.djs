@@ -1,4 +1,6 @@
-import { MessageActionRow, MessageButton, MessageSelectMenu } from "discord.js";
+
+
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from "discord.js";
 import { CommandOptionType, SubCommand } from "../../../src/Jobs";
 
 export default new SubCommand<{}>({
@@ -18,16 +20,16 @@ export default new SubCommand<{}>({
         ]
     }],
     async execute(interaction, app) {
-  		const row = new MessageActionRow()
+  		const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents(
-				new MessageButton()
+				new ButtonBuilder()
 					.setCustomId('primary')
 					.setLabel('Primary')
-					.setStyle('PRIMARY'),
+					.setStyle(ButtonStyle.Primary),
 			);
-        const row2 = new MessageActionRow()
+        const row2 = new ActionRowBuilder<StringSelectMenuBuilder>()
         .addComponents(
-            new MessageSelectMenu()
+            new StringSelectMenuBuilder()
                 .setCustomId('select')
                 .setPlaceholder('Nothing selected')
                 .addOptions([
@@ -43,8 +45,6 @@ export default new SubCommand<{}>({
                     },
                 ]),
         );
-        console.log(row.toJSON())
-        console.log(row2.toJSON())
 
 		await interaction.reply({ content: 'Pong!', components: [row, row2] });
     }

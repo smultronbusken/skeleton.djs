@@ -86,7 +86,7 @@ let playlist: Array<string> = skeleton
 ## Set up
 
 1. Install with `npm i base-app-for-discordjs`
-2. Install discord.js and stormdb `npm i stormdb` `npm i discord.js`
+2. Install discord.js (^14.11.0) and stormdb (^0.6.0) `npm i stormdb` `npm i discord.js`  
 3. Run a file with the following code:
 
 ```typescript
