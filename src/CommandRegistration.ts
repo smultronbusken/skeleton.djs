@@ -60,7 +60,7 @@ export function convertCommandsToJson<T>(
 
     if (optionBuilder instanceof SlashCommandStringOption) {
       if (option.choices) {
-        (option).choices.forEach(choice => optionBuilder.addChoices(choice));
+        option.choices.forEach(choice => optionBuilder.addChoices(choice));
       }
     }
 

@@ -1,5 +1,8 @@
-
-import { CommandInteraction, APIContextMenuInteraction, ApplicationCommandOptionType } from "discord.js";
+import {
+  CommandInteraction,
+  APIContextMenuInteraction,
+  ApplicationCommandOptionType,
+} from "discord.js";
 import fg from "fast-glob";
 import path from "path";
 import "reflect-metadata";
