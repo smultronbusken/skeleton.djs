@@ -14,7 +14,6 @@ import {
 
 export class Skeleton<T> {
   public commands: Collection<string, CommandBase<T>> = new Collection();
-  public subCommands: Array<SubCommand<T>> = new Array();
   public storages: Collection<any, StormDB> = new Collection();
   public client: Client;
   private emitter: EventEmitter = new EventEmitter();
@@ -39,7 +38,7 @@ export class Skeleton<T> {
 
   async init() {
     await this.importJobs();
-    let JSONCommands = convertCommandsToJson(this.commands, this.subCommands);
+    let JSONCommands = convertCommandsToJson(this.commands);
     registerCommands(JSONCommands, this.token, this.clientId, this.guildId, true);
     this.emitter.emit("ready");
   }
@@ -58,7 +57,7 @@ export class Skeleton<T> {
     });
 
     this.jobRegister.onRegister(SubCommand, command => {
-      this.subCommands.push(command);
+      this.commands.set(command.masterCommand+"/"+command.name, command);
     });
 
     await this.jobRegister.loadAndRegister();
@@ -66,17 +65,13 @@ export class Skeleton<T> {
 
   private onInteraction(interaction: Interaction) {
     if (interaction.isChatInputCommand()) {
+
+      let commandName = interaction.commandName;
+
       let subCommandName = interaction.options.getSubcommand(false);
-      if (subCommandName) {
-        let subCommand = this.subCommands.find(
-          subCommand =>
-            subCommand.masterCommand === interaction.commandName &&
-            subCommand.name === subCommandName,
-        );
-        if (subCommand) subCommand.execute(interaction, this.app);
-      } else {
-        this.commands.get(interaction.commandName).execute(interaction, this.app);
-      }
+      if (subCommandName) commandName += "/" + subCommandName;
+
+      this.commands.get(commandName).execute(interaction, this.app);
     }
 
     if (interaction.isContextMenuCommand()) {
