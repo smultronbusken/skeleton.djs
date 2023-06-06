@@ -1,5 +1,3 @@
-
-
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } from "discord.js";
 import { CommandOptionType, SubCommand } from "../../../src/Jobs";
 
