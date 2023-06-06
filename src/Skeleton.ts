@@ -32,7 +32,6 @@ export class Skeleton<T> {
   private jobRegister: JobRegister;
 
   constructor() {
-  
     this.jobRegister = new JobRegister();
 
     this.jobRegister.onRegister(SlashCommand, command => {
@@ -50,7 +49,6 @@ export class Skeleton<T> {
     this.jobRegister.onRegister(SubCommand, command => {
       this.commands.set(command.masterCommand + "/" + command.name, command);
     });
-
   }
 
   async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {
@@ -60,7 +58,7 @@ export class Skeleton<T> {
     this.registerInteractionHandler(chatInputCommandInteractionHandler);
 
     await this.jobRegister.loadAndRegister();
-    
+
     let JSONCommands = convertCommandsToJson(this.commands);
     await registerCommands(JSONCommands, options.token, options.appId, options.guildId, true);
   }
@@ -95,5 +93,4 @@ export class Skeleton<T> {
   public setContext(context: T) {
     this.context = context;
   }
-
 }

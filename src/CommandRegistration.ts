@@ -45,9 +45,7 @@ export async function registerCommands(
   }
 }
 
-export function convertCommandsToJson<T>(
-  commands: Collection<string, CommandBase<T>>
-): string[] {
+export function convertCommandsToJson<T>(commands: Collection<string, CommandBase<T>>): string[] {
   const commandsAsJson = [];
 
   let createOption = <T extends ApplicationCommandOptionBase>(
@@ -125,9 +123,8 @@ export function convertCommandsToJson<T>(
     addOptions(command, slashCommand);
 
     let correctSubCommands = commands.filter(
-      c => c instanceof SubCommand && c.masterCommand == command.name
+      c => c instanceof SubCommand && c.masterCommand == command.name,
     );
-
 
     correctSubCommands.forEach(subCommand => {
       slashCommand.addSubcommand(s => {

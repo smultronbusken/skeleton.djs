@@ -1,4 +1,10 @@
-import { ChatInputCommandInteraction, Client, CommandInteraction, ContextMenuCommandInteraction, GatewayIntentBits } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  Client,
+  CommandInteraction,
+  ContextMenuCommandInteraction,
+  GatewayIntentBits,
+} from "discord.js";
 import path from "path";
 import { Skeleton } from "./Skeleton";
 import { SlashCommand } from "./Jobs";
@@ -7,7 +13,6 @@ export * from "./Skeleton";
 
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
-
     const clientOptions = {
       intents: [
         GatewayIntentBits.Guilds,
@@ -22,24 +27,25 @@ if (require.main === module) {
     const skeleton = new Skeleton();
 
     // Set what will be passed to commands when executed
-    skeleton.setContext({})
+    skeleton.setContext({});
 
     // Manually add a command, instead of writing it in a .job.ts file
-    skeleton.addCommand(new SlashCommand<{}>({
+    skeleton.addCommand(
+      new SlashCommand<{}>({
         info: "Lmao",
         name: "manuallyadded",
-        async execute(interaction, context) { 
-            interaction.reply("Looking good bro")
-        }
-    }))
+        async execute(interaction, context) {
+          interaction.reply("Looking good bro");
+        },
+      }),
+    );
 
     // Loads all .job.ts files and registers them.
     skeleton.run({
-      appId:  config["APP_ID"],
+      appId: config["APP_ID"],
       client: client,
       token: config["APP_TOKEN"],
-      guildId: config["DEV_GUILD_ID"]
-    })
-
+      guildId: config["DEV_GUILD_ID"],
+    });
   });
 }
