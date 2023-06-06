@@ -7,7 +7,6 @@ This projects is a made using [discord.js](https://discord.js.org/#/). It is use
 - Easier command creation.
 - Automatic command registering - all command files are registered to the Discord API.
 - Interaction handling - each interaction from Discord gets mapped to the correct command.
-- Simple set up for JSON-based database using [stormdb](https://www.npmjs.com/package/stormdb). For example you are making a app with currencies and transactions. Simply create an file (which ends with .storage.json) anywhere in your source folder.
 
 ## Command creation
 
@@ -49,39 +48,6 @@ There are 4 types of commands of which all are registered automatically:
   ![](https://i.imgur.com/hPjR4aj.png)
 - `MessageCommand`
   ![](https://i.imgur.com/mSdkaLw.png)
-
-## Storage files
-
-
-Creating a file which ends in `.storage.json` with a "name" property will make it accessable in your code byt calling `Skeleton.getStorage(name)`
-
-In the above example you can see a `playlists.storage.json` file which has the content
-
-```json
-{
-  "name": "playlists",
-  "Chill": [
-    "https://www.youtube.com/watch?v=LmUHFgNFRG0",
-    "https://www.youtube.com/watch?v=LmUHFgNFRG0",
-    "https://www.youtube.com/watch?v=LmUHFgNFRG0"
-  ],
-  "Hype": [
-    "https://www.youtube.com/watch?v=LmUHFgNFRG0",
-    "https://www.youtube.com/watch?v=LmUHFgNFRG0",
-    "https://www.youtube.com/watch?v=LmUHFgNFRG0"
-  ]
-}
-```
-
-To read or write to this file
-
-```typescript
-let playlist: Array<string> = skeleton
-  .getStorage("playlists")
-  .get(playlistName)
-  .value();
-```
-
 
 ## Set up
 

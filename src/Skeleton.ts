@@ -11,7 +11,6 @@ import {
   SubCommand,
   UserCommand,
 } from "./Jobs";
-import { StorageImporter } from "./StorageImporter";
 
 export class Skeleton<T> {
   public commands: Collection<string, CommandBase<T>> = new Collection();
@@ -20,7 +19,6 @@ export class Skeleton<T> {
   public client: Client;
   private emitter: EventEmitter = new EventEmitter();
   public jobRegister: JobRegister;
-  public storage: StorageImporter;
 
   constructor(
     public app: T,
@@ -32,7 +30,6 @@ export class Skeleton<T> {
     this.client = new Client(clientOptions);
     this.client.on("interactionCreate", async i => this.onInteraction(i));
     this.jobRegister = new JobRegister();
-    this.storage = new StorageImporter(this);
     this.init();
   }
 
@@ -40,19 +37,9 @@ export class Skeleton<T> {
     this.emitter.on(event, fn);
   }
 
-  addStorage(db: StormDB) {
-    this.storages.set(db.get("name").value(), db);
-  }
-
-  getStorage(dbName: string): StormDB {
-    return this.storages.get(dbName);
-  }
-
   async init() {
-    await this.importStorages();
     await this.importJobs();
     let JSONCommands = convertCommandsToJson(this.commands, this.subCommands);
-    console.log(JSONCommands);
     registerCommands(JSONCommands, this.token, this.clientId, this.guildId, true);
     this.emitter.emit("ready");
   }
@@ -75,10 +62,6 @@ export class Skeleton<T> {
     });
 
     await this.jobRegister.loadAndRegister();
-  }
-
-  async importStorages() {
-    this.storage.loadAndRegister();
   }
 
   private onInteraction(interaction: Interaction) {
