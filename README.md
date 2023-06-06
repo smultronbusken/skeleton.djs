@@ -56,16 +56,30 @@ There are 4 types of commands of which all are registered automatically:
 3. Run a file with the following code:
 
 ```typescript
-  import Skeleton from "base-app-for-discordjs"
+    // Create a client and login as normal using Discord.js
+    const client = new Client(clientOptions);
+    client.login(config["APP_TOKEN"]);
 
-    const intents = { intents: [...all intents you need] }
-    const skeleton = new Skeleton(
-      {}, // This object will get passed to commands, it can be anything
-      "APP_TOKEN",  // You get this from the Discord developer portal
-      "APP_ID", // You get this from the Discord developer portal
-      intents,
-      "ID_OF_A_GUILD_WHERE_YOU_TEST_YOUR_COMMANDS" // this is optional, but without it it takes up to an hour to register commands
-    );
-    skeleton.client.login("APP_TOKEN");
-  })
+    // Create the object
+    const skeleton = new Skeleton();
+
+    // Set what will be passed to commands when executed
+    skeleton.setContext({})
+
+    // Manually add a command, instead of writing it in a .job.ts file
+    skeleton.addCommand(new SlashCommand<{}>({
+        info: "Lmao",
+        name: "manuallyadded",
+        async execute(interaction, context) { 
+            interaction.reply("Looking good bro")
+        }
+    }))
+
+    // Loads all .job.ts files and registers them.
+    skeleton.run({
+      appId:  config["APP_ID"],
+      client: client,
+      token: config["APP_TOKEN"],
+      guildId: config["DEV_GUILD_ID"]
+    })
 ```

@@ -4,8 +4,6 @@ import { Skeleton } from "./Skeleton";
 import { SlashCommand } from "./Jobs";
 
 export * from "./Skeleton";
-export * from "./Jobs";
-export * from "./CommandRegistration";
 
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
@@ -43,7 +41,5 @@ if (require.main === module) {
       guildId: config["DEV_GUILD_ID"]
     })
 
-
   });
-
 }
