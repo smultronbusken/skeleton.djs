@@ -36,6 +36,49 @@ export default new SlashCommand<{}>(
 );
 ```
 
+If youre using typescript the parameters are typed.
+
+Read more here on what data to pass:
+https://discord.com/developers/docs/interactions/application-commands & https://old.discordjs.dev/#/docs/discord.js/14.11.0/class/ApplicationCommand
+
+
+#### Subcommand with subcommand groups example
+
+```typescript
+export default new SubCommand<{}>(
+  {
+    master: "mastercommand",
+    group: "groupone",
+    name: "foo",
+    description: "bar",
+    options: [
+      {
+        name: "user",
+        description: "useroption",
+        type: ApplicationCommandOptionType.User,
+      },
+    ],
+  },
+  async (interaction, app) => {
+    interaction.reply("Hi.");
+  },
+);
+```
+
+```typescript
+export default new MasterCommand<{}>({
+  name: "mastercommand",
+  description: "A master command",
+  options: [
+    {
+      description: "A group",
+      name: "groupone",
+      type: ApplicationCommandOptionType.SubcommandGroup,
+    },
+  ],
+});
+```
+
 ### Types of commands
 
 There are 4 types of commands of which all are registered automatically:
