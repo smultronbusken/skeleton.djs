@@ -146,7 +146,7 @@ export default class CustomIdInteractionHandler<T> extends InteractionHandler<Cu
 
     // If this return true, then the execute() method will run.
     check = (interaction: CustomIdInteraction) => {
-      return  this.customIds.find(cid => cid.customId === interaction.customId)
+      return  this.customIds.find(cid => cid === interaction.customId)
     }
 
     execute = async (interaction: CustomIdInteraction, context: T) => {
