@@ -151,7 +151,8 @@ First make your command class extend the ```Job``` class and use the ```@JobRegi
 
 ```typescript
 
-export class CustomIdCommand<T>  {
+@JobRegistry.JobClass
+export class CustomIdCommand<T> extends Job<T> {
   customId: string;
   constructor(customId: string, execute: (i: CustomIdInteraction, context: T) => any) {
     super(execute);
