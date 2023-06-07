@@ -2,18 +2,21 @@ import {
   CommandInteraction,
   APIContextMenuInteraction,
   ApplicationCommandOptionType,
+  MessageContextMenuCommandInteraction,
+  UserContextMenuCommandInteraction,
+  APIApplicationCommand,
 } from "discord.js";
 import fg from "fast-glob";
 import path from "path";
 import "reflect-metadata";
 
-interface TConstructable<T> {
+export interface TConstructable<T> {
   new (...args): T;
   prototype: T;
 }
 
 export class JobRegister {
-  private onRegisterFunctions: Map<string, [(job: Job) => void]> = new Map();
+  private onRegisterFunctions: Map<string, [(job: Job<any>) => void]> = new Map();
   private static metadataKey: string = "jobClass";
 
   /**
@@ -23,7 +26,9 @@ export class JobRegister {
     let jobs = await this.importJobsInFolder("**/*.job.(js|ts)", {
       ignore: ["node_modules"],
     });
-    jobs.forEach((job: Job) => {
+
+    jobs.forEach((job: Job<any>) => {
+      if (!job || !job.execute) return;
       this.registerJob(job);
     });
   }
@@ -32,14 +37,14 @@ export class JobRegister {
    * Adds a function to be called when registering jobs.
    * @param func The function to be called when a Job of class T is registered.
    */
-  onRegister<T extends Job>(jobClass: TConstructable<T>, func: (job: T) => void) {
+  onRegister<T extends Job<any>>(jobClass: TConstructable<T>, func: (job: T) => void) {
     let className = Reflect.getMetadata(
       JobRegister.metadataKey,
-      (<TConstructable<Job>>jobClass).prototype,
+      (<TConstructable<Job<any>>>jobClass).prototype,
     );
     let functions = this.onRegisterFunctions.get(className);
-    if (functions) functions.push(<(job: Job) => void>func);
-    else this.onRegisterFunctions.set(className, [<(job: Job) => void>func]);
+    if (functions) functions.push(<(job: Job<any>) => void>func);
+    else this.onRegisterFunctions.set(className, [<(job: Job<any>) => void>func]);
   }
 
   /**
@@ -47,13 +52,17 @@ export class JobRegister {
    * If you want to register all imported jobs then use loadAndRegister()
    * @param job The job to be registered
    */
-  registerJob(job: Job) {
-    let jobType = Reflect.getMetadata(JobRegister.metadataKey, Reflect.getPrototypeOf(job));
-
+  registerJob(job: Job<any>) {
+    let jobType;
+    try {
+      jobType = Reflect.getMetadata(JobRegister.metadataKey, Reflect.getPrototypeOf(job));
+    } catch (error) {
+      return;
+    }
     if (jobType === undefined) {
+      console.log(job);
       throw new Error(
-        job.name +
-          " has no info about its type. Did you forget to put the JobClass decorator on its class?",
+        "Job has no info about its type. Did you forget to put the JobClass decorator on its class?",
       );
     }
     this.onRegisterFunctions.get(jobType)?.forEach(func => {
@@ -61,9 +70,6 @@ export class JobRegister {
     });
   }
 
-  /**
-   * Decorator for marking classes as job classes. It adds meta data to the class which is used internally for easier type inference.
-   */
   public static JobClass(constructor: Function) {
     Reflect.defineMetadata(JobRegister.metadataKey, constructor.name, constructor.prototype);
   }
@@ -72,11 +78,11 @@ export class JobRegister {
    * Imports the default export from the filepath whos name matches with the search string
    * The default export is expected to be a class extending T.
    */
-  async importJobsInFolder(searchString: string, fgConfig: any = {}): Promise<Array<Job>> {
+  async importJobsInFolder(searchString: string, fgConfig: any = {}): Promise<Array<Job<any>>> {
     const entries = await fg(searchString, fgConfig);
     let jobs = [];
     for (const file of entries) {
-      let jobClass: Job = await this.importJob(path.join(process.cwd(), "" + file));
+      let jobClass: Job<any> = await this.importJob(path.join(process.cwd(), "" + file));
       jobs.push(jobClass);
     }
     return jobs;
@@ -86,130 +92,13 @@ export class JobRegister {
    * Imports the default export from the filepath
    * The default export is expected to be a class extending T.
    */
-  async importJob(filePath: string): Promise<Job> {
-    console.log(filePath);
+  async importJob(filePath: string): Promise<Job<any>> {
+    console.log("Imported file: " + filePath.split("\\")[filePath.split("\\").length - 1]);
     let { default: jobClass } = await import(filePath);
     return jobClass;
   }
 }
 
-export const CommandOptionType = {
-  Boolean: ApplicationCommandOptionType.Boolean,
-  Channel: ApplicationCommandOptionType.Channel,
-  Integer: ApplicationCommandOptionType.Integer,
-  Mentionable: ApplicationCommandOptionType.Mentionable,
-  Number: ApplicationCommandOptionType.Number,
-  Role: ApplicationCommandOptionType.Role,
-  String: ApplicationCommandOptionType.String,
-  User: ApplicationCommandOptionType.User,
-} as const;
-type CommandOptionType = (typeof CommandOptionType)[keyof typeof CommandOptionType];
-
-export interface CommandOptionChoice {
-  name: string;
-  value: any;
-}
-
-export interface CommandOption {
-  name: string;
-  type: CommandOptionType;
-  description: string;
-  required: boolean;
-  choices?: CommandOptionChoice[];
-}
-
-export interface CommandOptionData {
-  name: string;
-  description: string;
-  required: boolean;
-}
-
-export enum CommandType {
-  Slash = 1,
-  User = 2,
-  Message = 3,
-}
-
-export interface JobInput extends Job {}
-export class Job {
-  name: string;
-  info: string;
-
-  constructor(input: JobInput) {
-    this.name = input.name;
-    this.info = input.info;
-  }
-}
-
-export abstract class CommandBase<T> extends Job {
-  abstract execute?: (interaction: any, app: T) => any;
-  abstract type: CommandType;
-}
-
-export interface SlashCommandBaseInput<T> extends JobInput {
-  options?: Array<CommandOption>;
-  execute?: (interaction: CommandInteraction, app: T) => void;
-}
-
-export abstract class SlashCommandBase<T> extends CommandBase<T> {
-  options?: Array<CommandOption>;
-  execute?: (interaction: CommandInteraction, app: T) => void;
-  type = CommandType.Slash;
-  constructor(input: SlashCommandBaseInput<T>) {
-    super(input);
-    this.options = input.options;
-    this.execute = input.execute;
-  }
-}
-
-export interface ContextMenuCommandInput<T> {
-  name: string;
-  execute?: (interaction: APIContextMenuInteraction, app: T) => void;
-}
-
-@JobRegister.JobClass
-export class MessageCommand<T> extends CommandBase<T> {
-  type = CommandType.Message;
-  execute?: (interaction: APIContextMenuInteraction, app: T) => void;
-  constructor(input: ContextMenuCommandInput<T>) {
-    super({
-      info: undefined,
-      name: input.name,
-    });
-    this.execute = input.execute;
-  }
-}
-
-@JobRegister.JobClass
-export class UserCommand<T> extends CommandBase<T> {
-  type = CommandType.User;
-  execute?: (interaction: APIContextMenuInteraction, app: T) => void;
-  constructor(input: ContextMenuCommandInput<T>) {
-    super({
-      info: undefined,
-      name: input.name,
-    });
-    this.execute = input.execute;
-  }
-}
-
-@JobRegister.JobClass
-export class SlashCommand<T> extends SlashCommandBase<T> {
-  constructor(input: SlashCommandBaseInput<T>) {
-    super(input);
-  }
-}
-
-export interface SubCommandBaseInput<T> extends SlashCommandBaseInput<T> {
-  masterCommand: string;
-}
-
-@JobRegister.JobClass
-export class SubCommand<T> extends SlashCommandBase<T> {
-  masterCommand: string;
-  hidden? = true;
-  constructor(input: SubCommandBaseInput<T>) {
-    super(input);
-    this.masterCommand = input.masterCommand;
-  }
+export class Job<T> {
+  constructor(public execute: (interaction: any, app: T) => any) {}
 }

@@ -9,67 +9,42 @@ import {
 } from "discord.js";
 import StormDB from "stormdb";
 import { EventEmitter } from "stream";
-import { convertCommandsToJson, registerCommands } from "./CommandRegistration";
-import {
-  CommandBase,
-  JobRegister,
-  MessageCommand,
-  SlashCommand,
-  SubCommand,
-  UserCommand,
-} from "./Jobs";
-import {
-  InteractionHandler,
-  chatInputCommandInteractionHandler,
-  contextMenuCommandInteractionHandler,
-} from "./InteractionHandler";
+import { Job, JobRegister, TConstructable } from "./Jobs";
+import { InteractionHandler } from "./interactions/InteractionHandler";
+import { CommandDeployer } from "./CommandDeployer";
 
 export class Skeleton<T> {
-  private commands: Collection<string, CommandBase<T>> = new Collection();
   private interactionHandlers: InteractionHandler<any>[] = [];
   private context: T;
 
   private jobRegister: JobRegister;
+  private commandDeployer: CommandDeployer;
 
   constructor() {
     this.jobRegister = new JobRegister();
+    this.commandDeployer = new CommandDeployer();
+  }
 
-    this.jobRegister.onRegister(SlashCommand, command => {
-      this.commands.set(command.name, command);
-    });
-
-    this.jobRegister.onRegister(UserCommand, command => {
-      this.commands.set(command.name, command);
-    });
-
-    this.jobRegister.onRegister(MessageCommand, command => {
-      this.commands.set(command.name, command);
-    });
-
-    this.jobRegister.onRegister(SubCommand, command => {
-      this.commands.set(command.masterCommand + "/" + command.name, command);
-    });
+  onRegister<T extends Job<any>>(jobClass: TConstructable<T>, func: (job: T) => void) {
+    this.jobRegister.onRegister(jobClass, func);
   }
 
   async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {
     options.client.on("interactionCreate", async i => this.onInteraction(i));
-
-    this.registerInteractionHandler(contextMenuCommandInteractionHandler);
-    this.registerInteractionHandler(chatInputCommandInteractionHandler);
-
     await this.jobRegister.loadAndRegister();
+    await this.commandDeployer.deploy(options);
+  }
 
-    let JSONCommands = convertCommandsToJson(this.commands);
-    await registerCommands(JSONCommands, options.token, options.appId, options.guildId, true);
+  addCommandProvider(provider: () => object[]) {
+    this.commandDeployer.addCommandProvider(provider);
   }
 
   private async onInteraction(interaction: Interaction) {
     try {
-      console.log(interaction);
       for (let handler of this.interactionHandlers) {
         if (handler.typeGuard(interaction)) {
-          if (handler.check(interaction)) {
-            await handler.execute(interaction, this.commands, this.context);
+          if (handler.check(interaction, this.context)) {
+            await handler.execute(interaction, this.context);
             return;
           }
         }
@@ -84,10 +59,6 @@ export class Skeleton<T> {
 
   public registerInteractionHandler<I extends BaseInteraction>(handler: InteractionHandler<I>) {
     this.interactionHandlers.push(handler);
-  }
-
-  public addCommand(command: CommandBase<T>) {
-    this.commands.set(command.name, command);
   }
 
   public setContext(context: T) {

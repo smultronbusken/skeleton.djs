@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "src/dev/**/*.ts"],
   "include": ["src/**/*.ts"],
   "compilerOptions": {
       "target": "esnext",
@@ -19,6 +19,7 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "outDir": "dist",
+      
 
   }
 }
