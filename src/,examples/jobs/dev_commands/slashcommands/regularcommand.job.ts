@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { SlashCommand } from "../../../../jobHandler/SlashCommandJobHandler";
+import { SlashCommand } from "../../../../command/SlashCommandHandler";
 
 export default new SlashCommand<{}>(
   {
@@ -8,7 +8,7 @@ export default new SlashCommand<{}>(
     options: [
       {
         name: "option",
-        description: "Epic",
+        description: "A option",
         type: ApplicationCommandOptionType.String,
       },
     ],

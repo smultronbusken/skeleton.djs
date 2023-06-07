@@ -1,8 +1,8 @@
-import { Collection, APIApplicationCommand } from "discord.js";
+import { Collection, APIApplicationCommand, ApplicationCommandType, CommandInteraction } from "discord.js";
 import { CommandMediator } from "./CommandMediator";
-import { ContextMenuCommand } from "../jobHandler/ContextMenuCommandJobHandler";
 import { CommandToJSON } from "./CommandToJSON";
-import { SlashCommand } from "../jobHandler/SlashCommandJobHandler";
+import { CommandBase, CommandInput } from "../Command";
+import { JobRegistry } from "../Jobs";
 
 
 export default class SlashCommandHandler<T> implements CommandMediator<SlashCommand<T>>, CommandToJSON  {
@@ -24,4 +24,22 @@ export default class SlashCommandHandler<T> implements CommandMediator<SlashComm
         });
         return commandsAsJson;
     };
+}
+
+
+@JobRegistry.JobClass
+export class SlashCommand<T> extends CommandBase<T> {
+  constructor(input: CommandInput, execute: (interaction: CommandInteraction, app: T) => void) {
+    super(
+      {
+        ...input,
+        id: input.id,
+        version: input.version,
+        default_member_permissions: input.default_member_permissions,
+        type: ApplicationCommandType.ChatInput,
+        application_id: "id",
+      },
+      execute,
+    );
+  }
 }

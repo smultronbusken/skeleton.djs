@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { SubCommand } from "../../../../jobHandler/SubCommandJobHandler";
+import { SubCommand } from "../../../../command/SubCommandHandler";
 
 export default new SubCommand<{}>(
   {

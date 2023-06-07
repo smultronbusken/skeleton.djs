@@ -1,11 +1,8 @@
-import {
-  Client,
-  GatewayIntentBits,
-} from "discord.js";
+import { GatewayIntentBits, Client } from "discord.js";
 import path from "path";
 import { Skeleton } from "./Skeleton";
+import { SlashCommand } from "./command/SlashCommandHandler";
 
-export * from "./Skeleton";
 
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
@@ -26,22 +23,24 @@ if (require.main === module) {
     skeleton.setContext({});
 
     // Manually add a command, instead of writing it in a .job.ts file
-    /*skeleton.addCommand(
+    skeleton.addSlashCommand(
       new SlashCommand<{}>({
-        name: "manuallyadded",
-        description: "Lmao",
-        async execute(interaction, context) {
-          
-        },
-      }),
-    );*/
+        name: "testcommand",
+        description: "I added this manually",
+      },
+      async (interaction, context) => {
+        interaction.reply("hej")
+      }
+      ),
+    );
 
-    // Loads all .job.ts files and registers them.
+    // This loads all command files and deploys them
     skeleton.run({
       appId: config["APP_ID"],
       client: client,
       token: config["APP_TOKEN"],
-      guildId: config["DEV_GUILD_ID"],
+      guildId: config["DEV_GUILD_ID"], // Optional, if youre using a dev guild.
     });
+
   });
 }

@@ -19,7 +19,8 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "outDir": "dist",
-      "noImplicitAny": true,
+
+      "noImplicitAny": true, // 
 
   }
 }

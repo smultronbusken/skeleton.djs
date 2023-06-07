@@ -1,7 +1,7 @@
 import { BaseInteraction, ChatInputCommandInteraction, Interaction } from "discord.js";
 import { CommandMediator } from "../command/CommandMediator";
 import { InteractionHandler } from "./InteractionHandler";
-import { SubCommand } from "../jobHandler/SubCommandJobHandler";
+import { SubCommand } from "../command/SubCommandHandler";
 
 export default class SubCommandInteractionHandler<T> extends InteractionHandler<ChatInputCommandInteraction, T> {
 

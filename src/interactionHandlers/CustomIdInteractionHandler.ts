@@ -1,7 +1,7 @@
 import { BaseInteraction, ChatInputCommandInteraction, Interaction } from "discord.js";
-import { CustomIdCommand, CustomIdInteraction, isCustomInteraction } from "../jobHandler/CustomIdCommandJobHandler";
 import { CommandMediator } from "../command/CommandMediator";
 import { InteractionHandler } from "./InteractionHandler";
+import { CustomIdCommand } from "../command/CustomIdCommandHandler";
 
 export default class CustomIdCommandInteractionHandler<T> extends InteractionHandler<CustomIdInteraction, T> {
 
@@ -9,7 +9,7 @@ export default class CustomIdCommandInteractionHandler<T> extends InteractionHan
       super();
     }
     
-    typeGuard = (interaction: Interaction): interaction is CustomIdInteraction => isCustomInteraction(interaction)
+    typeGuard = (interaction: BaseInteraction): interaction is CustomIdInteraction => isCustomInteraction(interaction)
 
     // Do not handle subcommands
     check = (interaction: CustomIdInteraction) => {
@@ -21,4 +21,15 @@ export default class CustomIdCommandInteractionHandler<T> extends InteractionHan
         await command?.execute(interaction, context);
     }
 
+}
+
+export type CustomIdInteraction = Interaction & { customId: string };
+
+export function isCustomInteraction(obj: unknown): obj is CustomIdInteraction {
+  return (
+    obj instanceof BaseInteraction &&
+    obj !== null &&
+    "customId" in obj &&
+    typeof (obj as any).customId === "string"
+  );
 }

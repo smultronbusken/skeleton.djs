@@ -4,6 +4,7 @@ import { CommandBase, CommandInput } from "../Command";
 import JobRegister from "./JobRegister";
 import { CommandMediator } from "../command/CommandMediator";
 import RegistrationHandler from "./JobRegister";
+import { UserCommand, MessageCommand } from "../command/ContextMenuCommandHandler";
 
   
 export class UserCommandJobHandler<T> implements RegistrationHandler<UserCommand<T>> {
@@ -28,47 +29,3 @@ export class MessageCommandJobHandler<T> implements RegistrationHandler<MessageC
     }
 }
 
-
-@JobRegistry.JobClass
-export class MessageCommand<T> extends CommandBase<T> {
-  constructor(
-    input: Omit<CommandInput, "description">,
-    execute: (interaction: MessageContextMenuCommandInteraction, app: T) => any,
-  ) {
-    super(
-      {
-        ...input,
-        id: input.id,
-        version: input.version,
-        default_member_permissions: input.default_member_permissions,
-        type: ApplicationCommandType.Message,
-        application_id: "id",
-        description: undefined,
-      },
-      execute,
-    );
-  }
-}
-
-@JobRegistry.JobClass
-export class UserCommand<T> extends CommandBase<T> {
-  constructor(
-    input: Omit<CommandInput, "description">,
-    execute: (interaction: UserContextMenuCommandInteraction, app: T) => any,
-  ) {
-    super(
-      {
-        ...input,
-        id: input.id,
-        version: input.version,
-        default_member_permissions: input.default_member_permissions,
-        type: ApplicationCommandType.User,
-        application_id: "id",
-        description: undefined,
-      },
-      execute,
-    );
-  }
-}
-
-export type ContextMenuCommand<T> = UserCommand<T> | MessageCommand<T>

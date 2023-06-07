@@ -1,8 +1,9 @@
-import { Collection, ApplicationCommandOptionType, APIApplicationCommandSubcommandGroupOption, APIApplicationCommand, APIApplicationCommandOption } from "discord.js";
-import { SlashCommand } from "../jobHandler/SlashCommandJobHandler";
+import { Collection, ApplicationCommandOptionType, APIApplicationCommandSubcommandGroupOption, APIApplicationCommand, APIApplicationCommandOption, CommandInteraction } from "discord.js";
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
-import { SubCommand, MasterCommand } from "../jobHandler/SubCommandJobHandler";
+import { SubcommandBase, SubcommandInput, CommandInput } from "../Command";
+import { JobRegistry } from "../Jobs";
+import { SlashCommand } from "./SlashCommandHandler";
 
 export default class SubCommandHandler<T> implements CommandMediator<SubCommand<T>>, CommandToJSON  {
 
@@ -17,7 +18,7 @@ export default class SubCommandHandler<T> implements CommandMediator<SubCommand<
         this.subCommands.set(id, command);
     }
 
-    addMasterCommand = (id: string, command: MasterCommand<T>) => {
+    setMasterCommand = (id: string, command: MasterCommand<T>) => {
         this.masterCommands.set(id, command)
     }
 
@@ -53,3 +54,33 @@ export default class SubCommandHandler<T> implements CommandMediator<SubCommand<
         return commandsAsJson;
       }
 }
+
+
+
+@JobRegistry.JobClass
+export class SubCommand<T> extends SubcommandBase<T> {
+  master: string;
+  group: string;
+  constructor(
+    input: SubcommandInput & { master: string; group?: string },
+    execute: (interaction: CommandInteraction, app: T) => void,
+  ) {
+    super(
+      {
+        ...input,
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      execute,
+    );
+    this.master = input.master;
+    this.group = input.group;
+  }
+}
+
+@JobRegistry.JobClass
+export class MasterCommand<T> extends SlashCommand<T> {
+  constructor(input: CommandInput) {
+    super(input, () => {});
+  }
+}
+

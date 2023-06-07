@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { MasterCommand } from "../../../../jobHandler/SubCommandJobHandler";
+import { MasterCommand } from "../../../../command/SubCommandHandler";
 
 export default new MasterCommand<{}>({
   description: "A master command",

@@ -2,7 +2,7 @@ import { BaseInteraction, ChatInputCommandInteraction, Interaction } from "disco
 import { CommandMediator } from "../command/CommandMediator";
 
 import { InteractionHandler } from "./InteractionHandler";
-import { SlashCommand } from "../jobHandler/SlashCommandJobHandler";
+import { SlashCommand } from "../command/SlashCommandHandler";
 
 export default class SlashCommandInteractionHandler<T> extends InteractionHandler<ChatInputCommandInteraction, T> {
 

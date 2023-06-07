@@ -1,4 +1,4 @@
-import { UserCommand } from "../../../jobHandler/ContextMenuCommandJobHandler";
+import { UserCommand } from "../../../command/ContextMenuCommandHandler";
 
 export default new UserCommand<{}>(
   {

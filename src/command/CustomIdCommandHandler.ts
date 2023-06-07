@@ -1,7 +1,8 @@
 import { APIApplicationCommand, Collection } from "discord.js";
-import { CustomIdCommand } from "../jobHandler/CustomIdCommandJobHandler";
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
+import { JobRegistry, Job } from "../Jobs";
+import { CustomIdInteraction } from "../interactionHandlers/CustomIdInteractionHandler";
 
 export default class CustomIdCommandHandler<T> implements CommandMediator<CustomIdCommand<T>>  {
 
@@ -12,5 +13,13 @@ export default class CustomIdCommandHandler<T> implements CommandMediator<Custom
     getCommand = (id: string) => this._commands.get(id);
 
     setCommand = (id: string, command: CustomIdCommand<T>) => this._commands.set(id, command);
+}
 
+@JobRegistry.JobClass
+export class CustomIdCommand<T> extends Job<T> {
+  customId: string;
+  constructor(customId: string, execute: (i: CustomIdInteraction, context: T) => any) {
+    super(execute);
+    this.customId = customId;
+  }
 }

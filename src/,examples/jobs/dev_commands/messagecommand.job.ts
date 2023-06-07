@@ -1,4 +1,4 @@
-import { MessageCommand } from "../../../jobHandler/ContextMenuCommandJobHandler";
+import { MessageCommand } from "../../../command/ContextMenuCommandHandler";
 
 export default new MessageCommand<{}>(
   {
