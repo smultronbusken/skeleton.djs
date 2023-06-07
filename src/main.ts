@@ -3,7 +3,6 @@ import path from "path";
 import { Skeleton } from "./Skeleton";
 import { SlashCommand } from "./command/SlashCommandHandler";
 
-
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
     const clientOptions = {
@@ -24,13 +23,14 @@ if (require.main === module) {
 
     // Manually add a command, instead of writing it in a .job.ts file
     skeleton.addSlashCommand(
-      new SlashCommand<{}>({
-        name: "testcommand",
-        description: "I added this manually",
-      },
-      async (interaction, context) => {
-        interaction.reply("hej")
-      }
+      new SlashCommand<{}>(
+        {
+          name: "testcommand",
+          description: "I added this manually",
+        },
+        async (interaction, context) => {
+          interaction.reply("hej");
+        },
       ),
     );
 
@@ -41,6 +41,5 @@ if (require.main === module) {
       token: config["APP_TOKEN"],
       guildId: config["DEV_GUILD_ID"], // Optional, if youre using a dev guild.
     });
-
   });
 }

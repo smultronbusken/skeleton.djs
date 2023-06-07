@@ -1,31 +1,35 @@
-import { Collection, APIApplicationCommand, ApplicationCommandType, CommandInteraction } from "discord.js";
+import {
+  Collection,
+  APIApplicationCommand,
+  ApplicationCommandType,
+  CommandInteraction,
+} from "discord.js";
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
 import { CommandBase, CommandInput } from "../Command";
 import { JobRegistry } from "../Jobs";
 
+export default class SlashCommandHandler<T>
+  implements CommandMediator<SlashCommand<T>>, CommandToJSON
+{
+  private _commands: Collection<string, SlashCommand<T>> = new Collection();
 
-export default class SlashCommandHandler<T> implements CommandMediator<SlashCommand<T>>, CommandToJSON  {
+  getCommands = () => Array.from(this._commands.values());
 
-    private _commands: Collection<string, SlashCommand<T>> = new Collection();
+  getCommand = (id: string) => this._commands.get(id);
 
-    getCommands = () => Array.from(this._commands.values())
+  setCommand = (id: string, command: SlashCommand<T>) => this._commands.set(id, command);
 
-    getCommand = (id: string) => this._commands.get(id);
-
-    setCommand = (id: string, command: SlashCommand<T>) => this._commands.set(id, command);
-
-    convertCommandsToJSON = () => {
-        const commandsAsJson: APIApplicationCommand[] = [];
-        this._commands.forEach(c => {
-          commandsAsJson.push({
-            ...c.data,
-          });
-        });
-        return commandsAsJson;
-    };
+  convertCommandsToJSON = () => {
+    const commandsAsJson: APIApplicationCommand[] = [];
+    this._commands.forEach(c => {
+      commandsAsJson.push({
+        ...c.data,
+      });
+    });
+    return commandsAsJson;
+  };
 }
-
 
 @JobRegistry.JobClass
 export class SlashCommand<T> extends CommandBase<T> {

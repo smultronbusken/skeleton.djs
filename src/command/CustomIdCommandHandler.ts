@@ -4,15 +4,14 @@ import { CommandToJSON } from "./CommandToJSON";
 import { JobRegistry, Job } from "../Jobs";
 import { CustomIdInteraction } from "../interactionHandlers/CustomIdInteractionHandler";
 
-export default class CustomIdCommandHandler<T> implements CommandMediator<CustomIdCommand<T>>  {
+export default class CustomIdCommandHandler<T> implements CommandMediator<CustomIdCommand<T>> {
+  private _commands: Collection<string, CustomIdCommand<T>> = new Collection();
 
-    private _commands: Collection<string, CustomIdCommand<T>> = new Collection();
+  getCommands = () => Array.from(this._commands.values());
 
-    getCommands = () => Array.from(this._commands.values())
+  getCommand = (id: string) => this._commands.get(id);
 
-    getCommand = (id: string) => this._commands.get(id);
-
-    setCommand = (id: string, command: CustomIdCommand<T>) => this._commands.set(id, command);
+  setCommand = (id: string, command: CustomIdCommand<T>) => this._commands.set(id, command);
 }
 
 @JobRegistry.JobClass

@@ -1,31 +1,37 @@
-import { Collection, APIApplicationCommand, ApplicationCommandType, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from "discord.js";
+import {
+  Collection,
+  APIApplicationCommand,
+  ApplicationCommandType,
+  MessageContextMenuCommandInteraction,
+  UserContextMenuCommandInteraction,
+} from "discord.js";
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
 import { CommandBase, CommandInput } from "../Command";
 import { JobRegistry } from "../Jobs";
 
-export default class ContextMenuCommandHandler<T> implements CommandMediator<ContextMenuCommand<T>>, CommandToJSON  {
+export default class ContextMenuCommandHandler<T>
+  implements CommandMediator<ContextMenuCommand<T>>, CommandToJSON
+{
+  private _commands: Collection<string, ContextMenuCommand<T>> = new Collection();
 
-    private _commands: Collection<string, ContextMenuCommand<T>> = new Collection();
+  getCommands = () => Array.from(this._commands.values());
 
-    getCommands = () => Array.from(this._commands.values())
+  getCommand = (id: string) => this._commands.get(id);
 
-    getCommand = (id: string) => this._commands.get(id);
+  setCommand = (id: string, command: ContextMenuCommand<T>) => this._commands.set(id, command);
 
-    setCommand = (id: string, command: ContextMenuCommand<T>) => this._commands.set(id, command);
-
-    convertCommandsToJSON = () => {
-        const commandsAsJson: APIApplicationCommand[] = [];
-        this._commands.forEach(c => {
-          commandsAsJson.push({
-            ...c.data,
-            //options: c.commandStructure.options.map(option => option.toJSON()),
-          });
-        });
-        return commandsAsJson;
-    };
+  convertCommandsToJSON = () => {
+    const commandsAsJson: APIApplicationCommand[] = [];
+    this._commands.forEach(c => {
+      commandsAsJson.push({
+        ...c.data,
+        //options: c.commandStructure.options.map(option => option.toJSON()),
+      });
+    });
+    return commandsAsJson;
+  };
 }
-
 
 @JobRegistry.JobClass
 export class MessageCommand<T> extends CommandBase<T> {
@@ -69,4 +75,4 @@ export class UserCommand<T> extends CommandBase<T> {
   }
 }
 
-export type ContextMenuCommand<T> = UserCommand<T> | MessageCommand<T>
+export type ContextMenuCommand<T> = UserCommand<T> | MessageCommand<T>;

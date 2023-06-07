@@ -3,7 +3,11 @@ import { CommandDeployer } from "./CommandDeployer";
 import { JobRegistry, Job } from "./Jobs";
 import { CommandMediator } from "./command/CommandMediator";
 import { CommandToJSON } from "./command/CommandToJSON";
-import ContextMenuCommandHandler, { ContextMenuCommand, UserCommand, MessageCommand } from "./command/ContextMenuCommandHandler";
+import ContextMenuCommandHandler, {
+  ContextMenuCommand,
+  UserCommand,
+  MessageCommand,
+} from "./command/ContextMenuCommandHandler";
 import CustomIdCommandHandler, { CustomIdCommand } from "./command/CustomIdCommandHandler";
 import SlashCommandHandler, { SlashCommand } from "./command/SlashCommandHandler";
 import SubCommandHandler, { MasterCommand, SubCommand } from "./command/SubCommandHandler";
@@ -12,7 +16,10 @@ import CustomIdCommandInteractionHandler from "./interactionHandlers/CustomIdInt
 import { InteractionHandler } from "./interactionHandlers/InteractionHandler";
 import SlashCommandInteractionHandler from "./interactionHandlers/SlashCommandInteractionHandler";
 import SubCommandInteractionHandler from "./interactionHandlers/SubCommandInteractionHandler";
-import { UserCommandJobHandler, MessageCommandJobHandler } from "./jobHandler/ContextMenuCommandJobHandler";
+import {
+  UserCommandJobHandler,
+  MessageCommandJobHandler,
+} from "./jobHandler/ContextMenuCommandJobHandler";
 import { CustomIdCommandJobHandler } from "./jobHandler/CustomIdCommandJobHandler";
 import RegistrationHandler from "./jobHandler/JobRegister";
 import { SlashCommandJobHandler } from "./jobHandler/SlashCommandJobHandler";
@@ -28,7 +35,7 @@ export class Skeleton<T> {
   private cxtMenuCommandHandler: CommandMediator<ContextMenuCommand<T>> & CommandToJSON;
   private slashCommandHandler: CommandMediator<SlashCommand<T>> & CommandToJSON;
   private customIdCommandHandler: CommandMediator<CustomIdCommand<T>>;
-  private subCommandHandler: SubCommandHandler<T>
+  private subCommandHandler: SubCommandHandler<T>;
 
   constructor() {
     this.jobRegister = new JobRegistry();
@@ -43,7 +50,7 @@ export class Skeleton<T> {
     this.onRegister(userCxtMenuJobHandler);
     this.registerInteractionHandler(cxtMenuInteractionHandler);
     this.addCommandProvider(() => this.cxtMenuCommandHandler.convertCommandsToJSON());
-    
+
     // Set up SlashCommand handlers
     this.slashCommandHandler = new SlashCommandHandler();
     let slashJobHandler = new SlashCommandJobHandler(this.slashCommandHandler);
@@ -51,14 +58,16 @@ export class Skeleton<T> {
     this.addCommandProvider(() => this.slashCommandHandler.convertCommandsToJSON());
     this.onRegister(slashJobHandler);
     this.registerInteractionHandler(slashInteractionHandler);
-    
+
     // Set up CustomIdCommand handlers
     this.customIdCommandHandler = new CustomIdCommandHandler();
     let customIdCommandJobHandler = new CustomIdCommandJobHandler(this.customIdCommandHandler);
-    let customIdCommandInteractionHandler = new CustomIdCommandInteractionHandler(this.customIdCommandHandler);
+    let customIdCommandInteractionHandler = new CustomIdCommandInteractionHandler(
+      this.customIdCommandHandler,
+    );
     this.onRegister(customIdCommandJobHandler);
     this.registerInteractionHandler(customIdCommandInteractionHandler);
-    
+
     // Set up CustomIdCommand handlers
     this.subCommandHandler = new SubCommandHandler();
     let subCommandInteractionHandler = new SubCommandInteractionHandler(this.subCommandHandler);
@@ -82,23 +91,23 @@ export class Skeleton<T> {
   }
 
   addSlashCommand(command: SlashCommand<T>) {
-    this.slashCommandHandler.setCommand(command.data.name, command)
+    this.slashCommandHandler.setCommand(command.data.name, command);
   }
 
   addUserCommand(command: UserCommand<T>) {
-    this.cxtMenuCommandHandler.setCommand(command.data.name, command)
+    this.cxtMenuCommandHandler.setCommand(command.data.name, command);
   }
 
   addMessageCommand(command: MessageCommand<T>) {
-    this.cxtMenuCommandHandler.setCommand(command.data.name, command)
+    this.cxtMenuCommandHandler.setCommand(command.data.name, command);
   }
 
   addSubCommand(command: SubCommand<T>) {
-    this.subCommandHandler.setCommand(command.data.name, command)
+    this.subCommandHandler.setCommand(command.data.name, command);
   }
 
   addMasterCommand(command: MasterCommand<T>) {
-    this.subCommandHandler.setMasterCommand(command.data.name, command)
+    this.subCommandHandler.setMasterCommand(command.data.name, command);
   }
 
   addCommandProvider(provider: () => APIApplicationCommand[]) {
@@ -113,9 +122,8 @@ export class Skeleton<T> {
           return;
         }
       }
-      console.log(interaction)
+      console.log(interaction);
       throw new Error(`Unsupported interaction type`);
-      
     } catch (err) {
       console.error(err);
       // send an error message to the user if possible
