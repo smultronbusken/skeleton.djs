@@ -1,12 +1,13 @@
-# Base app for discord.js (This README and project is WIP)
+# Skeleton - Base app for discord.js (This README and project is WIP)
 
 This projects is a made using [discord.js](https://discord.js.org/#/). It is used as a base app and includes a couple of handy features
 
 # Features
 
-- Easier command creation.
+- Easier command creation. 
 - Automatic command registering - all command files are registered to the Discord API.
 - Interaction handling - each interaction from Discord gets mapped to the correct command.
+- Write custom command types, interaction handlers, and ```.job.ts``` file registration, to extend the functionality.
 
 ## Command creation
 
@@ -64,7 +65,6 @@ export default class CustomIdInteractionHandler<T> extends InteractionHandler<Cu
       return  this.customIds.find(cid => cid.customId === interaction.customId)
     }
 
-    // If this return true, then the execute() method will run.
     execute = async (interaction: CustomIdInteraction, context: T) => {
         let customId = interaction.customId;
         // Do something depending on the custom id
@@ -118,7 +118,7 @@ export class CustomIdCommandJobHandler<T> implements RegistrationHandler<CustomI
 ## Set up
 
 1. Install with `npm i base-app-for-discordjs`
-2. Install discord.js (^14.11.0) and stormdb (^0.6.0) `npm i stormdb` `npm i discord.js`  
+2. Install all dependencies  
 3. Run a file with the following code:
 
 ```typescript
