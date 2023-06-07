@@ -9,7 +9,43 @@ This projects is a made using [discord.js](https://discord.js.org/#/). It is use
 - Interaction handling - each interaction from Discord gets mapped to the correct command.
 - Write custom command types, interaction handlers, and ```.job.ts``` file registration, to extend the functionality.
 
-## Command creation
+## Set up
+
+1. Install with `npm i base-app-for-discordjs`
+2. Install all dependencies  
+3. Run a file with the following code:
+
+```typescript
+    // Create the object
+    const skeleton = new Skeleton();
+
+    // Set what will be passed to commands when executed
+    skeleton.setContext({});
+
+    // Manually add a command, instead of writing it in a .job.ts file
+    // Be sure to add them before before you call skeleton.run
+    skeleton.addUserCommand(
+      new UserCommand<{}>({
+        name: "testcommand",
+        description: "I added this manually",
+      },
+      async (interaction, context) => {
+        interaction.reply("hej")
+      }
+      ),
+    );
+
+    // This loads all command files and deploys them
+    skeleton.run({
+      appId: config["APP_ID"],
+      client: client,
+      token: config["APP_TOKEN"],
+      guildId: config["DEV_GUILD_ID"], // Optional, if youre using a dev guild.
+    });
+```
+
+
+## Command files
 
 Command files are file which ends in `.job.ts` and define one command. All of the commands are imported and deployed when you run ``` skeleton.run() ```
 
@@ -116,6 +152,12 @@ export default class CustomIdInteractionHandler<T> extends InteractionHandler<Cu
 }
 ```
 
+Then call ```skeleton.registerInteractionHandler()``` before you call ``` skeleton.run() ```
+
+```typescript
+skeleton.registerInteractionHandler(new CustomIdInteractionHandler<{}>)
+```
+
 ### Custom commands
 
 You can extend the functionality and add more type of commands. 
@@ -180,38 +222,8 @@ export class CustomIdCommandJobHandler<T> implements RegistrationHandler<CustomI
 }
 ```
 
-
-## Set up
-
-1. Install with `npm i base-app-for-discordjs`
-2. Install all dependencies  
-3. Run a file with the following code:
+Then call ```skeleton.onRegister()``` before you call ``` skeleton.run() ```
 
 ```typescript
-    // Create the object
-    const skeleton = new Skeleton();
-
-    // Set what will be passed to commands when executed
-    skeleton.setContext({});
-
-    // Manually add a command, instead of writing it in a .job.ts file
-    // Be sure to add them before before you call skeleton.run
-    skeleton.addUserCommand(
-      new UserCommand<{}>({
-        name: "testcommand",
-        description: "I added this manually",
-      },
-      async (interaction, context) => {
-        interaction.reply("hej")
-      }
-      ),
-    );
-
-    // This loads all command files and deploys them
-    skeleton.run({
-      appId: config["APP_ID"],
-      client: client,
-      token: config["APP_TOKEN"],
-      guildId: config["DEV_GUILD_ID"], // Optional, if youre using a dev guild.
-    });
+skeleton.onRegister(new CustomIdCommandJobHandler<{}>)
 ```
