@@ -118,10 +118,11 @@ export default class CustomIdInteractionHandler<T> extends InteractionHandler<Cu
 
 ### Custom commands
 
-You can extend the functionality and add more type of commands. It has to extend from the ```Job``` class.
+You can extend the functionality and add more type of commands. It has to extend from the ```Job``` class and be decorated with  ```@JobRegistry.JobClass```
 
 - `CustomIdCommand`
 ```typescript
+@JobRegistry.JobClass
 export class CustomIdCommand<T> extends Job<T> {
   customId: string;
   constructor(customId: string, execute: (i: CustomIdInteraction, context: T) => any) {
