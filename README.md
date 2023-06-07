@@ -118,16 +118,16 @@ export default class CustomIdInteractionHandler<T> extends InteractionHandler<Cu
 
 ### Custom commands
 
-You can extend the functionality and add more type of commands. It has to extend from the ```Job``` class and be decorated with  ```@JobRegistry.JobClass```
+You can extend the functionality and add more type of commands. 
 
 - `CustomIdCommand`
 ```typescript
-@JobRegistry.JobClass
-export class CustomIdCommand<T> extends Job<T> {
+export class CustomIdCommand<T>  {
   customId: string;
+  execute
   constructor(customId: string, execute: (i: CustomIdInteraction, context: T) => any) {
-    super(execute);
     this.customId = customId;
+    this.execute = execute
   }
 }
 
@@ -145,8 +145,29 @@ You could then add this in the ``` CustomIdInteractionHandler ``` class and run 
 
 ### Registration handler when importing ```.job.ts``` file 
 
-You can then extend so that your new commands can be written in ```.job.ts``` files. You do this by creating a ```RegistrationHandler``` subclass
+You can then extend so that your new commands can be written in ```.job.ts``` files.
+First make your command class extend the ```Job``` class and use the ```@JobRegistry.JobClass``` decorator. Then, create a class which implements the ```RegistrationHandler``` interface. 
 
+
+```typescript
+
+export class CustomIdCommand<T>  {
+  customId: string;
+  constructor(customId: string, execute: (i: CustomIdInteraction, context: T) => any) {
+    super(execute);
+    this.customId = customId;
+  }
+}
+
+new CustomIdCommand<{}>(
+  "test",
+  async (interaction, app) => {
+    if (interaction.isRepliable()) 
+      interaction.reply("Button with custom id 'test' was clicked!")
+  }
+);
+
+```
 
 ```typescript
 export class CustomIdCommandJobHandler<T> implements RegistrationHandler<CustomIdCommand<T>> {
