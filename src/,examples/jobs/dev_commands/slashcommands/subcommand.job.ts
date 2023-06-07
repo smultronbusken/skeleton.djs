@@ -3,8 +3,8 @@ import { SubCommand } from "../../../../command/SubCommandHandler";
 export default new SubCommand<{}>(
   {
     master: "mastercommand",
-    group: "groupone",
-    name: "subtwo",
+    group: "group",
+    name: "subcommand",
     description: "yo",
     options: [
       {

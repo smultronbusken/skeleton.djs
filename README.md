@@ -48,7 +48,7 @@ https://discord.com/developers/docs/interactions/application-commands & https://
 export default new SubCommand<{}>(
   {
     master: "mastercommand",
-    group: "groupone",
+    group: "group",
     name: "foo",
     description: "bar",
     options: [
@@ -72,7 +72,7 @@ export default new MasterCommand<{}>({
   options: [
     {
       description: "A group",
-      name: "groupone",
+      name: "group",
       type: ApplicationCommandOptionType.SubcommandGroup,
     },
   ],
@@ -81,7 +81,7 @@ export default new MasterCommand<{}>({
 
 ### Types of commands
 
-There are 4 types of commands of which all are registered automatically:
+There are 4 types of commands of which all are deployed automatically:
 
 - `SlashCommand`
   ![](https://i.imgur.com/mym1QSP.png)

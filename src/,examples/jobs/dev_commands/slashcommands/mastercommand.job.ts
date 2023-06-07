@@ -7,7 +7,7 @@ export default new MasterCommand<{}>({
   options: [
     {
       description: "A group",
-      name: "groupone",
+      name: "group",
       type: ApplicationCommandOptionType.SubcommandGroup,
     },
   ],
