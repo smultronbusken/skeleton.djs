@@ -143,7 +143,7 @@ new CustomIdCommand<{}>(
 You could then add this in the ``` CustomIdInteractionHandler ``` class and run it when and interaction with the custom id "test" comes.
 
 
-### Writing your commands in ```.job.ts``` file 
+### Writing your custom commands in ```.job.ts``` file 
 
 You can then extend so that your new commands can be written in ```.job.ts``` files.
 First make your command class extend the ```Job``` class and use the ```@JobRegistry.JobClass``` decorator. Then, create a class which implements the ```RegistrationHandler``` interface. 
