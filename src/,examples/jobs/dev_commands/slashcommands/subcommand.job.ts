@@ -1,16 +1,11 @@
-import {
-  ActionRowBuilder,
-  ApplicationCommandOptionType,
-  ButtonBuilder,
-  ButtonStyle,
-  StringSelectMenuBuilder,
-} from "discord.js";
-import { SubCommand } from "../../../../jobs/SubCommand";
+import { ApplicationCommandOptionType } from "discord.js";
+import { SubCommand } from "../../../../jobHandler/SubCommandJobHandler";
 
 export default new SubCommand<{}>(
   {
     master: "mastercommand",
-    name: "sub",
+    group: "groupone",
+    name: "subtwo",
     description: "yo",
     options: [
       {

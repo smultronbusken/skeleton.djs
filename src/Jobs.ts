@@ -11,11 +11,11 @@ import path from "path";
 import "reflect-metadata";
 
 export interface TConstructable<T> {
-  new (...args): T;
+  new (...args: any[]): T;
   prototype: T;
 }
 
-export class JobRegister {
+export class JobRegistry {
   private onRegisterFunctions: Map<string, [(job: Job<any>) => void]> = new Map();
   private static metadataKey: string = "jobClass";
 
@@ -39,7 +39,7 @@ export class JobRegister {
    */
   onRegister<T extends Job<any>>(jobClass: TConstructable<T>, func: (job: T) => void) {
     let className = Reflect.getMetadata(
-      JobRegister.metadataKey,
+      JobRegistry.metadataKey,
       (<TConstructable<Job<any>>>jobClass).prototype,
     );
     let functions = this.onRegisterFunctions.get(className);
@@ -55,7 +55,7 @@ export class JobRegister {
   registerJob(job: Job<any>) {
     let jobType;
     try {
-      jobType = Reflect.getMetadata(JobRegister.metadataKey, Reflect.getPrototypeOf(job));
+      jobType = Reflect.getMetadata(JobRegistry.metadataKey, Reflect.getPrototypeOf(job));
     } catch (error) {
       return;
     }
@@ -71,7 +71,7 @@ export class JobRegister {
   }
 
   public static JobClass(constructor: Function) {
-    Reflect.defineMetadata(JobRegister.metadataKey, constructor.name, constructor.prototype);
+    Reflect.defineMetadata(JobRegistry.metadataKey, constructor.name, constructor.prototype);
   }
 
   /**

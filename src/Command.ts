@@ -4,7 +4,7 @@ import {
   APIApplicationCommandSubcommandOption,
   ApplicationCommandOption,
 } from "discord.js";
-import { Job } from "../Jobs";
+import { Job } from "./Jobs";
 import { APIApplicationCommandSubcommandGroupOption } from "discord-api-types/v9";
 
 // Fields from APIApplicationCommandSubcommandOption that the user should not be able to pass

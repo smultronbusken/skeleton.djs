@@ -9,17 +9,17 @@ import {
 } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { Client, Collection, Snowflake } from "discord.js";
+import { APIApplicationCommand, Client, Collection, Snowflake } from "discord.js";
 
 export class CommandDeployer {
-  commandProviders: (() => object[])[] = [];
+  commandProviders: (() => APIApplicationCommand[])[] = [];
 
-  addCommandProvider(provider: () => object[]) {
+  addCommandProvider(provider: () => APIApplicationCommand[]) {
     this.commandProviders.push(provider);
   }
 
   public deploy(options: { token: string; appId: string; guildId?: Snowflake }) {
-    let commands = [];
+    let commands: APIApplicationCommand[] = [];
     this.commandProviders.forEach(
       commandProvider => (commands = commands.concat(commandProvider())),
     );
@@ -27,13 +27,10 @@ export class CommandDeployer {
   }
 
   private async sendRequest(
-    JSONCommands,
+    JSONCommands: APIApplicationCommand[],
     options: { token: string; appId: string; guildId?: Snowflake },
   ) {
     console.log("Setting up " + JSONCommands.length + " commands for slash commands.");
-    JSONCommands.forEach(element => {
-      console.log(element);
-    });
     const rest = new REST({ version: "9" }).setToken(options.token);
     try {
       console.log("Started refreshing application (/) commands.");

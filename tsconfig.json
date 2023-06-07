@@ -1,6 +1,6 @@
 {
-  "exclude": ["node_modules", "src/dev/**/*.ts"],
-  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "src/examples/**/*.ts"],
+  "include": ["src/**/*.ts", "src/JobHandler"],
   "compilerOptions": {
       "target": "esnext",
       "lib": ["esnext", "dom"],
@@ -19,7 +19,7 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "outDir": "dist",
-      
+      "noImplicitAny": true,
 
   }
 }

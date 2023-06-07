@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { SlashCommand } from "../../../../jobs/SlashCommand";
+import { SlashCommand } from "../../../../jobHandler/SlashCommandJobHandler";
 
 export default new SlashCommand<{}>(
   {
