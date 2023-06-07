@@ -66,15 +66,6 @@ There are 4 types of commands of which all are registered automatically:
     // Set what will be passed to commands when executed
     skeleton.setContext({})
 
-    // Manually add a command, instead of writing it in a .job.ts file
-    skeleton.addCommand(new SlashCommand<{}>({
-        info: "Lmao",
-        name: "manuallyadded",
-        async execute(interaction, context) { 
-            interaction.reply("Looking good bro")
-        }
-    }))
-
     // Loads all .job.ts files and registers them.
     skeleton.run({
       appId:  config["APP_ID"],
