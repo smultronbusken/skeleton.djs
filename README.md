@@ -10,30 +10,29 @@ This projects is a made using [discord.js](https://discord.js.org/#/). It is use
 
 ## Command creation
 
-Command files are file which ends in `.job.ts` and define one command. All of these files are imported automatically. Here is a [music app](https://github.com/smultronbusken/discord-music-app) of mine. As you can see we have 5 command files under the command folder.
+Command files are file which ends in `.job.ts` and define one command. All of the commands are imported and deployed when you run ``` skeleton.run() ```
 
 ![](https://i.imgur.com/IXJaqDc.png)
 
-This is the code for the slash command `skip.job.ts`
+Here is an example command file:
 
 ```typescript
-import { SlashCommand } from "@smultronbusken/skeleton-discord-app/src/Jobs";
-import SongApp from "../main";
-
-export default new SlashCommand<SongApp>({
-  name: "skip",
-  info: "Skips the current song.",
-  execute(interaction, app) {
-    let subscription = app.getSubscription(interaction.guildId);
-    if (subscription) {
-      let nextSong = subscription.queue.dequeue();
-      if (nextSong) {
-        subscription.playSong(nextSong);
-        interaction.reply(`🎶 Now playing **${nextSong.title}**`);
-      }
-    }
+export default new SlashCommand<{}>(
+  {
+    name: "foo",
+    description: "bar",
+    options: [
+      {
+        name: "foo",
+        description: "bar",
+        type: ApplicationCommandOptionType.String,
+      },
+    ],
   },
-});
+  async (interaction, app) => {
+    interaction.reply("Hi.");
+  },
+);
 ```
 
 ### Types of commands
@@ -49,6 +48,73 @@ There are 4 types of commands of which all are registered automatically:
 - `MessageCommand`
   ![](https://i.imgur.com/mSdkaLw.png)
 
+
+### Interaction handling
+
+```typescript
+export default class CustomIdInteractionHandler<T> extends InteractionHandler<CustomIdInteraction, T> {
+
+    customIds = [..., "foo", ...]
+
+    // This is run before check() and execute() to make sure it is the correct type on interaction
+    typeGuard = (interaction: BaseInteraction): interaction is CustomIdInteraction => isCustomInteraction(interaction)
+
+    // If this return true, then the execute() method will run.
+    check = (interaction: CustomIdInteraction) => {
+      return  this.customIds.find(cid => cid.customId === interaction.customId)
+    }
+
+    // If this return true, then the execute() method will run.
+    execute = async (interaction: CustomIdInteraction, context: T) => {
+        let customId = interaction.customId;
+        // Do something depending on the custom id
+    }
+
+}
+```
+
+### Custom commands
+
+You can extend the functionality and add more type of commands. It has to extend from the ```Job``` class.
+
+- `CustomIdCommand`
+```typescript
+export class CustomIdCommand<T> extends Job<T> {
+  customId: string;
+  constructor(customId: string, execute: (i: CustomIdInteraction, context: T) => any) {
+    super(execute);
+    this.customId = customId;
+  }
+}
+
+new CustomIdCommand<{}>(
+  "test",
+  async (interaction, app) => {
+    if (interaction.isRepliable()) 
+      interaction.reply("Button with custom id 'test' was clicked!")
+  }
+);
+
+```
+You could then add this in the ``` CustomIdInteractionHandler ``` class and run it when and interaction with the custom id "test" comes.
+
+
+### Registration handler when importing ```.job.ts``` file 
+
+You can then extend so that your new commands can be written in ```.job.ts``` files. You do this by creating a ```RegistrationHandler``` subclass
+
+
+```typescript
+export class CustomIdCommandJobHandler<T> implements RegistrationHandler<CustomIdCommand<T>> {
+    jobType = CustomIdCommand;
+    constructor() {}
+    onRegister = (job: CustomIdCommand<T>) => {
+        // Do something with the command, such as passing it to the an InteractionHandler
+    }
+}
+```
+
+
 ## Set up
 
 1. Install with `npm i base-app-for-discordjs`
@@ -56,21 +122,30 @@ There are 4 types of commands of which all are registered automatically:
 3. Run a file with the following code:
 
 ```typescript
-    // Create a client and login as normal using Discord.js
-    const client = new Client(clientOptions);
-    client.login(config["APP_TOKEN"]);
-
     // Create the object
     const skeleton = new Skeleton();
 
     // Set what will be passed to commands when executed
-    skeleton.setContext({})
+    skeleton.setContext({});
 
-    // Loads all .job.ts files and registers them.
+    // Manually add a command, instead of writing it in a .job.ts file
+    // Be sure to add them before before you call skeleton.run
+    skeleton.addUserCommand(
+      new UserCommand<{}>({
+        name: "testcommand",
+        description: "I added this manually",
+      },
+      async (interaction, context) => {
+        interaction.reply("hej")
+      }
+      ),
+    );
+
+    // This loads all command files and deploys them
     skeleton.run({
-      appId:  config["APP_ID"],
+      appId: config["APP_ID"],
       client: client,
       token: config["APP_TOKEN"],
-      guildId: config["DEV_GUILD_ID"]
-    })
+      guildId: config["DEV_GUILD_ID"], // Optional, if youre using a dev guild.
+    });
 ```
