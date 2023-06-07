@@ -133,6 +133,9 @@ There are 4 types of commands of which all are deployed automatically:
 
 ### Interaction handling
 
+
+You can write custom interaction handlers. For example, maybe we would want to handle all the interactions with a certain custom id. Here is how you would do it:
+
 ```typescript
 export default class CustomIdInteractionHandler<T> extends InteractionHandler<CustomIdInteraction, T> {
 
