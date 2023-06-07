@@ -1,11 +1,13 @@
-# Skeleton - Base app for discord.js (This README and project is WIP)
+# Skeleton - A Lightweight Extension For discord.js 14
 
-This projects is a made using [discord.js](https://discord.js.org/#/). It is used as a base app and includes a couple of handy features
+(This README and project is WIP)
+
+This projects is a made using [discord.js](https://discord.js.org/#/). It includes a couple of handy features
 
 # Features
 
 - Easier command creation. 
-- Automatic command registering - all command files are registered to the Discord API.
+- Automatic command deployment - all command files are registered to the Discord API.
 - Interaction handling - each interaction from Discord gets mapped to the correct command.
 - Write custom command types, interaction handlers, and ```.job.ts``` file registration, to extend the functionality.
 
