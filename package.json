@@ -1,6 +1,6 @@
 {
   "name": "base-app-for-discordjs",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "description": "A base app for discord.js",
   "files": [
     "dist"
