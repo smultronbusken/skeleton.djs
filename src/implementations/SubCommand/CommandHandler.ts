@@ -51,9 +51,10 @@ export default class SubCommandHandler
         }
       });
 
+      
       commandsAsJson.push({
         ...c.data,
-        options: c.data.options.concat(options),
+        options: c.data.options ? options.concat(c.data.options) : options,
       });
     }
     return commandsAsJson;
