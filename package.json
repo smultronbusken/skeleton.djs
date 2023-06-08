@@ -5,6 +5,7 @@
   "files": [
     "dist"
   ],
+  "main": "./index.js",
   "exports": "./dist/main.js",
   "scripts": {
     "watch": "pnpm build -- --watch",
