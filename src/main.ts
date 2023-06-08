@@ -21,7 +21,7 @@ if (require.main === module) {
     skeleton.setContext({});
 
     // Manually add a command, instead of writing it in a .job.ts file
-    skeleton.addSlashCommand(
+    skeleton.addCommand(
       new SlashCommand<{}>(
         {
           name: "testcommand",

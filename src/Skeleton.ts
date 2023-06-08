@@ -105,24 +105,17 @@ export class Skeleton<T> {
     });
   }
 
-  addSlashCommand(command: SlashCommand<T>) {
-    this.slashCommandHandler.setCommand(command.data.name, command);
+  addCommand(command: SubCommand<T>) : void;
+  addCommand(command: SlashCommand<T>) : void;
+  addCommand(command: UserCommand<T>) : void;
+  addCommand(command: MessageCommand<T>) : void;
+  addCommand(command: SubCommand<T>) : void;
+  addCommand(command: any) : void{
+    this.importer.importObject(command)
   }
 
-  addUserCommand(command: UserCommand<T>) {
-    this.cxtMenuCommandHandler.setCommand(command.data.name, command);
-  }
-
-  addMessageCommand(command: MessageCommand<T>) {
-    this.cxtMenuCommandHandler.setCommand(command.data.name, command);
-  }
-
-  addSubCommand(command: SubCommand<T>) {
-    this.subCommandHandler.setCommand(command.data.name, command);
-  }
-
-  addMasterCommand(command: MasterCommand<T>) {
-    this.subCommandHandler.setMasterCommand(command.data.name, command);
+  importObject(obj: Object) {
+    this.importer.importObject(obj)
   }
 
   addCommandProvider(provider: APICommandProvider) {
