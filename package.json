@@ -5,7 +5,7 @@
   "files": [
     "dist"
   ],
-  "exports": "./main.js",
+  "exports": "./dist/main.js",
   "scripts": {
     "watch": "pnpm build -- --watch",
     "build": "rimraf out && pnpm format && tsc --noEmit false",
