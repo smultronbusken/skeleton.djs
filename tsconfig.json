@@ -4,9 +4,9 @@
   "compilerOptions": {
       "target": "esnext",
       "lib": ["esnext", "dom"],
-      "composite": false,
-      "declaration": false,
-      //"declarationMap": true,
+      "composite": true,
+      "declaration": true,
+      "declarationMap": true,
       //"downlevelIteration": true,
       "esModuleInterop": true,
       //"resolveJsonModule": true,
