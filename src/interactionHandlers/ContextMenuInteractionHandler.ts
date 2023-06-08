@@ -1,13 +1,7 @@
-import {
-  BaseInteraction,
-  Collection,
-  ContextMenuCommandInteraction,
-  Interaction,
-} from "discord.js";
+import { ContextMenuCommandInteraction, BaseInteraction } from "discord.js";
+import { CommandMediator } from "../commandHandlers/CommandMediator";
+import { UserCommand } from "../commandTypes/CommandTypes";
 import { InteractionHandler } from "./InteractionHandler";
-import { CommandBase } from "../Command";
-import { CommandMediator } from "../command/CommandMediator";
-import { UserCommand } from "../command/ContextMenuCommandHandler";
 
 export default class ContextMentInteractionHandler<T> extends InteractionHandler<
   ContextMenuCommandInteraction,

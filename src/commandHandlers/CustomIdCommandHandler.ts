@@ -3,7 +3,8 @@ import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
 import { CustomIdInteraction } from "../interactionHandlers/CustomIdInteractionHandler";
 import {  Importable } from "../Importer";
-import { Executable } from "../Command";
+import { Executable } from "../commandTypes/CommandTypes";
+
 
 
 export default class CustomIdCommandHandler<T> implements CommandMediator<CustomIdCommand<T>> {

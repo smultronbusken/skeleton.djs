@@ -8,9 +8,8 @@ import {
 } from "discord.js";
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
-import { SubcommandBase, SubcommandInput, CommandInput } from "../Command";
-import { SlashCommand } from "./SlashCommandHandler";
 import { Importable } from "../Importer";
+import { SubCommand, MasterCommand } from "../commandTypes/CommandTypes";
 
 export default class SubCommandHandler<T> implements CommandMediator<SubCommand<T>>, CommandToJSON {
   private subCommands: Collection<string, SubCommand<T>> = new Collection();
@@ -61,29 +60,3 @@ export default class SubCommandHandler<T> implements CommandMediator<SubCommand<
   }
 }
 
-@Importable
-export class SubCommand<T> extends SubcommandBase<T> {
-  master: string;
-  group: string;
-  constructor(
-    input: SubcommandInput & { master: string; group?: string },
-    execute: (interaction: CommandInteraction, app: T) => void,
-  ) {
-    super(
-      {
-        ...input,
-        type: ApplicationCommandOptionType.Subcommand,
-      },
-      execute,
-    );
-    this.master = input.master;
-    this.group = input.group;
-  }
-}
-
-@Importable
-export class MasterCommand<T> extends SlashCommand<T> {
-  constructor(input: CommandInput) {
-    super(input, () => {});
-  }
-}

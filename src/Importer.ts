@@ -26,7 +26,7 @@ export class Importer {
     Reflect.defineMetadata(Importer.metadataKey, obj.name, obj.prototype);
   }
 
-  private listeners: Map<string, [(job: any) => void]> = new Map();
+  private listeners: Map<string, [(importedObject: any) => void]> = new Map();
   
   async run() {
     let files = await this.find(Importer.fileSearchString, Importer.fgConfig)

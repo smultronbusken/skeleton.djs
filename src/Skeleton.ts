@@ -1,29 +1,23 @@
 import { Snowflake, Client, APIApplicationCommand, Interaction, BaseInteraction } from "discord.js";
 import { CommandDeployer } from "./CommandDeployer";
-import { CommandMediator } from "./command/CommandMediator";
-import { CommandToJSON } from "./command/CommandToJSON";
-import ContextMenuCommandHandler, {
-  ContextMenuCommand,
-  UserCommand,
-  MessageCommand,
-} from "./command/ContextMenuCommandHandler";
-import CustomIdCommandHandler, { CustomIdCommand } from "./command/CustomIdCommandHandler";
-import SlashCommandHandler, { SlashCommand } from "./command/SlashCommandHandler";
-import SubCommandHandler, { MasterCommand, SubCommand } from "./command/SubCommandHandler";
+import { Importer } from "./Importer";
+import { CommandMediator } from "./commandHandlers/CommandMediator";
+import { CommandToJSON } from "./commandHandlers/CommandToJSON";
+import ContextMenuCommandHandler from "./commandHandlers/ContextMenuCommandHandler";
+import CustomIdCommandHandler, { CustomIdCommand } from "./commandHandlers/CustomIdCommandHandler";
+import SlashCommandHandler from "./commandHandlers/SlashCommandHandler";
+import SubCommandHandler from "./commandHandlers/SubCommandHandler";
+import { ContextMenuCommand, SlashCommand, UserCommand, MessageCommand, SubCommand, MasterCommand } from "./commandTypes/CommandTypes";
+import { UserCommandImportHandler, MessageCommandImportHandler } from "./importHandlers/ContextMenuCommandImportHandler";
+import { CustomIdCommandImportHandler } from "./importHandlers/CustomIdCommandImportHandler";
+import ImportHandler from "./importHandlers/ImportHandler";
+import { SlashCommandImportHandler } from "./importHandlers/SlashCommandImportHandler";
+import { SubCommandImportHandler, MasterCommandImportHandler } from "./importHandlers/SubCommandImportHandler";
 import ContextMenuInteractionHandler from "./interactionHandlers/ContextMenuInteractionHandler";
 import CustomIdCommandInteractionHandler from "./interactionHandlers/CustomIdInteractionHandler";
 import { InteractionHandler } from "./interactionHandlers/InteractionHandler";
 import SlashCommandInteractionHandler from "./interactionHandlers/SlashCommandInteractionHandler";
 import SubCommandInteractionHandler from "./interactionHandlers/SubCommandInteractionHandler";
-import {
-  UserCommandJobHandler,
-  MessageCommandJobHandler,
-} from "./jobHandler/ContextMenuCommandJobHandler";
-import { CustomIdCommandJobHandler } from "./jobHandler/CustomIdCommandJobHandler";
-import RegistrationHandler from "./jobHandler/JobRegister";
-import { SlashCommandJobHandler } from "./jobHandler/SlashCommandJobHandler";
-import { SubCommandJobHandler, MasterCommandJobHandler } from "./jobHandler/SubCommandJobHandler";
-import { Importable, Importer } from "./Importer";
 
 export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any, T>[] = [];
@@ -45,43 +39,43 @@ export class Skeleton<T> {
     // Set up ContextMenu handlers
     this.cxtMenuCommandHandler = new ContextMenuCommandHandler();
     let cxtMenuInteractionHandler = new ContextMenuInteractionHandler(this.cxtMenuCommandHandler);
-    let userCxtMenuJobHandler = new UserCommandJobHandler(this.cxtMenuCommandHandler);
-    let messageCxtMenuJobHandler = new MessageCommandJobHandler(this.cxtMenuCommandHandler);
-    this.onRegister(messageCxtMenuJobHandler);
-    this.onRegister(userCxtMenuJobHandler);
+    let userCxtMenuImportHandler = new UserCommandImportHandler(this.cxtMenuCommandHandler);
+    let messageCxtMenuImportHandler = new MessageCommandImportHandler(this.cxtMenuCommandHandler);
+    this.addImportListener(messageCxtMenuImportHandler);
+    this.addImportListener(userCxtMenuImportHandler);
     this.registerInteractionHandler(cxtMenuInteractionHandler);
     this.addCommandProvider(() => this.cxtMenuCommandHandler.convertCommandsToJSON());
 
     // Set up SlashCommand handlers
     this.slashCommandHandler = new SlashCommandHandler();
-    let slashJobHandler = new SlashCommandJobHandler(this.slashCommandHandler);
+    let slashImportHandler = new SlashCommandImportHandler(this.slashCommandHandler);
     let slashInteractionHandler = new SlashCommandInteractionHandler(this.slashCommandHandler);
     this.addCommandProvider(() => this.slashCommandHandler.convertCommandsToJSON());
-    this.onRegister(slashJobHandler);
+    this.addImportListener(slashImportHandler);
     this.registerInteractionHandler(slashInteractionHandler);
 
     // Set up CustomIdCommand handlers
     this.customIdCommandHandler = new CustomIdCommandHandler();
-    let customIdCommandJobHandler = new CustomIdCommandJobHandler(this.customIdCommandHandler);
+    let customIdCommandImportHandler = new CustomIdCommandImportHandler(this.customIdCommandHandler);
     let customIdCommandInteractionHandler = new CustomIdCommandInteractionHandler(
       this.customIdCommandHandler,
     );
-    this.onRegister(customIdCommandJobHandler);
+    this.addImportListener(customIdCommandImportHandler);
     this.registerInteractionHandler(customIdCommandInteractionHandler);
 
     // Set up CustomIdCommand handlers
     this.subCommandHandler = new SubCommandHandler();
     let subCommandInteractionHandler = new SubCommandInteractionHandler(this.subCommandHandler);
-    let subCommandJobHandler = new SubCommandJobHandler(this.subCommandHandler);
-    let masterCommandJobHandler = new MasterCommandJobHandler(this.subCommandHandler);
+    let subCommandImportHandler = new SubCommandImportHandler(this.subCommandHandler);
+    let masterCommandImportHandler = new MasterCommandImportHandler(this.subCommandHandler);
     this.addCommandProvider(() => this.subCommandHandler.convertCommandsToJSON());
-    this.onRegister(subCommandJobHandler);
-    this.onRegister(masterCommandJobHandler);
+    this.addImportListener(subCommandImportHandler);
+    this.addImportListener(masterCommandImportHandler);
     this.registerInteractionHandler(subCommandInteractionHandler);
   }
 
-  onRegister(registrationHandler: RegistrationHandler<any>) {
-    this.importer.addListener(registrationHandler.jobType, registrationHandler.onRegister);
+  addImportListener(importHandler: ImportHandler<any>) {
+    this.importer.addListener(importHandler.classToBeImported, importHandler.onImport);
   }
 
   async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {

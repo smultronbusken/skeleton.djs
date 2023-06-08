@@ -1,13 +1,7 @@
-import {
-  Collection,
-  APIApplicationCommand,
-  ApplicationCommandType,
-  CommandInteraction,
-} from "discord.js";
+import { Collection, APIApplicationCommand } from "discord.js";
+import { SlashCommand } from "../commandTypes/CommandTypes";
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
-import { CommandBase, CommandInput } from "../Command";
-import { Importable } from "../Importer";
 
 export default class SlashCommandHandler<T>
   implements CommandMediator<SlashCommand<T>>, CommandToJSON
@@ -29,21 +23,4 @@ export default class SlashCommandHandler<T>
     });
     return commandsAsJson;
   };
-}
-
-@Importable
-export class SlashCommand<T> extends CommandBase<T> {
-  constructor(input: CommandInput, execute: (interaction: CommandInteraction, app: T) => void) {
-    super(
-      {
-        ...input,
-        id: input.id,
-        version: input.version,
-        default_member_permissions: input.default_member_permissions,
-        type: ApplicationCommandType.ChatInput,
-        application_id: "id",
-      },
-      execute,
-    );
-  }
 }
