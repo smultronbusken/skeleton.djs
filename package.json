@@ -1,15 +1,14 @@
 {
   "name": "base-app-for-discordjs",
-  "version": "0.8.9",
+  "version": "0.8.0",
   "description": "A base app for discord.js",
+  "exports": "./dist/main.js",
   "files": [
     "dist"
   ],
-  "main": "./index.js",
-  "exports": "./dist/main.js",
   "scripts": {
     "watch": "pnpm build -- --watch",
-    "build": "rimraf out && pnpm format && tsc --noEmit false",
+    "build": "rimraf out && pnpm format && tsc",
     "lint": "prettier --check src/**/*.ts",
     "format": "prettier --write src/**/*.ts"
   },

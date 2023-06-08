@@ -1,6 +1,6 @@
 {
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.test.ts"],
+  "exclude": ["node_modules", "**/*.test.ts", "src/examples"],
   "compilerOptions": {
       "target": "esnext",
       "lib": ["esnext", "dom"],
@@ -15,10 +15,11 @@
       "moduleResolution": "node",
       "skipLibCheck": true,
       "sourceMap": true,
-      "rootDir": "src",
+      "rootDir": "./src",
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "outDir": "./dist",
       "noImplicitAny": true, //
   }
+  
 }
