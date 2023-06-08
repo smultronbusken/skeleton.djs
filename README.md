@@ -9,8 +9,8 @@ This projects is a made using [discord.js](https://discord.js.org/#/). It includ
 # Features
 
 - Easier command creation. 
-- Automatic command deployment - all command files are registered to the Discord API.
-- Interaction handling - each interaction from Discord gets mapped to the correct command.
+- Automatic command deployment - all command are sent to the Discord API.
+- Interaction handling
 - Write custom command types, interaction handlers, and ```.job.ts``` file registration, to extend the functionality.
 
 ## Set up
