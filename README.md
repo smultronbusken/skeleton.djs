@@ -1,8 +1,10 @@
 # Skeleton - A Lightweight Extension For discord.js 14
 
-(This README and project is WIP)
+(This README and project is WIP, anything can happen if you decide to try it...)
 
 This projects is a made using [discord.js](https://discord.js.org/#/). It includes a couple of handy features
+
+
 
 # Features
 
