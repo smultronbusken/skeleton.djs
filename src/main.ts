@@ -1,7 +1,8 @@
-import { GatewayIntentBits, Client, BaseInteraction } from "discord.js";
+import { GatewayIntentBits, Client, BaseInteraction, User } from "discord.js";
 import path from "path";
 import { Skeleton } from "./Skeleton";
 import { SlashCommand } from "./implementations/SlashCommand/Command";
+import { UserCommand } from "./implementations/ContextMenuCommand/Command";
 
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
@@ -22,10 +23,9 @@ if (require.main === module) {
 
     // Manually add a command, instead of writing it in a .job.ts file
     skeleton.addCommand(
-      new SlashCommand<{}>(
+      new UserCommand<{}>(
         {
           name: "testcommand",
-          description: "I added this manually",
         },
         async (interaction, context) => {
           interaction.reply("hej");
@@ -42,3 +42,17 @@ if (require.main === module) {
     });
   });
 }
+
+export * from "./Skeleton";
+
+export * from "./importer/ImportHandler";
+export * from "./deployer/APICommandProvider";
+export * from "./command/BaseCommand";
+export * from "./command/CommandMediator";
+export * from "./eventhandlers/InteractionHandler";
+
+export * from "./implementations/ContextMenuCommand/Command";
+export * from "./implementations/CustomId/Command";
+export * from "./implementations/SlashCommand/Command";
+export * from "./implementations/SubCommand/MasterCommand";
+export * from "./implementations/SubCommand/SubCommand";

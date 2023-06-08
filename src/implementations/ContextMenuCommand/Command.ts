@@ -1,4 +1,8 @@
-import { MessageContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction } from "discord.js";
+import {
+  MessageContextMenuCommandInteraction,
+  ApplicationCommandType,
+  UserContextMenuCommandInteraction,
+} from "discord.js";
 import { CommandBase, CommandInput } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
 

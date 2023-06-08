@@ -3,9 +3,16 @@ import { CommandMediator } from "./command/CommandMediator";
 import { APICommandProvider } from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
 import { InteractionHandler } from "./eventhandlers/InteractionHandler";
-import { ContextMenuCommand, UserCommand, MessageCommand } from "./implementations/ContextMenuCommand/Command";
+import {
+  ContextMenuCommand,
+  UserCommand,
+  MessageCommand,
+} from "./implementations/ContextMenuCommand/Command";
 import ContextMenuCommandHandler from "./implementations/ContextMenuCommand/CommandHandler";
-import { UserCommandImportHandler, MessageCommandImportHandler } from "./implementations/ContextMenuCommand/ImportHandler";
+import {
+  UserCommandImportHandler,
+  MessageCommandImportHandler,
+} from "./implementations/ContextMenuCommand/ImportHandler";
 import { CustomIdCommand } from "./implementations/CustomId/Command";
 import CustomIdCommandHandler from "./implementations/CustomId/CommandHandler";
 import { CustomIdCommandImportHandler } from "./implementations/CustomId/ImportHandler";
@@ -15,7 +22,10 @@ import SlashCommandHandler from "./implementations/SlashCommand/CommandHandler";
 import { SlashCommandImportHandler } from "./implementations/SlashCommand/ImportHandler";
 import SlashCommandInteractionHandler from "./implementations/SlashCommand/InteractionHandler";
 import SubCommandHandler from "./implementations/SubCommand/CommandHandler";
-import { SubCommandImportHandler, MasterCommandImportHandler } from "./implementations/SubCommand/ImportHandler";
+import {
+  SubCommandImportHandler,
+  MasterCommandImportHandler,
+} from "./implementations/SubCommand/ImportHandler";
 import SubCommandInteractionHandler from "./implementations/SubCommand/InteractionHandler";
 import { MasterCommand } from "./implementations/SubCommand/MasterCommand";
 import { SubCommand } from "./implementations/SubCommand/SubCommand";
@@ -36,7 +46,6 @@ export class Skeleton<T> {
   private subCommandHandler: SubCommandHandler;
 
   constructor() {
-
     this.importer = new Importer();
     this.deployer = new Deployer();
 
@@ -60,7 +69,9 @@ export class Skeleton<T> {
 
     // Set up CustomIdCommand handlers
     this.customIdCommandHandler = new CustomIdCommandHandler();
-    let customIdCommandImportHandler = new CustomIdCommandImportHandler(this.customIdCommandHandler);
+    let customIdCommandImportHandler = new CustomIdCommandImportHandler(
+      this.customIdCommandHandler,
+    );
     let customIdCommandInteractionHandler = new CustomIdCommandInteractionHandler(
       this.customIdCommandHandler,
     );
@@ -83,13 +94,12 @@ export class Skeleton<T> {
   }
 
   async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {
-
     console.log("~~~~~ Login in ~~~~~");
-    
+
     try {
-      options.client.login(options.token)
+      options.client.login(options.token);
     } catch (error) {
-      throw error
+      throw error;
     }
 
     options.client.once(Events.ClientReady, async (c: Client) => {
@@ -101,21 +111,20 @@ export class Skeleton<T> {
       await this.importer.run();
       console.log("~~~~~ Deployer ~~~~~");
       await this.deployer.deploy(options);
-    
     });
   }
 
-  addCommand(command: SubCommand<T>) : void;
-  addCommand(command: SlashCommand<T>) : void;
-  addCommand(command: UserCommand<T>) : void;
-  addCommand(command: MessageCommand<T>) : void;
-  addCommand(command: SubCommand<T>) : void;
-  addCommand(command: any) : void{
-    this.importer.importObject(command)
+  addCommand(command: SubCommand<T>): void;
+  addCommand(command: SlashCommand<T>): void;
+  addCommand(command: UserCommand<T>): void;
+  addCommand(command: MessageCommand<T>): void;
+  addCommand(command: SubCommand<T>): void;
+  addCommand(command: any): void {
+    this.importer.importObject(command);
   }
 
   importObject(obj: Object) {
-    this.importer.importObject(obj)
+    this.importer.importObject(obj);
   }
 
   addCommandProvider(provider: APICommandProvider) {

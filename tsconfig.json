@@ -1,24 +1,25 @@
 {
-  "exclude": ["node_modules"],
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.test.ts"],
   "compilerOptions": {
       "target": "esnext",
       "lib": ["esnext", "dom"],
       "composite": true,
       "declaration": true,
+      "declarationDir": "./types",
       "declarationMap": true,
       "downlevelIteration": true,
       "esModuleInterop": true,
       "resolveJsonModule": true,
       "useDefineForClassFields": true,
-      "module": "commonjs",
+      "module": "CommonJS",
       "moduleResolution": "node",
       "skipLibCheck": true,
       "sourceMap": true,
       "rootDir": "src",
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
-      "outDir": "dist",
+      "outDir": "./dist",
       "noImplicitAny": true, //
   }
 }

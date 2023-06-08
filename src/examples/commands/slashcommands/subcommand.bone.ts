@@ -1,7 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { SubCommand } from "../../../implementations/SubCommand/SubCommand";
 
-
 export default new SubCommand<{}>(
   {
     master: "mastercommand",

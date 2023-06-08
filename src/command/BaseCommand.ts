@@ -1,5 +1,12 @@
-
-import { APIApplicationCommand, APIApplicationCommandSubcommandOption, ApplicationCommandOptionType, ApplicationCommandType, CommandInteraction, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from "discord.js";
+import {
+  APIApplicationCommand,
+  APIApplicationCommandSubcommandOption,
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+  CommandInteraction,
+  MessageContextMenuCommandInteraction,
+  UserContextMenuCommandInteraction,
+} from "discord.js";
 import { Importable } from "../importer/Importer";
 
 export class InteractionExecutable<T> {
@@ -30,10 +37,3 @@ export abstract class CommandBase<T> extends InteractionExecutable<T> {
     super(execute);
   }
 }
-
-
-
-
-
-
-

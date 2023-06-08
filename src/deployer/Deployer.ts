@@ -31,7 +31,6 @@ export class Deployer {
     JSONCommands: APIApplicationCommand[],
     options: { token: string; appId: string; guildId?: Snowflake },
   ) {
-
     console.log("Deploying " + JSONCommands.length + " commands.");
     const rest = new REST({ version: "9" }).setToken(options.token);
     try {
@@ -50,6 +49,5 @@ export class Deployer {
     } catch (error) {
       console.error(error);
     }
-
   }
 }

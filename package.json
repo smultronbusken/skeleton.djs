@@ -3,7 +3,8 @@
   "version": "0.7.2",
   "description": "A base app for discord.js",
   "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "types": "types/main.d.ts",
+  "files": ["dist", "types"],
   "scripts": {
     "watch": "pnpm build -- --watch",
     "build": "rimraf out && pnpm format && tsc --noEmit false",
@@ -36,9 +37,7 @@
     "type": "git",
     "url": "git+https://github.com/smultronbusken/skeleton-for-discordjs.git"
   },
-  "files": [
-    "dist"
-  ],
+
   "author": "smultron",
   "bugs": {
     "url": "https://github.com/smultronbusken/skeleton-for-discordjs/issues"

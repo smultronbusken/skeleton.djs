@@ -3,7 +3,6 @@ import { CommandMediator } from "../../command/CommandMediator";
 import { APICommandProvider } from "../../deployer/APICommandProvider";
 import { ContextMenuCommand } from "./Command";
 
-
 export default class ContextMenuCommandHandler
   implements CommandMediator<ContextMenuCommand<any>>, APICommandProvider
 {
@@ -26,4 +25,3 @@ export default class ContextMenuCommandHandler
     return commandsAsJson;
   };
 }
-

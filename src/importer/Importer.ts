@@ -9,45 +9,43 @@ export interface Class<T> {
 }
 
 export class Importer {
-
-  private static metadataKey: string = "importableClass"
-  private static fileSearchString =  "**/*.bone.(js|ts)"
+  private static metadataKey: string = "importableClass";
+  private static fileSearchString = "**/*.bone.(js|ts)";
   private static fgConfig = {
     ignore: ["node_modules"],
-  }
+  };
 
   public static Importable(obj: Class<any>) {
     Reflect.defineMetadata(Importer.metadataKey, obj.name, obj.prototype);
   }
 
   private importHandlers: ImportHandler<any>[] = [];
-  
+
   async run() {
-
-    let files = await this.find(Importer.fileSearchString, Importer.fgConfig)
+    let files = await this.find(Importer.fileSearchString, Importer.fgConfig);
     for (const file of files) {
-
       let filePath = path.join(process.cwd(), "" + file);
       //console.log("Found file: " + filePath.split("\\")[filePath.split("\\").length - 1]);
 
       let importedObject = await this.import(filePath);
-      let nameOfObject = this.getNameOfObject(importedObject)
-      
+      let nameOfObject = this.getNameOfObject(importedObject);
+
       console.log("Imported " + importedObject.constructor.name + " from " + file + ".");
 
-      this.handleImport(importedObject, nameOfObject)
+      this.handleImport(importedObject, nameOfObject);
     }
   }
 
   private getNameOfObject(object: Object) {
     let nameOfObject = Reflect.getMetadata(Importer.metadataKey, Reflect.getPrototypeOf(object));
-    if (!nameOfObject) throw new Error("Object prototype is not decorated with the Importable decorator.")
-    return nameOfObject
+    if (!nameOfObject)
+      throw new Error("Object prototype is not decorated with the Importable decorator.");
+    return nameOfObject;
   }
 
   private async find(searchString: string, fgConfig: any = {}) {
     const entries = await fg(searchString, fgConfig);
-    return entries
+    return entries;
   }
 
   private async import(filePath: string): Promise<Object> {
@@ -55,32 +53,35 @@ export class Importer {
     if (this.hasPrototypeAndConstructor(object)) {
       return object;
     } else {
-      throw new Error("Default export of " + filePath + " must be a object with a prototype and a constructor.")
+      throw new Error(
+        "Default export of " + filePath + " must be a object with a prototype and a constructor.",
+      );
     }
   }
 
   private getHandlersWithClass(nameOfObject: string): ImportHandler<any>[] {
-    return this.importHandlers.filter(ih => ih.classToBeImported.name == nameOfObject)
+    return this.importHandlers.filter(ih => ih.classToBeImported.name == nameOfObject);
   }
 
   private handleImport(importedObject: Object, nameOfObject: string) {
-
     let handlers = this.getHandlersWithClass(nameOfObject);
     if (handlers.length > 0) {
       handlers.forEach(h => {
-          h.onImport(importedObject)
-      })
+        h.onImport(importedObject);
+      });
     } else {
-      console.log("Warning: imported " + importedObject.constructor.name + " but no listeners is available")
+      console.log(
+        "Warning: imported " + importedObject.constructor.name + " but no listeners is available",
+      );
     }
   }
 
   importObject(object: Object) {
     if (this.hasPrototypeAndConstructor(object)) {
-      let nameOfObject = this.getNameOfObject(object)
-      this.handleImport(object, nameOfObject)
+      let nameOfObject = this.getNameOfObject(object);
+      this.handleImport(object, nameOfObject);
     } else {
-      throw new Error("Object must be have a prototype and a constructor.")
+      throw new Error("Object must be have a prototype and a constructor.");
     }
   }
 
@@ -90,27 +91,29 @@ export class Importer {
       importHandler.classToBeImported.prototype,
     );
 
-    if (!className) throw new Error("Class " + importHandler.classToBeImported.name + " is not decorated with Importable.")
+    if (!className)
+      throw new Error(
+        "Class " + importHandler.classToBeImported.name + " is not decorated with Importable.",
+      );
 
-    this.importHandlers.push(importHandler)
+    this.importHandlers.push(importHandler);
   }
 
   private hasPrototypeAndConstructor(obj: any): boolean {
     // Check if it's null or not an object first
-    if (obj === null || typeof obj !== 'object') {
-        return false;
+    if (obj === null || typeof obj !== "object") {
+      return false;
     }
-    
+
     // Check if it has a prototype
     const prototype = Object.getPrototypeOf(obj);
     if (prototype === null) {
-        return false;
+      return false;
     }
-    
+
     // Check if it has a constructor
-    return typeof obj.constructor === 'function';
+    return typeof obj.constructor === "function";
   }
-  
 }
 
 export const Importable = Importer.Importable;

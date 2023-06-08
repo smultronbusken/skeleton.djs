@@ -3,7 +3,6 @@ import { CommandMediator } from "../../command/CommandMediator";
 import { SubCommand } from "./SubCommand";
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
 
-
 export default class SubCommandInteractionHandler extends InteractionHandler<ChatInputCommandInteraction> {
   constructor(public mediator: CommandMediator<SubCommand<any>>) {
     super();

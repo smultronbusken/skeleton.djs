@@ -22,8 +22,6 @@ export default class CustomIdCommandInteractionHandler extends InteractionHandle
   };
 }
 
-
-
 export type CustomIdInteraction = Interaction & { customId: string };
 
 export function isCustomInteraction(obj: unknown): obj is CustomIdInteraction {
