@@ -7,6 +7,8 @@
   "files": [
     "dist"
   ],
+
+
   "scripts": {
     "watch": "pnpm build -- --watch",
     "build": "rimraf out && pnpm format && tsc",
