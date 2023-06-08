@@ -1,57 +1,61 @@
-import { Snowflake, Client, APIApplicationCommand, Interaction, BaseInteraction } from "discord.js";
-import { CommandDeployer } from "./CommandDeployer";
-import { Importer } from "./Importer";
-import { CommandMediator } from "./commandHandlers/CommandMediator";
-import { CommandToJSON } from "./commandHandlers/CommandToJSON";
-import ContextMenuCommandHandler from "./commandHandlers/ContextMenuCommandHandler";
-import CustomIdCommandHandler, { CustomIdCommand } from "./commandHandlers/CustomIdCommandHandler";
-import SlashCommandHandler from "./commandHandlers/SlashCommandHandler";
-import SubCommandHandler from "./commandHandlers/SubCommandHandler";
-import { ContextMenuCommand, SlashCommand, UserCommand, MessageCommand, SubCommand, MasterCommand } from "./commandTypes/CommandTypes";
-import { UserCommandImportHandler, MessageCommandImportHandler } from "./importHandlers/ContextMenuCommandImportHandler";
-import { CustomIdCommandImportHandler } from "./importHandlers/CustomIdCommandImportHandler";
-import ImportHandler from "./importHandlers/ImportHandler";
-import { SlashCommandImportHandler } from "./importHandlers/SlashCommandImportHandler";
-import { SubCommandImportHandler, MasterCommandImportHandler } from "./importHandlers/SubCommandImportHandler";
-import ContextMenuInteractionHandler from "./interactionHandlers/ContextMenuInteractionHandler";
-import CustomIdCommandInteractionHandler from "./interactionHandlers/CustomIdInteractionHandler";
-import { InteractionHandler } from "./interactionHandlers/InteractionHandler";
-import SlashCommandInteractionHandler from "./interactionHandlers/SlashCommandInteractionHandler";
-import SubCommandInteractionHandler from "./interactionHandlers/SubCommandInteractionHandler";
+import { Snowflake, Client, Interaction, Events } from "discord.js";
+import { CommandMediator } from "./command/CommandMediator";
+import { APICommandProvider } from "./deployer/APICommandProvider";
+import { Deployer } from "./deployer/Deployer";
+import { InteractionHandler } from "./eventhandlers/InteractionHandler";
+import { ContextMenuCommand, UserCommand, MessageCommand } from "./implementations/ContextMenuCommand/Command";
+import ContextMenuCommandHandler from "./implementations/ContextMenuCommand/CommandHandler";
+import { UserCommandImportHandler, MessageCommandImportHandler } from "./implementations/ContextMenuCommand/ImportHandler";
+import { CustomIdCommand } from "./implementations/CustomId/Command";
+import CustomIdCommandHandler from "./implementations/CustomId/CommandHandler";
+import { CustomIdCommandImportHandler } from "./implementations/CustomId/ImportHandler";
+import CustomIdCommandInteractionHandler from "./implementations/CustomId/InteractionHandler";
+import { SlashCommand } from "./implementations/SlashCommand/Command";
+import SlashCommandHandler from "./implementations/SlashCommand/CommandHandler";
+import { SlashCommandImportHandler } from "./implementations/SlashCommand/ImportHandler";
+import SlashCommandInteractionHandler from "./implementations/SlashCommand/InteractionHandler";
+import SubCommandHandler from "./implementations/SubCommand/CommandHandler";
+import { SubCommandImportHandler, MasterCommandImportHandler } from "./implementations/SubCommand/ImportHandler";
+import SubCommandInteractionHandler from "./implementations/SubCommand/InteractionHandler";
+import { MasterCommand } from "./implementations/SubCommand/MasterCommand";
+import { SubCommand } from "./implementations/SubCommand/SubCommand";
+import ImportHandler from "./importer/ImportHandler";
+import { Importer } from "./importer/Importer";
+import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
 
 export class Skeleton<T> {
-  private interactionHandlers: InteractionHandler<any, T>[] = [];
+  private interactionHandlers: InteractionHandler<any>[] = [];
   private context: T;
 
   private importer: Importer;
-  private commandDeployer: CommandDeployer;
+  private deployer: Deployer;
 
-  private cxtMenuCommandHandler: CommandMediator<ContextMenuCommand<T>> & CommandToJSON;
-  private slashCommandHandler: CommandMediator<SlashCommand<T>> & CommandToJSON;
+  private cxtMenuCommandHandler: CommandMediator<ContextMenuCommand<T>> & APICommandProvider;
+  private slashCommandHandler: CommandMediator<SlashCommand<T>> & APICommandProvider;
   private customIdCommandHandler: CommandMediator<CustomIdCommand<T>>;
-  private subCommandHandler: SubCommandHandler<T>;
+  private subCommandHandler: SubCommandHandler;
 
   constructor() {
 
     this.importer = new Importer();
-    this.commandDeployer = new CommandDeployer();
+    this.deployer = new Deployer();
 
     // Set up ContextMenu handlers
     this.cxtMenuCommandHandler = new ContextMenuCommandHandler();
-    let cxtMenuInteractionHandler = new ContextMenuInteractionHandler(this.cxtMenuCommandHandler);
+    let cxtMenuInteractionHandler = new ContextMentInteractionHandler(this.cxtMenuCommandHandler);
     let userCxtMenuImportHandler = new UserCommandImportHandler(this.cxtMenuCommandHandler);
     let messageCxtMenuImportHandler = new MessageCommandImportHandler(this.cxtMenuCommandHandler);
-    this.addImportListener(messageCxtMenuImportHandler);
-    this.addImportListener(userCxtMenuImportHandler);
+    this.addImportHandler(messageCxtMenuImportHandler);
+    this.addImportHandler(userCxtMenuImportHandler);
     this.registerInteractionHandler(cxtMenuInteractionHandler);
-    this.addCommandProvider(() => this.cxtMenuCommandHandler.convertCommandsToJSON());
+    this.addCommandProvider(this.cxtMenuCommandHandler);
 
     // Set up SlashCommand handlers
     this.slashCommandHandler = new SlashCommandHandler();
     let slashImportHandler = new SlashCommandImportHandler(this.slashCommandHandler);
     let slashInteractionHandler = new SlashCommandInteractionHandler(this.slashCommandHandler);
-    this.addCommandProvider(() => this.slashCommandHandler.convertCommandsToJSON());
-    this.addImportListener(slashImportHandler);
+    this.addCommandProvider(this.slashCommandHandler);
+    this.addImportHandler(slashImportHandler);
     this.registerInteractionHandler(slashInteractionHandler);
 
     // Set up CustomIdCommand handlers
@@ -60,7 +64,7 @@ export class Skeleton<T> {
     let customIdCommandInteractionHandler = new CustomIdCommandInteractionHandler(
       this.customIdCommandHandler,
     );
-    this.addImportListener(customIdCommandImportHandler);
+    this.addImportHandler(customIdCommandImportHandler);
     this.registerInteractionHandler(customIdCommandInteractionHandler);
 
     // Set up CustomIdCommand handlers
@@ -68,21 +72,37 @@ export class Skeleton<T> {
     let subCommandInteractionHandler = new SubCommandInteractionHandler(this.subCommandHandler);
     let subCommandImportHandler = new SubCommandImportHandler(this.subCommandHandler);
     let masterCommandImportHandler = new MasterCommandImportHandler(this.subCommandHandler);
-    this.addCommandProvider(() => this.subCommandHandler.convertCommandsToJSON());
-    this.addImportListener(subCommandImportHandler);
-    this.addImportListener(masterCommandImportHandler);
+    this.addCommandProvider(this.subCommandHandler);
+    this.addImportHandler(subCommandImportHandler);
+    this.addImportHandler(masterCommandImportHandler);
     this.registerInteractionHandler(subCommandInteractionHandler);
   }
 
-  addImportListener(importHandler: ImportHandler<any>) {
-    this.importer.addListener(importHandler.classToBeImported, importHandler.onImport);
+  addImportHandler(importHandler: ImportHandler<any>) {
+    this.importer.addImportHandler(importHandler);
   }
 
   async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {
-    options.client.on("interactionCreate", async i => this.onInteraction(i));
 
-    await this.importer.run();
-    await this.commandDeployer.deploy(options);
+    console.log("~~~~~ Login in ~~~~~");
+    
+    try {
+      options.client.login(options.token)
+    } catch (error) {
+      throw error
+    }
+
+    options.client.once(Events.ClientReady, async (c: Client) => {
+      console.log("Successfully logged in.");
+
+      options.client.on("interactionCreate", async i => this.onInteraction(i));
+
+      console.log("~~~~~ Importer ~~~~~");
+      await this.importer.run();
+      console.log("~~~~~ Deployer ~~~~~");
+      await this.deployer.deploy(options);
+    
+    });
   }
 
   addSlashCommand(command: SlashCommand<T>) {
@@ -105,8 +125,8 @@ export class Skeleton<T> {
     this.subCommandHandler.setMasterCommand(command.data.name, command);
   }
 
-  addCommandProvider(provider: () => APIApplicationCommand[]) {
-    this.commandDeployer.addCommandProvider(provider);
+  addCommandProvider(provider: APICommandProvider) {
+    this.deployer.addCommandProvider(provider);
   }
 
   private async onInteraction(interaction: Interaction) {
@@ -125,7 +145,7 @@ export class Skeleton<T> {
     }
   }
 
-  public registerInteractionHandler<I extends BaseInteraction>(handler: InteractionHandler<I, T>) {
+  public registerInteractionHandler(handler: InteractionHandler<any>) {
     this.interactionHandlers.push(handler);
   }
 

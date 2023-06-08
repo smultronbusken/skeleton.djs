@@ -1,7 +1,7 @@
-import { GatewayIntentBits, Client } from "discord.js";
+import { GatewayIntentBits, Client, BaseInteraction } from "discord.js";
 import path from "path";
 import { Skeleton } from "./Skeleton";
-import { SlashCommand } from "./commandHandlers/SlashCommandHandler";
+import { SlashCommand } from "./implementations/SlashCommand/Command";
 
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
@@ -13,7 +13,6 @@ if (require.main === module) {
       ],
     };
     const client = new Client(clientOptions);
-    client.login(config["APP_TOKEN"]);
 
     // Create the object
     const skeleton = new Skeleton();
