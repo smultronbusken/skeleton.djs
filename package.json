@@ -6,7 +6,7 @@
   "types": "dist/main.d.ts",
   "scripts": {
     "watch": "pnpm build -- --watch",
-    "build": "rimraf out && pnpm format && tsc",
+    "build": "rimraf out && pnpm format && tsc --noEmit false",
     "lint": "prettier --check src/**/*.ts",
     "format": "prettier --write src/**/*.ts"
   },
