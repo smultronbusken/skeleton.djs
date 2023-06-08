@@ -7,7 +7,7 @@ import {
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
 import { CommandBase, CommandInput } from "../Command";
-import { JobRegistry } from "../Jobs";
+import { Importable } from "../Importer";
 
 export default class SlashCommandHandler<T>
   implements CommandMediator<SlashCommand<T>>, CommandToJSON
@@ -31,7 +31,7 @@ export default class SlashCommandHandler<T>
   };
 }
 
-@JobRegistry.JobClass
+@Importable
 export class SlashCommand<T> extends CommandBase<T> {
   constructor(input: CommandInput, execute: (interaction: CommandInteraction, app: T) => void) {
     super(

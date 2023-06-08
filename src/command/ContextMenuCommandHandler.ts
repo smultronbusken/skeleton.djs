@@ -8,7 +8,7 @@ import {
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
 import { CommandBase, CommandInput } from "../Command";
-import { JobRegistry } from "../Jobs";
+import { Importable } from "../Importer";
 
 export default class ContextMenuCommandHandler<T>
   implements CommandMediator<ContextMenuCommand<T>>, CommandToJSON
@@ -33,7 +33,7 @@ export default class ContextMenuCommandHandler<T>
   };
 }
 
-@JobRegistry.JobClass
+@Importable
 export class MessageCommand<T> extends CommandBase<T> {
   constructor(
     input: Omit<CommandInput, "description">,
@@ -54,7 +54,7 @@ export class MessageCommand<T> extends CommandBase<T> {
   }
 }
 
-@JobRegistry.JobClass
+@Importable
 export class UserCommand<T> extends CommandBase<T> {
   constructor(
     input: Omit<CommandInput, "description">,

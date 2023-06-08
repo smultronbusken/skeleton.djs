@@ -1,15 +1,11 @@
-import { CommandInteraction, ApplicationCommandOptionType } from "discord.js";
-import { JobRegistry } from "../Jobs";
-import { CommandMediator } from "../command/CommandMediator";
-import { SubcommandBase, SubcommandInput, CommandInput } from "../Command";
 import RegistrationHandler from "./JobRegister";
 import SubCommandHandler, { SubCommand, MasterCommand } from "../command/SubCommandHandler";
 
 export class SubCommandJobHandler<T> implements RegistrationHandler<SubCommand<T>> {
   jobType = SubCommand;
-  constructor(public mediator: CommandMediator<SubCommand<T>>) {}
+  constructor(public subCommandhandler: SubCommandHandler<any>) {}
   onRegister = (job: SubCommand<T>) => {
-    this.mediator.setCommand(job.master + "/" + job.data.name, job);
+    this.subCommandhandler.setCommand(job.master + "/" + job.data.name, job);
   };
 }
 

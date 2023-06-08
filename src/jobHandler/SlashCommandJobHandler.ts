@@ -1,7 +1,4 @@
-import { CommandInteraction, ApplicationCommandType } from "discord.js";
-import { JobRegistry } from "../Jobs";
 import { CommandMediator } from "../command/CommandMediator";
-import { CommandBase, CommandInput } from "../Command";
 import RegistrationHandler from "./JobRegister";
 import { SlashCommand } from "../command/SlashCommandHandler";
 

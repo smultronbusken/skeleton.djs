@@ -9,8 +9,8 @@ import {
 import { CommandMediator } from "./CommandMediator";
 import { CommandToJSON } from "./CommandToJSON";
 import { SubcommandBase, SubcommandInput, CommandInput } from "../Command";
-import { JobRegistry } from "../Jobs";
 import { SlashCommand } from "./SlashCommandHandler";
+import { Importable } from "../Importer";
 
 export default class SubCommandHandler<T> implements CommandMediator<SubCommand<T>>, CommandToJSON {
   private subCommands: Collection<string, SubCommand<T>> = new Collection();
@@ -61,7 +61,7 @@ export default class SubCommandHandler<T> implements CommandMediator<SubCommand<
   }
 }
 
-@JobRegistry.JobClass
+@Importable
 export class SubCommand<T> extends SubcommandBase<T> {
   master: string;
   group: string;
@@ -81,7 +81,7 @@ export class SubCommand<T> extends SubcommandBase<T> {
   }
 }
 
-@JobRegistry.JobClass
+@Importable
 export class MasterCommand<T> extends SlashCommand<T> {
   constructor(input: CommandInput) {
     super(input, () => {});

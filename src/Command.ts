@@ -4,8 +4,12 @@ import {
   APIApplicationCommandSubcommandOption,
   ApplicationCommandOption,
 } from "discord.js";
-import { Job } from "./Jobs";
 import { APIApplicationCommandSubcommandGroupOption } from "discord-api-types/v9";
+
+
+export class Executable<T> {
+  constructor(public execute: (interaction: any, app: T) => any) {}
+}
 
 // Fields from APIApplicationCommandSubcommandOption that the user should not be able to pass
 export type ApplicationCommandNonInput = Omit<
@@ -23,7 +27,7 @@ export type ApplicationCommandNonInputOptional = {
 // Combine the two above
 export type CommandInput = ApplicationCommandNonInput & ApplicationCommandNonInputOptional;
 
-export abstract class CommandBase<T> extends Job<T> {
+export abstract class CommandBase<T> extends Executable<T> {
   constructor(
     public data: APIApplicationCommand,
     public execute: (interaction: any, app: T) => any,
@@ -41,7 +45,7 @@ export type ApplicationSubcommandNonInputOptional = {};
 // Combine the two above
 export type SubcommandInput = ApplicationSubcommandNonInput & ApplicationSubcommandNonInputOptional;
 
-export abstract class SubcommandBase<T> extends Job<T> {
+export abstract class SubcommandBase<T> extends Executable<T> {
   constructor(
     public data: APIApplicationCommandSubcommandOption,
     public execute: (interaction: any, app: T) => any,
@@ -49,3 +53,5 @@ export abstract class SubcommandBase<T> extends Job<T> {
     super(execute);
   }
 }
+
+

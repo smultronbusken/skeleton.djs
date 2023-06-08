@@ -1,6 +1,6 @@
-import { Job, TConstructable } from "../Jobs";
+import { Class } from "../Importer";
 
-export default interface RegistrationHandler<J extends Job<any>> {
-  jobType: TConstructable<J>;
+export default interface RegistrationHandler<J> {
+  jobType: Class<J>;
   onRegister(job: J): void;
 }

@@ -3,7 +3,6 @@ import {
   ApplicationCommandType,
   UserContextMenuCommandInteraction,
 } from "discord.js";
-import { JobRegistry } from "../Jobs";
 import { CommandBase, CommandInput } from "../Command";
 import JobRegister from "./JobRegister";
 import { CommandMediator } from "../command/CommandMediator";

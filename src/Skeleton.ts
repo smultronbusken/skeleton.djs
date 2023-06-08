@@ -1,6 +1,5 @@
 import { Snowflake, Client, APIApplicationCommand, Interaction, BaseInteraction } from "discord.js";
 import { CommandDeployer } from "./CommandDeployer";
-import { JobRegistry, Job } from "./Jobs";
 import { CommandMediator } from "./command/CommandMediator";
 import { CommandToJSON } from "./command/CommandToJSON";
 import ContextMenuCommandHandler, {
@@ -24,12 +23,13 @@ import { CustomIdCommandJobHandler } from "./jobHandler/CustomIdCommandJobHandle
 import RegistrationHandler from "./jobHandler/JobRegister";
 import { SlashCommandJobHandler } from "./jobHandler/SlashCommandJobHandler";
 import { SubCommandJobHandler, MasterCommandJobHandler } from "./jobHandler/SubCommandJobHandler";
+import { Importable, Importer } from "./Importer";
 
 export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any, T>[] = [];
   private context: T;
 
-  private jobRegister: JobRegistry;
+  private importer: Importer;
   private commandDeployer: CommandDeployer;
 
   private cxtMenuCommandHandler: CommandMediator<ContextMenuCommand<T>> & CommandToJSON;
@@ -38,7 +38,8 @@ export class Skeleton<T> {
   private subCommandHandler: SubCommandHandler<T>;
 
   constructor() {
-    this.jobRegister = new JobRegistry();
+
+    this.importer = new Importer();
     this.commandDeployer = new CommandDeployer();
 
     // Set up ContextMenu handlers
@@ -79,14 +80,14 @@ export class Skeleton<T> {
     this.registerInteractionHandler(subCommandInteractionHandler);
   }
 
-  onRegister<J extends Job<any>>(registrationHandler: RegistrationHandler<J>) {
-    this.jobRegister.onRegister(registrationHandler.jobType, registrationHandler.onRegister);
+  onRegister(registrationHandler: RegistrationHandler<any>) {
+    this.importer.addListener(registrationHandler.jobType, registrationHandler.onRegister);
   }
 
   async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {
     options.client.on("interactionCreate", async i => this.onInteraction(i));
 
-    await this.jobRegister.loadAndRegister();
+    await this.importer.run();
     await this.commandDeployer.deploy(options);
   }
 
