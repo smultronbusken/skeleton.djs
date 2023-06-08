@@ -4,9 +4,7 @@
   "description": "A base app for discord.js",
   "types": "types/main.d.ts",
   "files": [
-    "dist",
-    "types"
-  ],
+    "dist"],
   "exports": {
     ".": "./dist/main.js"
   },

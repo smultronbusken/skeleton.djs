@@ -6,7 +6,6 @@
       "lib": ["esnext", "dom"],
       "composite": true,
       "declaration": true,
-      "declarationDir": "./types",
       "declarationMap": true,
       "downlevelIteration": true,
       "esModuleInterop": true,
