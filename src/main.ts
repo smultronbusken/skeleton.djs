@@ -1,5 +1,5 @@
-export * from "./Skeleton";
-export * as option from "./options";
+export { Skeleton } from "./Skeleton";
+export { options } from "./options";
 export * from "./importer/ImportHandler";
 export * from "./deployer/APICommandProvider";
 export {

@@ -33,7 +33,7 @@ import ImportHandler from "./importer/ImportHandler";
 import { Importer } from "./importer/Importer";
 import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
 
-export default class Skeleton<T> {
+export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any>[] = [];
   private context: T;
 

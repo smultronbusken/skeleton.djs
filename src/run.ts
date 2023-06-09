@@ -1,7 +1,7 @@
 import { GatewayIntentBits, Client } from "discord.js";
 import path from "path";
 import { SlashCommand, UserCommand } from "./main";
-import Skeleton from "./Skeleton";
+import { Skeleton } from "./Skeleton";
 
 if (require.main === module) {
   import(path.join(process.cwd(), "app-config.json")).then(config => {
