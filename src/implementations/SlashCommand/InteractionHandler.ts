@@ -15,7 +15,11 @@ export default class SlashCommandInteractionHandler extends InteractionHandler<C
   // Do not handle subcommands
   check = (interaction: ChatInputCommandInteraction) => !interaction.options.getSubcommand(false);
 
-  execute = async (interaction: ChatInputCommandInteraction, context: any, skeleton: Skeleton<any>) => {
+  execute = async (
+    interaction: ChatInputCommandInteraction,
+    context: any,
+    skeleton: Skeleton<any>,
+  ) => {
     const command = this.mediator.getCommand(interaction.commandName);
     await command?.execute(interaction, context, skeleton);
   };

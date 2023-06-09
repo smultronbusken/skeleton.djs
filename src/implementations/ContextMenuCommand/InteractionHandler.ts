@@ -15,7 +15,11 @@ export default class ContextMentInteractionHandler extends InteractionHandler<Co
   // Handle ALL context menu interactions.
   check = (interaction: ContextMenuCommandInteraction) => true;
 
-  execute = async (interaction: ContextMenuCommandInteraction, context: any, skeleton: Skeleton<any>) => {
+  execute = async (
+    interaction: ContextMenuCommandInteraction,
+    context: any,
+    skeleton: Skeleton<any>,
+  ) => {
     const command = this.mediator.getCommand(interaction.commandName);
     await command?.execute(interaction, context, skeleton);
   };

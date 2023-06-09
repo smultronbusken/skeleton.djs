@@ -32,7 +32,9 @@ import { SubCommand } from "./implementations/SubCommand/SubCommand";
 import ImportHandler from "./importer/ImportHandler";
 import { Importer } from "./importer/Importer";
 import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
-import ModalInteractionHandler, { ModalSubmitCommand } from "./implementations/Modal/InteractionHandler";
+import ModalInteractionHandler, {
+  ModalSubmitCommand,
+} from "./implementations/Modal/InteractionHandler";
 
 export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any>[] = [];
@@ -91,12 +93,12 @@ export class Skeleton<T> {
     this.registerInteractionHandler(subCommandInteractionHandler);
 
     // Modal
-    this.modalSubmitInteractionHandler = new ModalInteractionHandler()
+    this.modalSubmitInteractionHandler = new ModalInteractionHandler();
     this.registerInteractionHandler(this.modalSubmitInteractionHandler);
   }
 
   handleModalSubmit(customId: string, func: ModalSubmitCommand) {
-    this.modalSubmitInteractionHandler.handleModalSubmit(customId, func)
+    this.modalSubmitInteractionHandler.handleModalSubmit(customId, func);
   }
 
   addImportHandler(importHandler: ImportHandler<any>) {
@@ -120,10 +122,8 @@ export class Skeleton<T> {
       console.log("~~~~~ Importer ~~~~~");
       await this.importer.run();
 
-
       console.log("~~~~~ Deployer ~~~~~");
       await this.deployer.deploy(options);
-      
     });
   }
 

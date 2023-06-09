@@ -74,7 +74,9 @@ export function number(
     ...i,
   };
 }
-export function role(i: Omit<APIApplicationCommandRoleOption, "type">): APIApplicationCommandRoleOption {
+export function role(
+  i: Omit<APIApplicationCommandRoleOption, "type">,
+): APIApplicationCommandRoleOption {
   return {
     type: ApplicationCommandOptionType.Role,
     ...i,
@@ -110,13 +112,15 @@ export function group(
     ...i,
   };
 }
-export function user(i: Omit<APIApplicationCommandUserOption, "type">): APIApplicationCommandUserOption {
+export function user(
+  i: Omit<APIApplicationCommandUserOption, "type">,
+): APIApplicationCommandUserOption {
   return {
     type: ApplicationCommandOptionType.User,
     ...i,
   };
 }
 
-export function Options(...o: APIApplicationCommandOption[]) : APIApplicationCommandOption[] {
-  return o
+export function Options(...o: APIApplicationCommandOption[]): APIApplicationCommandOption[] {
+  return o;
 }

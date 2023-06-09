@@ -15,7 +15,11 @@ export default class SubCommandInteractionHandler extends InteractionHandler<Cha
   // ONLY handle subcommands
   check = (interaction: ChatInputCommandInteraction) => interaction.options.getSubcommand(false);
 
-  execute = async (interaction: ChatInputCommandInteraction, context: any, skeleton: Skeleton<any>) => {
+  execute = async (
+    interaction: ChatInputCommandInteraction,
+    context: any,
+    skeleton: Skeleton<any>,
+  ) => {
     let name = interaction.options.getSubcommand(true);
     let command = this.mediator.getCommand(interaction.commandName + "/" + name);
     await command.execute(interaction, context, skeleton);

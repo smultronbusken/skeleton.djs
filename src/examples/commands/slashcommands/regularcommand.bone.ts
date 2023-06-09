@@ -1,8 +1,13 @@
-import { APIApplicationCommandOption, ApplicationCommandOptionType, CommandInteraction, Interaction } from "discord.js";
+import {
+  APIApplicationCommandOption,
+  ApplicationCommandOptionType,
+  CommandInteraction,
+  Interaction,
+} from "discord.js";
 import { SlashCommand } from "../../../implementations/SlashCommand/Command";
 
-import { Modal, text} from  "../../../builders/components";
-import { Options, string, integer} from  "../../../builders/options";
+import { Modal, text } from "../../../builders/components";
+import { Options, string, integer } from "../../../builders/options";
 import { SubCommand } from "../../../main";
 
 export default new SubCommand<{}>(
@@ -12,29 +17,30 @@ export default new SubCommand<{}>(
     description: "A subcommand example.",
   },
   (interaction: CommandInteraction, app, skeleton) => {
-    let modalID = "custommodal"
+    let modalID = "custommodal";
 
-    let m = Modal({
+    let m = Modal(
+      {
         custom_id: modalID,
-        title: "This is a modal!"
+        title: "This is a modal!",
       },
       text({
         custom_id: "foo",
-        label: "Foo?"
+        label: "Foo?",
       }),
       text({
         custom_id: "bar",
         label: "Bar?",
         required: true,
-      })
-    )
+      }),
+    );
 
-    skeleton.handleModalSubmit(modalID, (interaction) => {
+    skeleton.handleModalSubmit(modalID, interaction => {
       // Handle submission
-      interaction.reply("Thank you for your submission!")
-    })
-    
-    interaction.showModal(m)
+      interaction.reply("Thank you for your submission!");
+    });
+
+    interaction.showModal(m);
   },
   string({
     name: "s",

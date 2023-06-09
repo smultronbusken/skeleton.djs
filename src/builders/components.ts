@@ -1,32 +1,53 @@
-import { APIModalInteractionResponseCallbackData, APIActionRowComponentTypes, APIActionRowComponent, ComponentType, APITextInputComponent, TextInputStyle, APIButtonComponentWithCustomId, ButtonStyle, APIButtonComponentWithURL, APIApplicationCommandBasicOption, APIMessageActionRowComponent, APIModalActionRowComponent, APIModalComponent } from "discord.js";
+import {
+  APIModalInteractionResponseCallbackData,
+  APIActionRowComponentTypes,
+  APIActionRowComponent,
+  ComponentType,
+  APITextInputComponent,
+  TextInputStyle,
+  APIButtonComponentWithCustomId,
+  ButtonStyle,
+  APIButtonComponentWithURL,
+  APIApplicationCommandBasicOption,
+  APIMessageActionRowComponent,
+  APIModalActionRowComponent,
+  APIModalComponent,
+} from "discord.js";
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-export function Modal(i: Omit<APIModalInteractionResponseCallbackData, "components">, ...components: APIModalActionRowComponent[]) : APIModalInteractionResponseCallbackData{
-  let rows = []
+export function Modal(
+  i: Omit<APIModalInteractionResponseCallbackData, "components">,
+  ...components: APIModalActionRowComponent[]
+): APIModalInteractionResponseCallbackData {
+  let rows = [];
   for (let i = 0; i < components.length; i++) {
-    rows.push(modalRow(components[i]))
+    rows.push(modalRow(components[i]));
   }
   return {
     ...i,
-    components: rows
+    components: rows,
   };
 }
 
-export function modalRow(...components: APIModalActionRowComponent[]): APIActionRowComponent<APIModalActionRowComponent> {
+export function modalRow(
+  ...components: APIModalActionRowComponent[]
+): APIActionRowComponent<APIModalActionRowComponent> {
   let a: APIActionRowComponent<APIModalActionRowComponent> = {
     type: ComponentType.ActionRow,
-    components: components
-  }
+    components: components,
+  };
   return a;
 }
 
-export function row(...components: APIMessageActionRowComponent[]): APIActionRowComponent<APIMessageActionRowComponent> {
+export function row(
+  ...components: APIMessageActionRowComponent[]
+): APIActionRowComponent<APIMessageActionRowComponent> {
   let a: APIActionRowComponent<APIMessageActionRowComponent> = {
     type: ComponentType.ActionRow,
-    components: components
-  }
+    components: components,
+  };
   return a;
 }
 
@@ -34,26 +55,29 @@ export function text(i: Omit<PartialBy<APITextInputComponent, "style">, "type">)
   let a: APITextInputComponent = {
     type: ComponentType.TextInput,
     style: i.style ? i.style : TextInputStyle.Short,
-    ...i
-  }
+    ...i,
+  };
   return a;
 }
 
-
-export function button(i: Omit<PartialBy<APIButtonComponentWithCustomId, "style">, "type">)  : APIActionRowComponentTypes {
+export function button(
+  i: Omit<PartialBy<APIButtonComponentWithCustomId, "style">, "type">,
+): APIActionRowComponentTypes {
   let a: APIButtonComponentWithCustomId = {
     type: ComponentType.Button,
     style: i.style ? i.style : ButtonStyle.Primary,
-    ...i
-  }
+    ...i,
+  };
   return a;
 }
 
-export function urlButton(i: Omit<PartialBy<APIButtonComponentWithURL, "style">, "type">) : APIActionRowComponentTypes {
+export function urlButton(
+  i: Omit<PartialBy<APIButtonComponentWithURL, "style">, "type">,
+): APIActionRowComponentTypes {
   let a: APIButtonComponentWithURL = {
     type: ComponentType.Button,
     style: ButtonStyle.Link,
-    ...i
-  }
+    ...i,
+  };
   return a;
 }

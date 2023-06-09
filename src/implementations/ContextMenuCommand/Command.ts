@@ -11,7 +11,11 @@ import { Skeleton } from "../../main";
 export class MessageCommand<T> extends CommandBase<T> {
   constructor(
     input: Omit<CommandInput, "description">,
-    execute: (interaction: MessageContextMenuCommandInteraction, context: T, skeleton: Skeleton<T>) => any,
+    execute: (
+      interaction: MessageContextMenuCommandInteraction,
+      context: T,
+      skeleton: Skeleton<T>,
+    ) => any,
   ) {
     super(
       {
@@ -32,7 +36,11 @@ export class MessageCommand<T> extends CommandBase<T> {
 export class UserCommand<T> extends CommandBase<T> {
   constructor(
     input: Omit<CommandInput, "description">,
-    execute: (interaction: UserContextMenuCommandInteraction, context: T, skeleton: Skeleton<T>) => any,
+    execute: (
+      interaction: UserContextMenuCommandInteraction,
+      context: T,
+      skeleton: Skeleton<T>,
+    ) => any,
   ) {
     super(
       {
