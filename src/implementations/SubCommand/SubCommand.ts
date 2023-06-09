@@ -1,4 +1,6 @@
 import {
+  APIApplicationCommandBasicOption,
+  APIApplicationCommandOption,
   APIApplicationCommandSubcommandOption,
   ApplicationCommandOptionType,
   CommandInteraction,
@@ -30,13 +32,15 @@ export class SubCommand<T> extends SubcommandBase<T> {
   master: string;
   group: string;
   constructor(
-    input: SubcommandInput & { master: string; group?: string },
+    input: Omit<SubcommandInput, "options"> & { master: string; group?: string },
     execute: (interaction: CommandInteraction, context: T) => void,
+    ...options: APIApplicationCommandBasicOption[]
   ) {
     super(
       {
         ...input,
         type: ApplicationCommandOptionType.Subcommand,
+        options: options
       },
       execute,
     );
