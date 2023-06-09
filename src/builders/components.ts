@@ -12,6 +12,8 @@ import {
   APIMessageActionRowComponent,
   APIModalActionRowComponent,
   APIModalComponent,
+  APIMessageComponent,
+  APIButtonComponent,
 } from "discord.js";
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -42,9 +44,9 @@ export function modalRow(
 }
 
 export function row(
-  ...components: APIActionRowComponentTypes[]
-): APIActionRowComponent<APIActionRowComponentTypes> {
-  let a: APIActionRowComponent<APIActionRowComponentTypes> = {
+  ...components: APIMessageActionRowComponent[]
+): APIActionRowComponent<APIMessageActionRowComponent> {
+  let a: APIActionRowComponent<APIMessageActionRowComponent> = {
     type: ComponentType.ActionRow,
     components: components,
   };
@@ -62,7 +64,7 @@ export function text(i: Omit<PartialBy<APITextInputComponent, "style">, "type">)
 
 export function button(
   i: Omit<PartialBy<APIButtonComponentWithCustomId, "style">, "type">,
-): APIActionRowComponentTypes {
+): APIMessageActionRowComponent {
   let a: APIButtonComponentWithCustomId = {
     type: ComponentType.Button,
     style: i.style ? i.style : ButtonStyle.Primary,
@@ -73,7 +75,7 @@ export function button(
 
 export function urlButton(
   i: Omit<PartialBy<APIButtonComponentWithURL, "style">, "type">,
-): APIActionRowComponentTypes {
+): APIMessageActionRowComponent {
   let a: APIButtonComponentWithURL = {
     type: ComponentType.Button,
     style: ButtonStyle.Link,
