@@ -14,7 +14,18 @@ import {
   APIModalComponent,
   APIMessageComponent,
   APIButtonComponent,
+  StringSelectMenuBuilder,
+  APIStringSelectComponent,
+  APIBaseSelectMenuComponent,
+  APIBaseComponent,
+  APISelectMenuComponent,
+  APIChannelSelectComponent,
+  APIMentionableSelectComponent,
+  APIRoleSelectComponent,
+  APIUserSelectComponent,
+  APISelectMenuOption,
 } from "discord.js";
+import { PartialBy } from "../util/types";
 
 export function Modal(
   i: Omit<APIModalInteractionResponseCallbackData, "components">,
@@ -79,4 +90,55 @@ export function urlButton(
     ...i,
   };
   return a;
+}
+
+function select(i: APISelectMenuComponent): APISelectMenuComponent {
+  let a: APISelectMenuComponent = {
+    ...i,
+  };
+  return a;
+}
+
+export function selectChannel(i: Omit<APIChannelSelectComponent, "type">): APISelectMenuComponent {
+  return select({
+    type: ComponentType.ChannelSelect,
+    ...i,
+  });
+}
+
+export function selectString(
+  i: Omit<APIStringSelectComponent, "type" | "options">,
+  option: APISelectMenuOption,
+  ...options: APISelectMenuOption[]
+): APISelectMenuComponent {
+  if (options) options.push(option);
+  else options = [option];
+  return select({
+    type: ComponentType.StringSelect,
+    options: options,
+    ...i,
+  });
+}
+
+export function selectRole(i: Omit<APIRoleSelectComponent, "type">): APISelectMenuComponent {
+  return select({
+    type: ComponentType.RoleSelect,
+    ...i,
+  });
+}
+
+export function selectUser(i: Omit<APIUserSelectComponent, "type">): APISelectMenuComponent {
+  return select({
+    type: ComponentType.UserSelect,
+    ...i,
+  });
+}
+
+export function selectMentionable(
+  i: Omit<APIMentionableSelectComponent, "type">,
+): APISelectMenuComponent {
+  return select({
+    type: ComponentType.MentionableSelect,
+    ...i,
+  });
 }
