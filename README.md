@@ -10,13 +10,11 @@ Skeleton provides a streamlined framework for Discord bot development packed wit
 
 - **Full Command Support and File-Based Definitions**: From Slash Commands to User Commands, Subcommands, and Message Commands, Skeleton accommodates all four Discord command types. Furthermore, these commands can be defined in individual `.bone.ts` files for a cleaner, modular project structure.
 
-- **Custom Command Extension**: Create custom command classes and import them just like any `.bone.ts` files. Skeleton provides support for custom import handlers, allowing maximum flexibility.
+- **Custom Command Extension**: Create custom command classes and import them just like any `.bone.ts` files.
 
 - **Integrated and Custom Interaction Handlers**: Skeleton comes equipped with built-in interaction handlers and also supports custom handlers, enabling comprehensive interaction management.
 
 - **Component Helpers**: Skeleton's suite of helper functions simplify the process of building UI components for your bot.
-
-The following sections provide a step-by-step guide to setting up Skeleton and leveraging its rich features for your Discord bot. Happy coding!
 
 # Guide
 
@@ -183,15 +181,8 @@ Here's a list of available helper functions:
 If you prefer not to use these helper functions, you can specify the type manually:
 
 ```typescript
-import { SlashCommand, ApplicationCommandOptionType } from 'base-app-for-discordjs';
-
 new SlashCommand<{}>(
-  ...,
-  {
-    type: ApplicationCommandOptionType.User,
-    name: "user",
-    description: "pings this user",
-  },
+  ...
   {
     type: ApplicationCommandOptionType.String,
     name: "string",
