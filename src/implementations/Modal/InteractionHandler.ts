@@ -10,7 +10,6 @@ export default class ModalInteractionHandler extends InteractionHandler<ModalSub
       interaction.isModalSubmit();
   
     check = (interaction: ModalSubmitInteraction) => {
-        console.log(this.customIds)
       return this.customIds.get(interaction.customId)
     };
   
