@@ -1,6 +1,6 @@
 {
   "name": "@smultron/skeleton",
-  "version": "0.11.0",
+  "version": "0.1.0",
   "description": "Lightweight extension for discord.js with minimal set up.",
   "exports": "./dist/main.js",
   "main": "./dist/main.js",
@@ -26,7 +26,7 @@
   },
   "peerDependencies": {
     "@discordjs/builders": "^1.6.3",
-    "discord-api-types": "^0.37.43",
+    "discord-api-types": "^0.37.43",  
     "discord.js": "^14.11.0"
   },
   "devDependencies": {
