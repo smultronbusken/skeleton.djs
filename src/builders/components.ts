@@ -42,9 +42,9 @@ export function modalRow(
 }
 
 export function row(
-  ...components: APIMessageActionRowComponent[]
-): APIActionRowComponent<APIMessageActionRowComponent> {
-  let a: APIActionRowComponent<APIMessageActionRowComponent> = {
+  ...components: APIActionRowComponentTypes[]
+): APIActionRowComponent<APIActionRowComponentTypes> {
+  let a: APIActionRowComponent<APIActionRowComponentTypes> = {
     type: ComponentType.ActionRow,
     components: components,
   };
