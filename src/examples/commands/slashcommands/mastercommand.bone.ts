@@ -1,13 +1,13 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { MasterCommand } from "../../../implementations/SubCommand/MasterCommand";
-import { default as o } from "../../../options";
+import { group } from "../../../builders/options";
 
 export default new MasterCommand<{}>(
   {
     description: "A master command",
     name: "mastercommand",
   },
-  o.group({
+  group({
     description: "A group",
     name: "group",
   }),

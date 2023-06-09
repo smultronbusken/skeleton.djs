@@ -5,12 +5,13 @@ import {
 } from "discord.js";
 import { CommandBase, CommandInput } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
+import { Skeleton } from "../../main";
 
 @Importable
 export class SlashCommand<T> extends CommandBase<T> {
   constructor(
     input: Omit<CommandInput, "options">,
-    execute: (interaction: CommandInteraction, context: T) => void,
+    execute: (interaction: CommandInteraction, context: T, skeleton: Skeleton<T>) => void,
     ...options: APIApplicationCommandOption[]
   ) {
     super(

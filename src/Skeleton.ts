@@ -1,4 +1,4 @@
-import { Snowflake, Client, Interaction, Events } from "discord.js";
+import { Snowflake, Client, Interaction, Events, ModalSubmitInteraction } from "discord.js";
 import { CommandMediator } from "./command/CommandMediator";
 import APICommandProvider from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
@@ -32,6 +32,7 @@ import { SubCommand } from "./implementations/SubCommand/SubCommand";
 import ImportHandler from "./importer/ImportHandler";
 import { Importer } from "./importer/Importer";
 import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
+import ModalInteractionHandler, { ModalSubmitCommand } from "./implementations/Modal/InteractionHandler";
 
 export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any>[] = [];
@@ -44,6 +45,7 @@ export class Skeleton<T> {
   private slashCommandHandler: CommandMediator<SlashCommand<T>> & APICommandProvider;
   private customIdCommandHandler: CommandMediator<CustomIdCommand<T>>;
   private subCommandHandler: SubCommandHandler;
+  private modalSubmitInteractionHandler: ModalInteractionHandler;
 
   constructor() {
     this.importer = new Importer();
@@ -87,6 +89,14 @@ export class Skeleton<T> {
     this.addImportHandler(subCommandImportHandler);
     this.addImportHandler(masterCommandImportHandler);
     this.registerInteractionHandler(subCommandInteractionHandler);
+
+    // Modal
+    this.modalSubmitInteractionHandler = new ModalInteractionHandler()
+    this.registerInteractionHandler(this.modalSubmitInteractionHandler);
+  }
+
+  handleModalSubmit(customId: string, func: ModalSubmitCommand) {
+    this.modalSubmitInteractionHandler.handleModalSubmit(customId, func)
   }
 
   addImportHandler(importHandler: ImportHandler<any>) {
@@ -109,8 +119,11 @@ export class Skeleton<T> {
 
       console.log("~~~~~ Importer ~~~~~");
       await this.importer.run();
+
+
       console.log("~~~~~ Deployer ~~~~~");
       await this.deployer.deploy(options);
+      
     });
   }
 
@@ -135,7 +148,7 @@ export class Skeleton<T> {
     try {
       for (let handler of this.interactionHandlers) {
         if (await handler.performCheck(interaction, this.context)) {
-          await handler.performExecute(interaction, this.context);
+          await handler.performExecute(interaction, this.context, this);
           return;
         }
       }

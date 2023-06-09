@@ -2,6 +2,7 @@ import { BaseInteraction, Interaction } from "discord.js";
 import { CommandMediator } from "../../command/CommandMediator";
 import { CustomIdCommand } from "./Command";
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
+import { Skeleton } from "../../Skeleton";
 
 export default class CustomIdCommandInteractionHandler extends InteractionHandler<CustomIdInteraction> {
   constructor(public mediator: CommandMediator<CustomIdCommand<any>>) {
@@ -16,9 +17,9 @@ export default class CustomIdCommandInteractionHandler extends InteractionHandle
     return this.mediator.getCommands().find(cid => cid.customId === interaction.customId);
   };
 
-  execute = async (interaction: CustomIdInteraction, context: any) => {
+  execute = async (interaction: CustomIdInteraction, context: any, skeleton: Skeleton<any>) => {
     const command = this.mediator.getCommand(interaction.customId);
-    await command?.execute(interaction, context);
+    await command?.execute(interaction, context, skeleton);
   };
 }
 

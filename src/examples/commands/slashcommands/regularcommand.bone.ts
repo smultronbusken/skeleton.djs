@@ -1,21 +1,44 @@
-import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord.js";
+import { APIApplicationCommandOption, ApplicationCommandOptionType, CommandInteraction, Interaction } from "discord.js";
 import { SlashCommand } from "../../../implementations/SlashCommand/Command";
-import { default as o } from "../../../options";
 
-export default new SlashCommand<{}>(
+import { Modal, text} from  "../../../builders/components";
+import { Options, string, integer} from  "../../../builders/options";
+import { SubCommand } from "../../../main";
+
+export default new SubCommand<{}>(
   {
-    name: "another",
-    description: "Another",
+    master: "mastercommand",
+    name: "subcommand",
+    description: "A subcommand example.",
   },
-  async (interaction, app) => {
-    interaction.reply("Hi.");
+  (interaction: CommandInteraction, app, skeleton) => {
+    let modalID = "custommodal"
+
+    let m = Modal({
+        custom_id: modalID,
+        title: "This is a modal!"
+      },
+      text({
+        custom_id: "foo",
+        label: "Foo?"
+      }),
+      text({
+        custom_id: "bar",
+        label: "Bar?",
+        required: true,
+      })
+    )
+
+    skeleton.handleModalSubmit(modalID, (interaction) => {
+      // Handle submission
+      interaction.reply("Thank you for your submission!")
+    })
+    
+    interaction.showModal(m)
   },
-  o.string({
+  string({
     name: "s",
     description: "A string option",
-  }),
-  o.integer({
-    name: "n",
-    description: "A int option",
+    max_length: 10,
   }),
 );

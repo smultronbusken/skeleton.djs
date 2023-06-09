@@ -2,6 +2,7 @@ import { ContextMenuCommandInteraction, BaseInteraction } from "discord.js";
 import { CommandMediator } from "../../command/CommandMediator";
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
 import { UserCommand } from "./Command";
+import { Skeleton } from "../../main";
 
 export default class ContextMentInteractionHandler extends InteractionHandler<ContextMenuCommandInteraction> {
   constructor(public mediator: CommandMediator<UserCommand<any>>) {
@@ -14,8 +15,8 @@ export default class ContextMentInteractionHandler extends InteractionHandler<Co
   // Handle ALL context menu interactions.
   check = (interaction: ContextMenuCommandInteraction) => true;
 
-  execute = async (interaction: ContextMenuCommandInteraction, context: any) => {
+  execute = async (interaction: ContextMenuCommandInteraction, context: any, skeleton: Skeleton<any>) => {
     const command = this.mediator.getCommand(interaction.commandName);
-    await command?.execute(interaction, context);
+    await command?.execute(interaction, context, skeleton);
   };
 }

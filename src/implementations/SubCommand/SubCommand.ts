@@ -7,6 +7,7 @@ import {
 } from "discord.js";
 import { InteractionExecutable } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
+import { Skeleton } from "../../main";
 
 // Fields from APIApplicationCommandSubcommandOption that the user should not be able to pass
 export type ApplicationSubcommandNonInput = Omit<APIApplicationCommandSubcommandOption, "type">;
@@ -21,7 +22,7 @@ export type SubcommandInput = ApplicationSubcommandNonInput & ApplicationSubcomm
 export abstract class SubcommandBase<T> extends InteractionExecutable<T> {
   constructor(
     public data: APIApplicationCommandSubcommandOption,
-    public execute: (interaction: any, context: T) => any,
+    public execute: (interaction: any, context: T, skeleton: Skeleton<T>) => any,
   ) {
     super(execute);
   }
@@ -33,7 +34,7 @@ export class SubCommand<T> extends SubcommandBase<T> {
   group: string;
   constructor(
     input: Omit<SubcommandInput, "options"> & { master: string; group?: string },
-    execute: (interaction: CommandInteraction, context: T) => void,
+    execute: (interaction: CommandInteraction, context: T, skeleton: Skeleton<T>) => void,
     ...options: APIApplicationCommandBasicOption[]
   ) {
     super(

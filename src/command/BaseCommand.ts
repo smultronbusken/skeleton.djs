@@ -8,9 +8,10 @@ import {
   UserContextMenuCommandInteraction,
 } from "discord.js";
 import { Importable } from "../importer/Importer";
+import { Skeleton } from "../main";
 
 export class InteractionExecutable<T> {
-  constructor(public execute: (interaction: any, context: T) => any) {}
+  constructor(public execute: (interaction: any, context: T, skeleton?: Skeleton<T>) => any) {}
 }
 
 // Fields from APIApplicationCommandSubcommandOption that the user should not be able to pass
@@ -32,7 +33,7 @@ export type CommandInput = ApplicationCommandNonInput & ApplicationCommandNonInp
 export abstract class CommandBase<T> extends InteractionExecutable<T> {
   constructor(
     public data: APIApplicationCommand,
-    public execute: (interaction: any, context: T) => any,
+    public execute: (interaction: any, context: T, skeleton?: Skeleton<T>) => any,
   ) {
     super(execute);
   }
