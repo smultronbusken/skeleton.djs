@@ -16,9 +16,6 @@ import {
   APIButtonComponent,
 } from "discord.js";
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-
 export function Modal(
   i: Omit<APIModalInteractionResponseCallbackData, "components">,
   ...components: APIModalActionRowComponent[]
