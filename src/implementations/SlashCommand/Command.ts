@@ -1,10 +1,18 @@
-import { CommandInteraction, ApplicationCommandType, APIApplicationCommandOption } from "discord.js";
+import {
+  CommandInteraction,
+  ApplicationCommandType,
+  APIApplicationCommandOption,
+} from "discord.js";
 import { CommandBase, CommandInput } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
 
 @Importable
 export class SlashCommand<T> extends CommandBase<T> {
-  constructor(input: Omit<CommandInput, "options">, execute: (interaction: CommandInteraction, context: T) => void, ...options: APIApplicationCommandOption[]) {
+  constructor(
+    input: Omit<CommandInput, "options">,
+    execute: (interaction: CommandInteraction, context: T) => void,
+    ...options: APIApplicationCommandOption[]
+  ) {
     super(
       {
         ...input,
@@ -13,7 +21,7 @@ export class SlashCommand<T> extends CommandBase<T> {
         default_member_permissions: input.default_member_permissions,
         type: ApplicationCommandType.ChatInput,
         application_id: "id",
-        options: options
+        options: options,
       },
       execute,
     );

@@ -5,7 +5,7 @@ import { SlashCommand } from "../SlashCommand/Command";
 
 @Importable
 export class MasterCommand<T> extends SlashCommand<T> {
-  constructor(input:  Omit<CommandInput, "options">, ...options: APIApplicationCommandOption[]) {
+  constructor(input: Omit<CommandInput, "options">, ...options: APIApplicationCommandOption[]) {
     super(input, () => {}, ...options);
   }
 }

@@ -25,7 +25,7 @@ if (require.main === module) {
       new SlashCommand<{}>(
         {
           name: "testcommand",
-          description: "to"
+          description: "to",
         },
         async (interaction, context) => {
           interaction.reply("hej");

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { SubCommand } from "../../../implementations/SubCommand/SubCommand";
-import {default as o}  from "../../../options" 
+import { default as o } from "../../../options";
 
 export default new SubCommand<{}>(
   {
@@ -14,5 +14,5 @@ export default new SubCommand<{}>(
   o.user({
     name: "user",
     description: "pings this user",
-  })
+  }),
 );

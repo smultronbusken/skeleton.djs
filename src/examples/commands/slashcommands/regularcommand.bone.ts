@@ -1,6 +1,6 @@
 import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord.js";
 import { SlashCommand } from "../../../implementations/SlashCommand/Command";
-import {default as o}  from "../../../options" 
+import { default as o } from "../../../options";
 
 export default new SlashCommand<{}>(
   {

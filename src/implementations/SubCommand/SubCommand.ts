@@ -40,7 +40,7 @@ export class SubCommand<T> extends SubcommandBase<T> {
       {
         ...input,
         type: ApplicationCommandOptionType.Subcommand,
-        options: options
+        options: options,
       },
       execute,
     );
