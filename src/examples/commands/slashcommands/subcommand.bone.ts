@@ -1,11 +1,11 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { SubCommand } from "../../../implementations/SubCommand/SubCommand";
-import { user } from "../../../builders/options";
+import { string, user } from "../../../builders/options";
 export default new SubCommand<{}>(
   {
     master: "mastercommand",
     group: "group",
-    name: "subcommand",
+    name: "s",
     description: "yo",
   },
   async (interaction, app) => {

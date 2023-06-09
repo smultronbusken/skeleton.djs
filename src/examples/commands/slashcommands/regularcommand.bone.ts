@@ -7,7 +7,7 @@ import {
 import { SlashCommand } from "../../../implementations/SlashCommand/Command";
 
 import { Modal, text } from "../../../builders/components";
-import { Options, string, integer } from "../../../builders/options";
+import { string, integer } from "../../../builders/options";
 import { SubCommand } from "../../../main";
 
 export default new SubCommand<{}>(
@@ -46,5 +46,6 @@ export default new SubCommand<{}>(
     name: "s",
     description: "A string option",
     max_length: 10,
+    choices: [{ name: "hej", value: "LOL" }],
   }),
 );

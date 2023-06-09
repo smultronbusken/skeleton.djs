@@ -2,10 +2,15 @@ import {
   APIApplicationCommandAttachmentOption,
   APIApplicationCommandBooleanOption,
   APIApplicationCommandChannelOption,
+  APIApplicationCommandIntegerOption,
   APIApplicationCommandMentionableOption,
+  APIApplicationCommandNumberOption,
   APIApplicationCommandOption,
   APIApplicationCommandOptionBase,
+  APIApplicationCommandOptionChoice,
+  APIApplicationCommandOptionWithAutocompleteOrChoicesWrapper,
   APIApplicationCommandRoleOption,
+  APIApplicationCommandStringOption,
   APIApplicationCommandSubcommandGroupOption,
   APIApplicationCommandSubcommandOption,
   APIApplicationCommandUserOption,
@@ -39,19 +44,6 @@ export function channel(
   };
 }
 
-interface APIApplicationCommandIntegerOptionBase
-  extends APIApplicationCommandOptionBase<ApplicationCommandOptionType.Integer> {
-  min_value?: number;
-  max_value?: number;
-}
-export function integer(
-  i: Omit<APIApplicationCommandIntegerOptionBase, "type">,
-): APIApplicationCommandIntegerOptionBase {
-  return {
-    type: ApplicationCommandOptionType.Integer,
-    ...i,
-  };
-}
 export function mentionable(
   i: Omit<APIApplicationCommandMentionableOption, "type">,
 ): APIApplicationCommandMentionableOption {
@@ -67,13 +59,34 @@ interface APIApplicationCommandNumberOptionBase
   max_value?: number;
 }
 export function number(
-  i: Omit<APIApplicationCommandNumberOptionBase, "type">,
-): APIApplicationCommandNumberOptionBase {
+  i: Omit<APIApplicationCommandStringOption, "type">,
+): APIApplicationCommandNumberOption {
+  // @ts-ignore TODO explain why needed / fix it
   return {
     type: ApplicationCommandOptionType.Number,
     ...i,
   };
 }
+
+export function string(
+  i: Omit<APIApplicationCommandStringOption, "type">,
+): APIApplicationCommandStringOption {
+  // @ts-ignore TODO explain why needed / fix it
+  return {
+    type: ApplicationCommandOptionType.String,
+    ...i,
+  };
+}
+export function integer(
+  i: Omit<APIApplicationCommandStringOption, "type">,
+): APIApplicationCommandIntegerOption {
+  // @ts-ignore TODO explain why needed / fix it
+  return {
+    type: ApplicationCommandOptionType.Integer,
+    ...i,
+  };
+}
+
 export function role(
   i: Omit<APIApplicationCommandRoleOption, "type">,
 ): APIApplicationCommandRoleOption {
@@ -83,19 +96,6 @@ export function role(
   };
 }
 
-interface APIApplicationCommandStringOptionBase
-  extends APIApplicationCommandOptionBase<ApplicationCommandOptionType.String> {
-  min_length?: number;
-  max_length?: number;
-}
-export function string(
-  i: Omit<APIApplicationCommandStringOptionBase, "type">,
-): APIApplicationCommandStringOptionBase {
-  return {
-    type: ApplicationCommandOptionType.String,
-    ...i,
-  };
-}
 export function sub(
   i: Omit<APIApplicationCommandSubcommandOption, "type">,
 ): APIApplicationCommandSubcommandOption {
@@ -119,8 +119,4 @@ export function user(
     type: ApplicationCommandOptionType.User,
     ...i,
   };
-}
-
-export function Options(...o: APIApplicationCommandOption[]): APIApplicationCommandOption[] {
-  return o;
 }
