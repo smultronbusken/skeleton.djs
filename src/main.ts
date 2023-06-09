@@ -1,4 +1,4 @@
-export *  from "./Skeleton";
+export * from "./Skeleton";
 export * as option from "./options";
 export * from "./importer/ImportHandler";
 export * from "./deployer/APICommandProvider";

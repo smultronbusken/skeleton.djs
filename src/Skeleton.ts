@@ -1,6 +1,6 @@
 import { Snowflake, Client, Interaction, Events } from "discord.js";
 import { CommandMediator } from "./command/CommandMediator";
-import  APICommandProvider  from "./deployer/APICommandProvider";
+import APICommandProvider from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
 import { InteractionHandler } from "./eventhandlers/InteractionHandler";
 import {
