@@ -1,6 +1,6 @@
 import { Snowflake, Client, Interaction, Events } from "discord.js";
 import { CommandMediator } from "./command/CommandMediator";
-import { APICommandProvider } from "./deployer/APICommandProvider";
+import  APICommandProvider  from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
 import { InteractionHandler } from "./eventhandlers/InteractionHandler";
 import {
@@ -33,7 +33,7 @@ import ImportHandler from "./importer/ImportHandler";
 import { Importer } from "./importer/Importer";
 import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
 
-export class Skeleton<T> {
+export default class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any>[] = [];
   private context: T;
 

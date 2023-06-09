@@ -1,7 +1,7 @@
-export * as Skeleton from "./Skeleton";
+export *  from "./Skeleton";
 export * as option from "./options";
-export * as ImportHandler from "./importer/ImportHandler";
-export * as APICommandProvider from "./deployer/APICommandProvider";
+export * from "./importer/ImportHandler";
+export * from "./deployer/APICommandProvider";
 export {
   InteractionExecutable,
   CommandBase,

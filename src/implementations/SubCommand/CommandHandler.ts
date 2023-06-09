@@ -5,7 +5,7 @@ import {
   APIApplicationCommandSubcommandGroupOption,
 } from "discord.js";
 import { CommandMediator } from "../../command/CommandMediator";
-import { APICommandProvider } from "../../deployer/APICommandProvider";
+import APICommandProvider from "../../deployer/APICommandProvider";
 import { MasterCommand } from "./MasterCommand";
 import { SubCommand } from "./SubCommand";
 

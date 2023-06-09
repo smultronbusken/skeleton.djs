@@ -1,6 +1,6 @@
 import { Collection, APIApplicationCommand } from "discord.js";
 import { CommandMediator } from "../../command/CommandMediator";
-import { APICommandProvider } from "../../deployer/APICommandProvider";
+import APICommandProvider from "../../deployer/APICommandProvider";
 import { ContextMenuCommand } from "./Command";
 
 export default class ContextMenuCommandHandler

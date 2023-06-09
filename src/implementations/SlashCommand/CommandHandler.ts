@@ -1,7 +1,7 @@
 import { Collection, APIApplicationCommand } from "discord.js";
 import { CommandMediator } from "../../command/CommandMediator";
-import { APICommandProvider } from "../../deployer/APICommandProvider";
 import { SlashCommand } from "./Command";
+import APICommandProvider from "../../deployer/APICommandProvider";
 
 export default class SlashCommandHandler
   implements CommandMediator<SlashCommand<any>>, APICommandProvider

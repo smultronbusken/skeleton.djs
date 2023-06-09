@@ -1,5 +1,5 @@
 import { APIApplicationCommand } from "discord.js";
 
-export interface APICommandProvider {
+export default interface APICommandProvider {
   getAPICommands: () => APIApplicationCommand[];
 }
