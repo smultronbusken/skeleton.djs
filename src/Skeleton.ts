@@ -153,7 +153,7 @@ export class Skeleton<T> {
         }
       }
       console.log(interaction);
-      throw new Error(`Unsupported interaction type`);
+      console.log(`Unsupported interaction type, ${interaction.toString()}`);
     } catch (err) {
       console.error(err);
       // send an error message to the user if possible

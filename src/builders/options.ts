@@ -53,11 +53,6 @@ export function mentionable(
   };
 }
 
-interface APIApplicationCommandNumberOptionBase
-  extends APIApplicationCommandOptionBase<ApplicationCommandOptionType.Number> {
-  min_value?: number;
-  max_value?: number;
-}
 export function number(
   i: Omit<APIApplicationCommandStringOption, "type">,
 ): APIApplicationCommandNumberOption {

@@ -18,10 +18,6 @@ export {
   UserCommand,
 } from "./implementations/ContextMenuCommand/Command";
 export { CustomIdCommand } from "./implementations/CustomId/Command";
-export {
-  CustomIdInteraction,
-  isCustomInteraction,
-} from "./implementations/CustomId/InteractionHandler";
 export { SlashCommand } from "./implementations/SlashCommand/Command";
 export { MasterCommand } from "./implementations/SubCommand/MasterCommand";
 export {

@@ -1,6 +1,6 @@
 import { GatewayIntentBits, Client } from "discord.js";
 import path from "path";
-import { SlashCommand, UserCommand } from "./main";
+import { SlashCommand, UserCommand, string } from "./main";
 import { Skeleton } from "./Skeleton";
 
 if (require.main === module) {
@@ -19,19 +19,6 @@ if (require.main === module) {
 
     // Set what will be passed to commands when executed
     skeleton.setContext({});
-
-    // Manually add a command, instead of writing it in a .job.ts file
-    skeleton.addCommand(
-      new SlashCommand<{}>(
-        {
-          name: "testcommand",
-          description: "to",
-        },
-        async (interaction, context) => {
-          interaction.reply("hej");
-        },
-      ),
-    );
 
     // This loads all command files and deploys them
     skeleton.run({
