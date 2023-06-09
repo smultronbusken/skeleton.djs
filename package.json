@@ -1,7 +1,7 @@
 {
-  "name": "base-app-for-discordjs",
+  "name": "@smultron/skeleton",
   "version": "0.10.10",
-  "description": "A base app for discord.js",
+  "description": "Lightweight extension for discord.js with minimal set up.",
   "exports": "./dist/main.js",
   "main": "./dist/main.js",
   "files": [
