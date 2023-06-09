@@ -1,4 +1,4 @@
-# Skeleton - Most Lightweight Extension for discord.js v14
+# Skeleton.djs - Most Lightweight Extension for discord.js v14
 
 Welcome to Skeleton, an extensive and user-friendly extension for [discord.js](https://discord.js.org/#/). While this project is currently a work in progress, it already boasts several handy features that augment your ability to create a Discord bot using discord.js. Please be aware that features and implementation can still change, so be ready for potential adjustments while working with this project.
 
@@ -184,8 +184,7 @@ If you prefer not to use these helper functions, you can specify the type manual
 
 ```typescript
 new SlashCommand<{}>(
-  ...
-  {
+  ...{
     type: ApplicationCommandOptionType.String,
     name: "string",
     description: "string option",

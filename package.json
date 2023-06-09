@@ -1,5 +1,5 @@
 {
-  "name": "@smultron/skeleton",
+  "name": "skeleton.djs",
   "version": "0.1.0",
   "description": "Lightweight extension for discord.js with minimal set up.",
   "exports": "./dist/main.js",
