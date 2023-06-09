@@ -1,6 +1,6 @@
 {
   "name": "skeleton.djs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Lightweight extension for discord.js with minimal set up.",
   "exports": "./dist/main.js",
   "main": "./dist/main.js",
@@ -37,11 +37,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smultronbusken/skeleton-for-discordjs.git"
+    "url": "git+https://github.com/smultronbusken/skeleton.djs.git"
   },
   "author": "smultron",
   "bugs": {
-    "url": "https://github.com/smultronbusken/skeleton-for-discordjs/issues"
+    "url": "https://github.com/smultronbusken/skeleton.djs/issues"
   },
-  "homepage": "https://github.com/smultronbusken/skeleton-for-discordjs#readme"
+  "homepage": "https://github.com/smultronbusken/skeleton.djs#readme"
 }
