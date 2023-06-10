@@ -4,6 +4,10 @@ import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
 import { SlashCommand } from "./Command";
 import { Skeleton } from "../../main";
 
+/**
+ * Handles all {@link ChatInputCommandInteraction}s which does NOT have a subcommand option.
+ * These get mapped to the correct {@link SlashCommand} which are then executed.
+ */
 export default class SlashCommandInteractionHandler extends InteractionHandler<ChatInputCommandInteraction> {
   constructor(public mediator: CommandMediator<SlashCommand<any>>) {
     super();
@@ -12,7 +16,9 @@ export default class SlashCommandInteractionHandler extends InteractionHandler<C
   typeGuard = (interaction: BaseInteraction): interaction is ChatInputCommandInteraction =>
     interaction.isChatInputCommand();
 
-  // Do not handle subcommands
+  /**
+   * Checks if the interaction is a not a subcommand.
+   */
   check = (interaction: ChatInputCommandInteraction) => !interaction.options.getSubcommand(false);
 
   execute = async (

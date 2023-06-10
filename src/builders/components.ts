@@ -27,6 +27,11 @@ import {
 } from "discord.js";
 import { PartialBy } from "../util/types";
 
+/**
+ * Creates a Modal interaction response.
+ * @param i Data for the modal.
+ * @param components Components for the modal.
+ */
 export function Modal(
   i: Omit<APIModalInteractionResponseCallbackData, "components">,
   ...components: APIModalActionRowComponent[]
@@ -41,6 +46,10 @@ export function Modal(
   };
 }
 
+/**
+ * Creates a row of components for a modal.
+ * @param components Components for the row.
+ */
 export function modalRow(
   ...components: APIModalActionRowComponent[]
 ): APIActionRowComponent<APIModalActionRowComponent> {
@@ -51,6 +60,10 @@ export function modalRow(
   return a;
 }
 
+/**
+ * Creates a row of components for a message.
+ * @param components Components for the row.
+ */
 export function row(
   ...components: APIMessageActionRowComponent[]
 ): APIActionRowComponent<APIMessageActionRowComponent> {
@@ -61,6 +74,10 @@ export function row(
   return a;
 }
 
+/**
+ * Creates a text component.
+ * @param i Data for the text component.
+ */
 export function text(i: Omit<PartialBy<APITextInputComponent, "style">, "type">) {
   let a: APITextInputComponent = {
     type: ComponentType.TextInput,
@@ -70,6 +87,10 @@ export function text(i: Omit<PartialBy<APITextInputComponent, "style">, "type">)
   return a;
 }
 
+/**
+ * Creates a button component with custom id.
+ * @param i Data for the button component.
+ */
 export function button(
   i: Omit<PartialBy<APIButtonComponentWithCustomId, "style">, "type">,
 ): APIMessageActionRowComponent {
@@ -81,6 +102,10 @@ export function button(
   return a;
 }
 
+/**
+ * Creates a URL button component.
+ * @param i Data for the button component.
+ */
 export function urlButton(
   i: Omit<PartialBy<APIButtonComponentWithURL, "style">, "type">,
 ): APIMessageActionRowComponent {
@@ -92,6 +117,10 @@ export function urlButton(
   return a;
 }
 
+/**
+ * Helper function to create a select menu component.
+ * @param i Data for the select menu component.
+ */
 function select(i: APISelectMenuComponent): APISelectMenuComponent {
   let a: APISelectMenuComponent = {
     ...i,
@@ -99,6 +128,10 @@ function select(i: APISelectMenuComponent): APISelectMenuComponent {
   return a;
 }
 
+/**
+ * Creates a channel select component.
+ * @param i Data for the channel select component.
+ */
 export function selectChannel(i: Omit<APIChannelSelectComponent, "type">): APISelectMenuComponent {
   return select({
     type: ComponentType.ChannelSelect,
@@ -106,6 +139,12 @@ export function selectChannel(i: Omit<APIChannelSelectComponent, "type">): APISe
   });
 }
 
+/**
+ * Creates a string select component.
+ * @param i Data for the string select component.
+ * @param option First option for the select menu.
+ * @param options Additional options for the select menu.
+ */
 export function selectString(
   i: Omit<APIStringSelectComponent, "type" | "options">,
   option: APISelectMenuOption,
@@ -120,6 +159,10 @@ export function selectString(
   });
 }
 
+/**
+ * Creates a role select component.
+ * @param i Data for the role select component.
+ */
 export function selectRole(i: Omit<APIRoleSelectComponent, "type">): APISelectMenuComponent {
   return select({
     type: ComponentType.RoleSelect,
@@ -127,6 +170,10 @@ export function selectRole(i: Omit<APIRoleSelectComponent, "type">): APISelectMe
   });
 }
 
+/**
+ * Creates a user select component.
+ * @param i Data for the user select component.
+ */
 export function selectUser(i: Omit<APIUserSelectComponent, "type">): APISelectMenuComponent {
   return select({
     type: ComponentType.UserSelect,
@@ -134,6 +181,10 @@ export function selectUser(i: Omit<APIUserSelectComponent, "type">): APISelectMe
   });
 }
 
+/**
+ * Creates a mentionable select component.
+ * @param i Data for the mentionable select component.
+ */
 export function selectMentionable(
   i: Omit<APIMentionableSelectComponent, "type">,
 ): APISelectMenuComponent {

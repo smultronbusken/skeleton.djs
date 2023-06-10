@@ -2,6 +2,9 @@ import { ModalSubmitInteraction, Collection, BaseInteraction } from "discord.js"
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
 import { Skeleton } from "../../Skeleton";
 
+/**
+ * Handles all {@link ModalSubmitInteraction}s.
+ */
 export default class ModalInteractionHandler extends InteractionHandler<ModalSubmitInteraction> {
   customIds: Collection<string, (interaction: ModalSubmitInteraction) => any> = new Collection();
 

@@ -4,6 +4,10 @@ import { CustomIdCommand } from "./Command";
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
 import { Skeleton } from "../../Skeleton";
 
+/**
+ * Handles all {@link MessageComponentInteraction} more specifically buttons and select menus.
+ * {@link CustomIdCommand} will be executed depending on the custom id of the interaction.
+ */
 export default class CustomIdCommandInteractionHandler extends InteractionHandler<MessageComponentInteraction> {
   constructor(public mediator: CommandMediator<CustomIdCommand<any>>) {
     super();
@@ -12,7 +16,6 @@ export default class CustomIdCommandInteractionHandler extends InteractionHandle
   typeGuard = (interaction: BaseInteraction): interaction is MessageComponentInteraction =>
     interaction.isMessageComponent();
 
-  // Do not handle subcommands
   check = (interaction: MessageComponentInteraction) => {
     return this.mediator.getCommands().find(cid => cid.customId === interaction.customId);
   };

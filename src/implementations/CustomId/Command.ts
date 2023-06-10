@@ -1,10 +1,10 @@
 import { MessageComponentInteraction } from "discord.js";
 import { Skeleton } from "../../Skeleton";
-import { InteractionExecutable } from "../../command/BaseCommand";
+import { InteractionExecutableContainer } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
 
 @Importable
-export class CustomIdCommand<T> extends InteractionExecutable<T> {
+export class CustomIdCommand<T> extends InteractionExecutableContainer<T> {
   customId: string;
   constructor(
     customId: string,

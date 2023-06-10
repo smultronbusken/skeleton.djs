@@ -1,5 +1,6 @@
-import { Collection } from "discord.js";
-
+/**
+ * Used internally for easier command handling between InteractionHandler and ImportHandler.
+ */
 export class CommandMediator<T> {
   getCommand: (id: string) => T;
   setCommand: (id: string, command: T) => any;

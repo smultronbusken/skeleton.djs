@@ -132,6 +132,7 @@ export class Skeleton<T> {
   addCommand(command: UserCommand<T>): void;
   addCommand(command: MessageCommand<T>): void;
   addCommand(command: SubCommand<T>): void;
+  addCommand(command: CustomIdCommand<T>): void;
   addCommand(command: any): void {
     this.importer.importObject(command);
   }

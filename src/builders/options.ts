@@ -17,6 +17,10 @@ import {
   ApplicationCommandOptionType,
 } from "discord.js";
 
+/**
+ * Creates an attachment option for an application command.
+ * @param i The data for the attachment option.
+ */
 export function attachment(
   i: Omit<APIApplicationCommandAttachmentOption, "type">,
 ): APIApplicationCommandAttachmentOption {
@@ -26,6 +30,10 @@ export function attachment(
   };
 }
 
+/**
+ * Creates a boolean option for an application command.
+ * @param i The data for the boolean option.
+ */
 export function boolean(
   i: Omit<APIApplicationCommandBooleanOption, "type">,
 ): APIApplicationCommandBooleanOption {
@@ -35,6 +43,10 @@ export function boolean(
   };
 }
 
+/**
+ * Creates a channel option for an application command.
+ * @param i The data for the channel option.
+ */
 export function channel(
   i: Omit<APIApplicationCommandChannelOption, "type">,
 ): APIApplicationCommandChannelOption {
@@ -44,6 +56,10 @@ export function channel(
   };
 }
 
+/**
+ * Creates a mentionable option for an application command.
+ * @param i The data for the mentionable option.
+ */
 export function mentionable(
   i: Omit<APIApplicationCommandMentionableOption, "type">,
 ): APIApplicationCommandMentionableOption {
@@ -53,6 +69,10 @@ export function mentionable(
   };
 }
 
+/**
+ * Creates a number option for an application command.
+ * @param i The data for the number option.
+ */
 export function number(
   i: Omit<APIApplicationCommandStringOption, "type">,
 ): APIApplicationCommandNumberOption {
@@ -63,6 +83,10 @@ export function number(
   };
 }
 
+/**
+ * Creates a string option for an application command.
+ * @param i The data for the string option.
+ */
 export function string(
   i: Omit<APIApplicationCommandStringOption, "type">,
 ): APIApplicationCommandStringOption {
@@ -72,6 +96,11 @@ export function string(
     ...i,
   };
 }
+
+/**
+ * Creates an integer option for an application command.
+ * @param i The data for the integer option.
+ */
 export function integer(
   i: Omit<APIApplicationCommandStringOption, "type">,
 ): APIApplicationCommandIntegerOption {
@@ -82,6 +111,10 @@ export function integer(
   };
 }
 
+/**
+ * Creates a role option for an application command.
+ * @param i The data for the role option.
+ */
 export function role(
   i: Omit<APIApplicationCommandRoleOption, "type">,
 ): APIApplicationCommandRoleOption {
@@ -91,6 +124,10 @@ export function role(
   };
 }
 
+/**
+ * Creates a subcommand option for an application command.
+ * @param i The data for the subcommand option.
+ */
 export function sub(
   i: Omit<APIApplicationCommandSubcommandOption, "type">,
 ): APIApplicationCommandSubcommandOption {
@@ -99,6 +136,11 @@ export function sub(
     ...i,
   };
 }
+
+/**
+ * Creates a subcommand group option for an application command.
+ * @param i The data for the subcommand group option.
+ */
 export function group(
   i: Omit<APIApplicationCommandSubcommandGroupOption, "type">,
 ): APIApplicationCommandSubcommandGroupOption {
@@ -107,6 +149,11 @@ export function group(
     ...i,
   };
 }
+
+/**
+ * Creates a user option for an application command.
+ * @param i The data for the user option.
+ */
 export function user(
   i: Omit<APIApplicationCommandUserOption, "type">,
 ): APIApplicationCommandUserOption {

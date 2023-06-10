@@ -9,6 +9,9 @@ import APICommandProvider from "../../deployer/APICommandProvider";
 import { MasterCommand } from "./MasterCommand";
 import { SubCommand } from "./SubCommand";
 
+/**
+ * Class representing a handler for sub-commands. Implements CommandMediator and APICommandProvider interfaces.
+ */
 export default class SubCommandHandler
   implements CommandMediator<SubCommand<any>>, APICommandProvider
 {
@@ -29,21 +32,24 @@ export default class SubCommandHandler
 
   getAPICommands() {
     const commandsAsJson = [];
+
+    // Iterate over each master command
     for (const c of this.masterCommands.values()) {
       let options: APIApplicationCommandOption[] = [];
-      // Find all direct subcommads
       let subCommands = this.subCommands.filter(sc => sc.master === c.data.name);
+
       subCommands.forEach(sc => {
         if (sc.group) {
+          // Find the group option associated with the sub-command
           let groupOption = c.data.options.find(option => {
             return (
               option.type === ApplicationCommandOptionType.SubcommandGroup &&
               option.name == sc.group
             );
           }) as APIApplicationCommandSubcommandGroupOption;
-
           if (!groupOption) throw new Error(`Subcommand group ${sc.group} does not exist.`);
 
+          // If the group option does not have any options, initialize an empty array
           if (!groupOption.options) groupOption.options = [];
           groupOption.options.push(sc.data);
         } else {
@@ -51,6 +57,7 @@ export default class SubCommandHandler
         }
       });
 
+      // Add the master command data and all its options (including sub-commands) to the JSON array
       commandsAsJson.push({
         ...c.data,
         options: c.data.options ? options.concat(c.data.options) : options,

@@ -7,8 +7,27 @@ import { CommandBase, CommandInput } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
 import { Skeleton } from "../../main";
 
+/**
+ * Represents a slash command.
+ * @example
+ ```ts
+    new SlashCommand({
+      name: "user",
+    },
+    async (interaction) => {
+      interaction.reply("Hi.");
+    },
+  );
+ ```
+ */
 @Importable
 export class SlashCommand<T> extends CommandBase<T> {
+  /**
+   * @param input - Data for the command
+   * @see {@link https://discord.com/developers/docs/interactions/application-commands#application-command-object}.
+   * @param execute - Function to execute when the subcommand is called.
+   * @param options - Array of basic command options.
+   */
   constructor(
     input: Omit<CommandInput, "options">,
     execute: (interaction: CommandInteraction, context: T, skeleton: Skeleton<T>) => void,
