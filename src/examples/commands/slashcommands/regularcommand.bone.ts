@@ -10,7 +10,7 @@ import { Modal, text } from "../../../builders/components";
 import { string, integer } from "../../../builders/options";
 import { SubCommand } from "../../../main";
 
-export default new SubCommand<{}>(
+export default new SubCommand(
   {
     master: "mastercommand",
     name: "subcommand",

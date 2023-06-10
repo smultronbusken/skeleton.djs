@@ -21,7 +21,7 @@ import { Skeleton } from "../../main";
  ```
  */
 @Importable
-export class SlashCommand<T> extends CommandBase<T> {
+export class SlashCommand extends CommandBase {
   /**
    * @param input - Data for the command
    * @see {@link https://discord.com/developers/docs/interactions/application-commands#application-command-object}.
@@ -30,7 +30,7 @@ export class SlashCommand<T> extends CommandBase<T> {
    */
   constructor(
     input: Omit<CommandInput, "options">,
-    execute: (interaction: CommandInteraction, context: T, skeleton: Skeleton<T>) => void,
+    execute: (interaction: CommandInteraction, context: any, skeleton: Skeleton) => void,
     ...options: APIApplicationCommandOption[]
   ) {
     super(

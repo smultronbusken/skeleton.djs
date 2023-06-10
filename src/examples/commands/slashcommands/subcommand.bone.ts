@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { SubCommand } from "../../../implementations/SubCommand/SubCommand";
 import { string, user } from "../../../builders/options";
-export default new SubCommand<{}>(
+export default new SubCommand(
   {
     master: "mastercommand",
     group: "group",

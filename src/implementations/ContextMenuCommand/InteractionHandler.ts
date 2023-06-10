@@ -9,7 +9,7 @@ import { Skeleton } from "../../main";
  * ser and message commands.
  */
 export default class ContextMentInteractionHandler extends InteractionHandler<ContextMenuCommandInteraction> {
-  constructor(public mediator: Mediator<UserCommand<any>>) {
+  constructor(public mediator: Mediator<UserCommand>) {
     super();
   }
 
@@ -22,7 +22,7 @@ export default class ContextMentInteractionHandler extends InteractionHandler<Co
   execute = async (
     interaction: ContextMenuCommandInteraction,
     context: any,
-    skeleton: Skeleton<any>,
+    skeleton: Skeleton,
   ) => {
     const command = this.mediator.get(interaction.commandName);
     await command?.execute(interaction, context, skeleton);

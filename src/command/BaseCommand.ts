@@ -15,17 +15,17 @@ import APICommandProvider from "../deployer/APICommandProvider";
 /**
  * Defines a class which  has a  executable in an interaction.
  */
-export class InteractionExecutableContainer<T> {
-  constructor(public execute: (interaction: any, context: T, skeleton?: Skeleton<T>) => any) {}
+export class InteractionExecutableContainer {
+  constructor(public execute: (interaction: any, context: any, skeleton?: Skeleton) => any) {}
 }
 
 /**
  * Type that is used for all command execution methods.
  */
-export type InteractionExecutable<T> = (
+export type InteractionExecutable = (
   interaction: CommandInteraction,
-  context: T,
-  skeleton: Skeleton<T>,
+  context: any,
+  skeleton: Skeleton,
 ) => void;
 
 type ApplicationCommandNonInput = Omit<
@@ -47,7 +47,7 @@ export type CommandInput = ApplicationCommandNonInput & ApplicationCommandNonInp
 /**
  * Abstract base class for a command.
  */
-export abstract class CommandBase<T> extends InteractionExecutableContainer<T> {
+export abstract class CommandBase extends InteractionExecutableContainer {
   /**
    * Creates a new command.
    * @param data - APIApplicationCommand data for the command. see {@link https://discord.com/developers/docs/interactions/application-commands#application-command-object}
@@ -55,13 +55,13 @@ export abstract class CommandBase<T> extends InteractionExecutableContainer<T> {
    */
   constructor(
     public data: APIApplicationCommand,
-    public execute: (interaction: any, context: T, skeleton?: Skeleton<T>) => any,
+    public execute: (interaction: any, context: any, skeleton?: Skeleton) => any,
   ) {
     super(execute);
   }
 }
 
-export class CommandMediator<T extends CommandBase<any>>
+export class CommandMediator<T extends CommandBase>
   extends CollectionMediator<T>
   implements APICommandProvider
 {

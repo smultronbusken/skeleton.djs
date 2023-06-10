@@ -33,9 +33,9 @@ import { SlashCommand } from "./implementations/SlashCommand/Command";
 import { ComponentCommand } from "./implementations/Component/Command";
 import { SubCommand } from "./implementations/SubCommand/SubCommand";
 
-export class Skeleton<T> {
+export class Skeleton {
   private interactionHandlers: InteractionHandler<any>[] = [];
-  private context: T;
+  private context: any;
 
   private importer: Importer;
   private deployer: Deployer;
@@ -47,7 +47,7 @@ export class Skeleton<T> {
     this.deployer = new Deployer();
 
     // Set up ContextMenu handlers
-    let cxtCommandMediator = new CommandMediator<ContextMenuCommand<T>>();
+    let cxtCommandMediator = new CommandMediator<ContextMenuCommand>();
     let cxtMenuInteractionHandler = new ContextMentInteractionHandler(cxtCommandMediator);
     let userCxtMenuImportHandler = new UserCommandImportHandler(cxtCommandMediator);
     let messageCxtMenuImportHandler = new MessageCommandImportHandler(cxtCommandMediator);
@@ -57,7 +57,7 @@ export class Skeleton<T> {
     this.addCommandProvider(cxtCommandMediator);
 
     // Set up SlashCommand handlers
-    let slashCommandHandler = new CommandMediator<SlashCommand<T>>();
+    let slashCommandHandler = new CommandMediator<SlashCommand>();
     let slashImportHandler = new SlashCommandImportHandler(slashCommandHandler);
     let slashInteractionHandler = new SlashCommandInteractionHandler(slashCommandHandler);
     this.addImportHandler(slashImportHandler);
@@ -65,7 +65,7 @@ export class Skeleton<T> {
     this.registerInteractionHandler(slashInteractionHandler);
 
     // Set up CustomIdCommand handlers
-    let componentCommandHandler = new CollectionMediator<ComponentCommand<T>>();
+    let componentCommandHandler = new CollectionMediator<ComponentCommand>();
     let componentCommandImportHandler = new ComponentCommandImportHandler(componentCommandHandler);
     let componentCommandInteractionHandler = new ComponentCommandInteractionHandler(
       componentCommandHandler,
@@ -118,12 +118,12 @@ export class Skeleton<T> {
     });
   }
 
-  addCommand(command: SubCommand<T>): void;
-  addCommand(command: SlashCommand<T>): void;
-  addCommand(command: UserCommand<T>): void;
-  addCommand(command: MessageCommand<T>): void;
-  addCommand(command: SubCommand<T>): void;
-  addCommand(command: ComponentCommand<T>): void;
+  addCommand(command: SubCommand): void;
+  addCommand(command: SlashCommand): void;
+  addCommand(command: UserCommand): void;
+  addCommand(command: MessageCommand): void;
+  addCommand(command: SubCommand): void;
+  addCommand(command: ComponentCommand): void;
   addCommand(command: any): void {
     this.importer.importObject(command);
   }
@@ -156,7 +156,7 @@ export class Skeleton<T> {
     this.interactionHandlers.push(handler);
   }
 
-  public setContext(context: T) {
+  public setContext(context: any) {
     this.context = context;
   }
 }

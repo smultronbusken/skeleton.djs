@@ -35,7 +35,7 @@ export abstract class InteractionHandler<I extends BaseInteraction> {
    * @param {any} context - The context for the interaction.
    * @param {Skeleton<any>} skeleton - The Skeleton instance.
    */
-  protected abstract execute: (interaction: I, context: any, skeleton: Skeleton<any>) => void;
+  protected abstract execute: (interaction: I, context: any, skeleton: Skeleton) => void;
 
   /**
    * Function to perform a check using the type guard and check functions.
@@ -56,7 +56,7 @@ export abstract class InteractionHandler<I extends BaseInteraction> {
    * @param {Skeleton<any>} skeleton - The Skeleton instance.
    * @returns {void} - The result of executing the action if the interaction is of the correct type.
    */
-  performExecute(interaction: BaseInteraction, context: any, skeleton: Skeleton<any>) {
+  performExecute(interaction: BaseInteraction, context: any, skeleton: Skeleton) {
     if (this.typeGuard(interaction)) {
       return this.execute(interaction as I, context, skeleton);
     }

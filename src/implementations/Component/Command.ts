@@ -4,11 +4,11 @@ import { InteractionExecutableContainer } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
 
 @Importable
-export class ComponentCommand<T> extends InteractionExecutableContainer<T> {
+export class ComponentCommand extends InteractionExecutableContainer {
   customId: string;
   constructor(
     customId: string,
-    execute: (i: MessageComponentInteraction, context: T, skeleton: Skeleton<T>) => any,
+    execute: (i: MessageComponentInteraction, context: any, skeleton: Skeleton) => any,
   ) {
     super(execute);
     this.customId = customId;

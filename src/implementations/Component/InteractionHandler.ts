@@ -9,7 +9,7 @@ import { Skeleton } from "../../Skeleton";
  * {@link ComponentCommand} will be executed depending on the custom id of the interaction.
  */
 export default class ComponentCommandInteractionHandler extends InteractionHandler<MessageComponentInteraction> {
-  constructor(public mediator: Mediator<ComponentCommand<any>>) {
+  constructor(public mediator: Mediator<ComponentCommand>) {
     super();
   }
 
@@ -20,11 +20,7 @@ export default class ComponentCommandInteractionHandler extends InteractionHandl
     return this.mediator.getAll().find(cid => cid.customId === interaction.customId);
   };
 
-  execute = async (
-    interaction: MessageComponentInteraction,
-    context: any,
-    skeleton: Skeleton<any>,
-  ) => {
+  execute = async (interaction: MessageComponentInteraction, context: any, skeleton: Skeleton) => {
     const command = this.mediator.get(interaction.customId);
     await command?.execute(interaction, context, skeleton);
   };

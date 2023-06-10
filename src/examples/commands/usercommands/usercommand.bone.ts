@@ -1,6 +1,6 @@
 import { UserCommand } from "../../../implementations/ContextMenuCommand/Command";
 
-export default new UserCommand<{}>(
+export default new UserCommand(
   {
     name: "user",
   },

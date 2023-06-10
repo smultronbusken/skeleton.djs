@@ -12,7 +12,7 @@ import { Skeleton } from "../../main";
  * @extends CommandBase
  */
 @Importable
-export class MessageCommand<T> extends CommandBase<T> {
+export class MessageCommand extends CommandBase {
   /**
    * Creates a new message command.
    * @param input Data for the command.
@@ -22,8 +22,8 @@ export class MessageCommand<T> extends CommandBase<T> {
     input: Omit<CommandInput, "description">,
     execute: (
       interaction: MessageContextMenuCommandInteraction,
-      context: T,
-      skeleton: Skeleton<T>,
+      context: any,
+      skeleton: Skeleton,
     ) => any,
   ) {
     super(
@@ -46,7 +46,7 @@ export class MessageCommand<T> extends CommandBase<T> {
  * @extends CommandBase
  */
 @Importable
-export class UserCommand<T> extends CommandBase<T> {
+export class UserCommand extends CommandBase {
   /**
    * Creates a new user command.
    * @param input Data for the command.
@@ -56,8 +56,8 @@ export class UserCommand<T> extends CommandBase<T> {
     input: Omit<CommandInput, "description">,
     execute: (
       interaction: UserContextMenuCommandInteraction,
-      context: T,
-      skeleton: Skeleton<T>,
+      context: any,
+      skeleton: Skeleton,
     ) => any,
   ) {
     super(
@@ -78,4 +78,4 @@ export class UserCommand<T> extends CommandBase<T> {
 /**
  * Type alias for context menu command, which can be either a user command or a message command.
  */
-export type ContextMenuCommand<T> = UserCommand<T> | MessageCommand<T>;
+export type ContextMenuCommand = UserCommand | MessageCommand;

@@ -15,7 +15,7 @@ export default class ModalInteractionHandler extends InteractionHandler<ModalSub
     return this.customIds.get(interaction.customId);
   };
 
-  execute = async (interaction: ModalSubmitInteraction, context: any, skeleton: Skeleton<any>) => {
+  execute = async (interaction: ModalSubmitInteraction, context: any, skeleton: Skeleton) => {
     await this.customIds.get(interaction.customId)(interaction);
     this.customIds.delete(interaction.customId);
   };

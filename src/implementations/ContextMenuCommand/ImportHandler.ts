@@ -3,22 +3,22 @@ import { Mediator } from "../../command/Mediator";
 import ImportHandler from "../../importer/ImportHandler";
 import { UserCommand, MessageCommand } from "./Command";
 
-export class UserCommandImportHandler implements ImportHandler<UserCommand<any>> {
+export class UserCommandImportHandler implements ImportHandler<UserCommand> {
   classToBeImported = UserCommand;
 
-  constructor(public mediator: Mediator<UserCommand<any>>) {}
+  constructor(public mediator: Mediator<UserCommand>) {}
 
-  onImport = (command: UserCommand<any>) => {
+  onImport = (command: UserCommand) => {
     this.mediator.set(command.data.name, command);
   };
 }
 
-export class MessageCommandImportHandler implements ImportHandler<MessageCommand<any>> {
+export class MessageCommandImportHandler implements ImportHandler<MessageCommand> {
   classToBeImported = MessageCommand;
 
-  constructor(public mediator: Mediator<MessageCommand<any>>) {}
+  constructor(public mediator: Mediator<MessageCommand>) {}
 
-  onImport = (command: MessageCommand<any>) => {
+  onImport = (command: MessageCommand) => {
     this.mediator.set(command.data.name, command);
   };
 }

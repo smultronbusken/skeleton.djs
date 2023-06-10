@@ -9,7 +9,7 @@ import { Skeleton } from "../../main";
  * These get mapped to the correct {@link SlashCommand} which are then executed.
  */
 export default class SlashCommandInteractionHandler extends InteractionHandler<ChatInputCommandInteraction> {
-  constructor(public mediator: Mediator<SlashCommand<any>>) {
+  constructor(public mediator: Mediator<SlashCommand>) {
     super();
   }
 
@@ -21,11 +21,7 @@ export default class SlashCommandInteractionHandler extends InteractionHandler<C
    */
   check = (interaction: ChatInputCommandInteraction) => !interaction.options.getSubcommand(false);
 
-  execute = async (
-    interaction: ChatInputCommandInteraction,
-    context: any,
-    skeleton: Skeleton<any>,
-  ) => {
+  execute = async (interaction: ChatInputCommandInteraction, context: any, skeleton: Skeleton) => {
     const command = this.mediator.get(interaction.commandName);
     await command?.execute(interaction, context, skeleton);
   };

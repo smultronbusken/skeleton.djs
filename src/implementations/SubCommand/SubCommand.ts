@@ -13,7 +13,7 @@ import { InteractionExecutable } from "../../main";
 /**
  * An abstract class representing a base for a subcommand.
  */
-export abstract class SubcommandBase<T> extends InteractionExecutableContainer<T> {
+export abstract class SubcommandBase extends InteractionExecutableContainer {
   /**
    * Constructs a new SubcommandBase.
    * @param data - APIApplicationCommandSubcommandOption data for the subcommand.
@@ -21,7 +21,7 @@ export abstract class SubcommandBase<T> extends InteractionExecutableContainer<T
    */
   constructor(
     public data: APIApplicationCommandSubcommandOption,
-    public execute: (interaction: any, context: T, skeleton: Skeleton<T>) => any,
+    public execute: (interaction: any, context: any, skeleton: Skeleton) => any,
   ) {
     super(execute);
   }
@@ -45,7 +45,7 @@ export abstract class SubcommandBase<T> extends InteractionExecutableContainer<T
  ```
  */
 @Importable
-export class SubCommand<T> extends SubcommandBase<T> {
+export class SubCommand extends SubcommandBase {
   /**
    * Name of the master command.
    */
@@ -68,7 +68,7 @@ export class SubCommand<T> extends SubcommandBase<T> {
       master: string;
       group?: string;
     },
-    execute: InteractionExecutable<T>,
+    execute: InteractionExecutable,
     ...options: APIApplicationCommandBasicOption[]
   ) {
     super(

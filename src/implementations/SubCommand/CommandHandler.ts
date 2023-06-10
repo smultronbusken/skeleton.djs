@@ -12,19 +12,19 @@ import { SubCommand } from "./SubCommand";
 /**
  * Class representing a handler for sub-commands. Implements CommandMediator and APICommandProvider interfaces.
  */
-export default class SubCommandHandler implements Mediator<SubCommand<any>>, APICommandProvider {
-  private subCommands: Collection<string, SubCommand<any>> = new Collection();
-  private masterCommands: Collection<string, MasterCommand<any>> = new Collection();
+export default class SubCommandHandler implements Mediator<SubCommand>, APICommandProvider {
+  private subCommands: Collection<string, SubCommand> = new Collection();
+  private masterCommands: Collection<string, MasterCommand> = new Collection();
 
   getAll = () => Array.from(this.subCommands.values());
 
   get = (id: string) => this.subCommands.get(id);
 
-  set = (id: string, command: SubCommand<any>) => {
+  set = (id: string, command: SubCommand) => {
     this.subCommands.set(id, command);
   };
 
-  setMasterCommand = (id: string, command: MasterCommand<any>) => {
+  setMasterCommand = (id: string, command: MasterCommand) => {
     this.masterCommands.set(id, command);
   };
 
