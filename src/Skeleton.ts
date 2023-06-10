@@ -1,21 +1,17 @@
-import { Snowflake, Client, Interaction, Events, ModalSubmitInteraction } from "discord.js";
-import { CollectionMediator, Mediator } from "./command/Mediator";
+import { Snowflake, Client, Events, Interaction } from "discord.js";
+import { Mediator, CollectionMediator } from "./command/Mediator";
 import APICommandProvider from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
-import { InteractionHandler } from "./eventhandlers/InteractionHandler";
-import {
-  ContextMenuCommand,
-  UserCommand,
-  MessageCommand,
-} from "./implementations/ContextMenuCommand/Command";
 import {
   UserCommandImportHandler,
   MessageCommandImportHandler,
 } from "./implementations/ContextMenuCommand/ImportHandler";
-import { CustomIdCommand } from "./implementations/CustomId/Command";
+import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
 import { CustomIdCommandImportHandler } from "./implementations/CustomId/ImportHandler";
 import CustomIdCommandInteractionHandler from "./implementations/CustomId/InteractionHandler";
-import { SlashCommand } from "./implementations/SlashCommand/Command";
+import ModalInteractionHandler, {
+  ModalSubmitCommand,
+} from "./implementations/Modal/InteractionHandler";
 import { SlashCommandImportHandler } from "./implementations/SlashCommand/ImportHandler";
 import SlashCommandInteractionHandler from "./implementations/SlashCommand/InteractionHandler";
 import SubCommandHandler from "./implementations/SubCommand/CommandHandler";
@@ -24,15 +20,18 @@ import {
   MasterCommandImportHandler,
 } from "./implementations/SubCommand/ImportHandler";
 import SubCommandInteractionHandler from "./implementations/SubCommand/InteractionHandler";
-import { MasterCommand } from "./implementations/SubCommand/MasterCommand";
-import { SubCommand } from "./implementations/SubCommand/SubCommand";
 import ImportHandler from "./importer/ImportHandler";
 import { Importer } from "./importer/Importer";
-import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
-import ModalInteractionHandler, {
-  ModalSubmitCommand,
-} from "./implementations/Modal/InteractionHandler";
-import CustomIdCommandHandler from "./implementations/CustomId/CommandHandler";
+import {
+  InteractionHandler,
+  ContextMenuCommand,
+  SlashCommand,
+  CustomIdCommand,
+  UserCommand,
+  SubCommand,
+  MessageCommand,
+} from "./main";
+import { CommandMediator } from "./command/BaseCommand";
 
 export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any>[] = [];
@@ -41,10 +40,6 @@ export class Skeleton<T> {
   private importer: Importer;
   private deployer: Deployer;
 
-  private cxtMenuCommandHandler: Mediator<ContextMenuCommand<T>> & APICommandProvider;
-  private slashCommandHandler: Mediator<SlashCommand<T>> & APICommandProvider;
-  private customIdCommandHandler: Mediator<CustomIdCommand<T>>;
-  private subCommandHandler: SubCommandHandler;
   private modalSubmitInteractionHandler: ModalInteractionHandler;
 
   constructor() {
@@ -52,40 +47,38 @@ export class Skeleton<T> {
     this.deployer = new Deployer();
 
     // Set up ContextMenu handlers
-    this.cxtMenuCommandHandler = new CommandMediator<UserCommand<T>>();
-    let cxtMenuInteractionHandler = new ContextMentInteractionHandler(this.cxtMenuCommandHandler);
-    let userCxtMenuImportHandler = new UserCommandImportHandler(this.cxtMenuCommandHandler);
-    let messageCxtMenuImportHandler = new MessageCommandImportHandler(this.cxtMenuCommandHandler);
+    let cxtCommandMediator = new CommandMediator<ContextMenuCommand<T>>();
+    let cxtMenuInteractionHandler = new ContextMentInteractionHandler(cxtCommandMediator);
+    let userCxtMenuImportHandler = new UserCommandImportHandler(cxtCommandMediator);
+    let messageCxtMenuImportHandler = new MessageCommandImportHandler(cxtCommandMediator);
     this.addImportHandler(messageCxtMenuImportHandler);
     this.addImportHandler(userCxtMenuImportHandler);
     this.registerInteractionHandler(cxtMenuInteractionHandler);
-    this.addCommandProvider(this.cxtMenuCommandHandler);
+    this.addCommandProvider(cxtCommandMediator);
 
     // Set up SlashCommand handlers
-    this.slashCommandHandler = new CommandMediator<SlashCommand<T>>();
-    let slashImportHandler = new SlashCommandImportHandler(this.slashCommandHandler);
-    let slashInteractionHandler = new SlashCommandInteractionHandler(this.slashCommandHandler);
-    this.addCommandProvider(this.slashCommandHandler);
+    let slashCommandHandler = new CommandMediator<SlashCommand<T>>();
+    let slashImportHandler = new SlashCommandImportHandler(slashCommandHandler);
+    let slashInteractionHandler = new SlashCommandInteractionHandler(slashCommandHandler);
     this.addImportHandler(slashImportHandler);
+    this.addCommandProvider(slashCommandHandler);
     this.registerInteractionHandler(slashInteractionHandler);
 
     // Set up CustomIdCommand handlers
-    this.customIdCommandHandler = new CollectionMediator<CustomIdCommand<T>>();
-    let customIdCommandImportHandler = new CustomIdCommandImportHandler(
-      this.customIdCommandHandler,
-    );
+    let customIdCommandHandler = new CollectionMediator<CustomIdCommand<T>>();
+    let customIdCommandImportHandler = new CustomIdCommandImportHandler(customIdCommandHandler);
     let customIdCommandInteractionHandler = new CustomIdCommandInteractionHandler(
-      this.customIdCommandHandler,
+      customIdCommandHandler,
     );
     this.addImportHandler(customIdCommandImportHandler);
     this.registerInteractionHandler(customIdCommandInteractionHandler);
 
     // Set up CustomIdCommand handlers
-    this.subCommandHandler = new SubCommandHandler();
-    let subCommandInteractionHandler = new SubCommandInteractionHandler(this.subCommandHandler);
-    let subCommandImportHandler = new SubCommandImportHandler(this.subCommandHandler);
-    let masterCommandImportHandler = new MasterCommandImportHandler(this.subCommandHandler);
-    this.addCommandProvider(this.subCommandHandler);
+    let subCommandHandler = new SubCommandHandler();
+    let subCommandInteractionHandler = new SubCommandInteractionHandler(subCommandHandler);
+    let subCommandImportHandler = new SubCommandImportHandler(subCommandHandler);
+    let masterCommandImportHandler = new MasterCommandImportHandler(subCommandHandler);
+    this.addCommandProvider(subCommandHandler);
     this.addImportHandler(subCommandImportHandler);
     this.addImportHandler(masterCommandImportHandler);
     this.registerInteractionHandler(subCommandInteractionHandler);

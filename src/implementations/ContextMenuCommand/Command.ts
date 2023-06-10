@@ -7,8 +7,17 @@ import { CommandBase, CommandInput } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
 import { Skeleton } from "../../main";
 
+/**
+ * Class representing a message command.
+ * @extends CommandBase
+ */
 @Importable
 export class MessageCommand<T> extends CommandBase<T> {
+  /**
+   * Creates a new message command.
+   * @param input Data for the command.
+   * @param execute Function to execute when the command is called.
+   */
   constructor(
     input: Omit<CommandInput, "description">,
     execute: (
@@ -32,8 +41,17 @@ export class MessageCommand<T> extends CommandBase<T> {
   }
 }
 
+/**
+ * Class representing a user command.
+ * @extends CommandBase
+ */
 @Importable
 export class UserCommand<T> extends CommandBase<T> {
+  /**
+   * Creates a new user command.
+   * @param input Data for the command.
+   * @param execute Function to execute when the command is called.
+   */
   constructor(
     input: Omit<CommandInput, "description">,
     execute: (
@@ -57,4 +75,7 @@ export class UserCommand<T> extends CommandBase<T> {
   }
 }
 
+/**
+ * Type alias for context menu command, which can be either a user command or a message command.
+ */
 export type ContextMenuCommand<T> = UserCommand<T> | MessageCommand<T>;
