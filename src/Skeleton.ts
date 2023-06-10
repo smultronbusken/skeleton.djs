@@ -1,5 +1,5 @@
 import { Snowflake, Client, Interaction, Events, ModalSubmitInteraction } from "discord.js";
-import { Mediator } from "./command/Mediator";
+import { CollectionMediator, Mediator } from "./command/Mediator";
 import APICommandProvider from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
 import { InteractionHandler } from "./eventhandlers/InteractionHandler";
@@ -32,7 +32,6 @@ import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/
 import ModalInteractionHandler, {
   ModalSubmitCommand,
 } from "./implementations/Modal/InteractionHandler";
-import CommandMediator from "./command/CommandCollection";
 import CustomIdCommandHandler from "./implementations/CustomId/CommandHandler";
 
 export class Skeleton<T> {
@@ -71,7 +70,7 @@ export class Skeleton<T> {
     this.registerInteractionHandler(slashInteractionHandler);
 
     // Set up CustomIdCommand handlers
-    this.customIdCommandHandler = new CustomIdCommandHandler();
+    this.customIdCommandHandler = new CollectionMediator<CustomIdCommand<T>>();
     let customIdCommandImportHandler = new CustomIdCommandImportHandler(
       this.customIdCommandHandler,
     );

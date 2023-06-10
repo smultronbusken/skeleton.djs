@@ -7,7 +7,7 @@ export class SubCommandImportHandler implements ImportHandler<SubCommand<any>> {
   classToBeImported = SubCommand;
   constructor(public subCommandhandler: SubCommandHandler) {}
   onImport = (command: SubCommand<any>) => {
-    this.subCommandhandler.setCommand(command.master + "/" + command.data.name, command);
+    this.subCommandhandler.set(command.master + "/" + command.data.name, command);
   };
 }
 

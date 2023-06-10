@@ -17,7 +17,7 @@ export default class CustomIdCommandInteractionHandler extends InteractionHandle
     interaction.isMessageComponent();
 
   check = (interaction: MessageComponentInteraction) => {
-    return this.mediator.getCommands().find(cid => cid.customId === interaction.customId);
+    return this.mediator.getAll().find(cid => cid.customId === interaction.customId);
   };
 
   execute = async (
@@ -25,7 +25,7 @@ export default class CustomIdCommandInteractionHandler extends InteractionHandle
     context: any,
     skeleton: Skeleton<any>,
   ) => {
-    const command = this.mediator.getCommand(interaction.customId);
+    const command = this.mediator.get(interaction.customId);
     await command?.execute(interaction, context, skeleton);
   };
 }

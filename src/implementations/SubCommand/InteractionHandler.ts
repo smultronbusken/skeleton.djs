@@ -27,7 +27,7 @@ export default class SubCommandInteractionHandler extends InteractionHandler<Cha
     skeleton: Skeleton<any>,
   ) => {
     let name = interaction.options.getSubcommand(true);
-    let command = this.mediator.getCommand(interaction.commandName + "/" + name);
+    let command = this.mediator.get(interaction.commandName + "/" + name);
     await command.execute(interaction, context, skeleton);
   };
 }

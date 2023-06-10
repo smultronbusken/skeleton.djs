@@ -24,7 +24,7 @@ export default class ContextMentInteractionHandler extends InteractionHandler<Co
     context: any,
     skeleton: Skeleton<any>,
   ) => {
-    const command = this.mediator.getCommand(interaction.commandName);
+    const command = this.mediator.get(interaction.commandName);
     await command?.execute(interaction, context, skeleton);
   };
 }

@@ -16,11 +16,11 @@ export default class SubCommandHandler implements Mediator<SubCommand<any>>, API
   private subCommands: Collection<string, SubCommand<any>> = new Collection();
   private masterCommands: Collection<string, MasterCommand<any>> = new Collection();
 
-  getCommands = () => Array.from(this.subCommands.values());
+  getAll = () => Array.from(this.subCommands.values());
 
-  getCommand = (id: string) => this.subCommands.get(id);
+  get = (id: string) => this.subCommands.get(id);
 
-  setCommand = (id: string, command: SubCommand<any>) => {
+  set = (id: string, command: SubCommand<any>) => {
     this.subCommands.set(id, command);
   };
 

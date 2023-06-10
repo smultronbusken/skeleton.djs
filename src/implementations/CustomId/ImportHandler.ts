@@ -6,6 +6,6 @@ export class CustomIdCommandImportHandler implements ImportHandler<CustomIdComma
   classToBeImported = CustomIdCommand;
   constructor(public mediator: Mediator<CustomIdCommand<any>>) {}
   onImport = (command: CustomIdCommand<any>) => {
-    this.mediator.setCommand(command.customId, command);
+    this.mediator.set(command.customId, command);
   };
 }

@@ -9,6 +9,8 @@ import {
 } from "discord.js";
 import { Importable } from "../importer/Importer";
 import { Skeleton } from "../main";
+import { CollectionMediator } from "./Mediator";
+import APICommandProvider from "../deployer/APICommandProvider";
 
 /**
  * Defines a class which  has a  executable in an interaction.
@@ -57,4 +59,19 @@ export abstract class CommandBase<T> extends InteractionExecutableContainer<T> {
   ) {
     super(execute);
   }
+}
+
+export class CommandMediator<T extends CommandBase<any>>
+  extends CollectionMediator<T>
+  implements APICommandProvider
+{
+  getAPICommands = () => {
+    const commandsAsJson: APIApplicationCommand[] = [];
+    this.elements.forEach(c => {
+      commandsAsJson.push({
+        ...c.data,
+      });
+    });
+    return commandsAsJson;
+  };
 }

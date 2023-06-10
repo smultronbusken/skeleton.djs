@@ -9,7 +9,7 @@ export class UserCommandImportHandler implements ImportHandler<UserCommand<any>>
   constructor(public mediator: Mediator<UserCommand<any>>) {}
 
   onImport = (command: UserCommand<any>) => {
-    this.mediator.setCommand(command.data.name, command);
+    this.mediator.set(command.data.name, command);
   };
 }
 
@@ -19,6 +19,6 @@ export class MessageCommandImportHandler implements ImportHandler<MessageCommand
   constructor(public mediator: Mediator<MessageCommand<any>>) {}
 
   onImport = (command: MessageCommand<any>) => {
-    this.mediator.setCommand(command.data.name, command);
+    this.mediator.set(command.data.name, command);
   };
 }
