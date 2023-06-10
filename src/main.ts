@@ -9,14 +9,14 @@ export {
   CommandBase,
   CommandInput,
 } from "./command/BaseCommand";
-export { Mediator as CommandMediator } from "./command/Mediator";
+export { Mediator } from "./command/Mediator";
 export { InteractionHandler } from "./eventhandlers/InteractionHandler";
 export {
   ContextMenuCommand,
   MessageCommand,
   UserCommand,
 } from "./implementations/ContextMenuCommand/Command";
-export { CustomIdCommand } from "./implementations/CustomId/Command";
+export { ComponentCommand } from "./implementations/Component/Command";
 export { SlashCommand } from "./implementations/SlashCommand/Command";
 export { MasterCommand } from "./implementations/SubCommand/MasterCommand";
 export { SubCommand, SubcommandBase } from "./implementations/SubCommand/SubCommand";

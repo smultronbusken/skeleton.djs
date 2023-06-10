@@ -7,8 +7,8 @@ import {
   MessageCommandImportHandler,
 } from "./implementations/ContextMenuCommand/ImportHandler";
 import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/InteractionHandler";
-import { CustomIdCommandImportHandler } from "./implementations/CustomId/ImportHandler";
-import CustomIdCommandInteractionHandler from "./implementations/CustomId/InteractionHandler";
+import { ComponentCommandImportHandler } from "./implementations/Component/ImportHandler";
+import ComponentCommandInteractionHandler from "./implementations/Component/InteractionHandler";
 import ModalInteractionHandler, {
   ModalSubmitCommand,
 } from "./implementations/Modal/InteractionHandler";
@@ -22,16 +22,16 @@ import {
 import SubCommandInteractionHandler from "./implementations/SubCommand/InteractionHandler";
 import ImportHandler from "./importer/ImportHandler";
 import { Importer } from "./importer/Importer";
-import {
-  InteractionHandler,
-  ContextMenuCommand,
-  SlashCommand,
-  CustomIdCommand,
-  UserCommand,
-  SubCommand,
-  MessageCommand,
-} from "./main";
 import { CommandMediator } from "./command/BaseCommand";
+import { InteractionHandler } from "./eventhandlers/InteractionHandler";
+import {
+  ContextMenuCommand,
+  MessageCommand,
+  UserCommand,
+} from "./implementations/ContextMenuCommand/Command";
+import { SlashCommand } from "./implementations/SlashCommand/Command";
+import { ComponentCommand } from "./implementations/Component/Command";
+import { SubCommand } from "./implementations/SubCommand/SubCommand";
 
 export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any>[] = [];
@@ -65,13 +65,13 @@ export class Skeleton<T> {
     this.registerInteractionHandler(slashInteractionHandler);
 
     // Set up CustomIdCommand handlers
-    let customIdCommandHandler = new CollectionMediator<CustomIdCommand<T>>();
-    let customIdCommandImportHandler = new CustomIdCommandImportHandler(customIdCommandHandler);
-    let customIdCommandInteractionHandler = new CustomIdCommandInteractionHandler(
-      customIdCommandHandler,
+    let componentCommandHandler = new CollectionMediator<ComponentCommand<T>>();
+    let componentCommandImportHandler = new ComponentCommandImportHandler(componentCommandHandler);
+    let componentCommandInteractionHandler = new ComponentCommandInteractionHandler(
+      componentCommandHandler,
     );
-    this.addImportHandler(customIdCommandImportHandler);
-    this.registerInteractionHandler(customIdCommandInteractionHandler);
+    this.addImportHandler(componentCommandImportHandler);
+    this.registerInteractionHandler(componentCommandInteractionHandler);
 
     // Set up CustomIdCommand handlers
     let subCommandHandler = new SubCommandHandler();
@@ -123,7 +123,7 @@ export class Skeleton<T> {
   addCommand(command: UserCommand<T>): void;
   addCommand(command: MessageCommand<T>): void;
   addCommand(command: SubCommand<T>): void;
-  addCommand(command: CustomIdCommand<T>): void;
+  addCommand(command: ComponentCommand<T>): void;
   addCommand(command: any): void {
     this.importer.importObject(command);
   }

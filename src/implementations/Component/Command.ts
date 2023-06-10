@@ -4,7 +4,7 @@ import { InteractionExecutableContainer } from "../../command/BaseCommand";
 import { Importable } from "../../importer/Importer";
 
 @Importable
-export class CustomIdCommand<T> extends InteractionExecutableContainer<T> {
+export class ComponentCommand<T> extends InteractionExecutableContainer<T> {
   customId: string;
   constructor(
     customId: string,
