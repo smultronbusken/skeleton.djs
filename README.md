@@ -72,7 +72,7 @@ Here's a basic structure of how a command file (e.g., `foobar.bone.ts`) might lo
 ```typescript
 import { SlashCommand } from "base-app-for-discordjs";
 
-export default new SlashCommand<{}>(
+export default new SlashCommand(
   {
     name: "foo",
     description: "bar",
@@ -91,7 +91,7 @@ If you prefer not to define commands in separate files, you can add them manuall
 import { UserCommand, Skeleton } from 'base-app-for-discordjs';
 
 let skeleton = new Skeleton();
-let command = new UserCommand<{}>(
+let command = new UserCommand(
   {
     name: "manual",
     description: "I added this manually",
@@ -152,7 +152,7 @@ Let's walk through the process of incorporating options into your commands using
 ```typescript
 import { SlashCommand, user, string } from 'base-app-for-discordjs';
 
-new SlashCommand<{}>(
+new SlashCommand(
   ...,
   user({
     name: "user",
@@ -183,7 +183,7 @@ Here's a list of available helper functions:
 If you prefer not to use these helper functions, you can specify the type manually:
 
 ```typescript
-new SlashCommand<{}>(
+new SlashCommand(
   ...{
     type: ApplicationCommandOptionType.String,
     name: "string",
@@ -275,7 +275,7 @@ class CustomIdInteractionHandler extends InteractionHandler<CustomIdInteraction>
     return  this.customIds.find(cid => cid === interaction.customId);
   };
 
-  execute = async (interaction: MessageComponentInteraction, context: any, skeleton: Skeleton<any>) => {
+  execute = async (interaction: MessageComponentInteraction, context: any, skeleton: Skeleton) => {
     let customId = interaction.customId;
     if (customId === "foo") {
       // Do something depending on the custom id
@@ -304,10 +304,10 @@ To further expand the functionalities of Skeleton, you can create custom command
 1. Create a custom command class:
 
 ```typescript
-class CustomIdCommand<T> {
+class CustomIdCommand {
   customId: string;
   execute;
-  constructor(customId: string, execute: (i: MessageComponentInteraction, context: T) => any) {
+  constructor(customId: string, execute: (i: MessageComponentInteraction, context: any) => any) {
     this.customId = customId;
     this.execute = execute;
   }
@@ -363,7 +363,7 @@ If you prefer keeping your command definitions organized in individual files, Sk
 import { Importable } from "base-app-for-discordjs";
 
 @Importable
-class CustomIdCommand<T> {
+class CustomIdCommand {
   customId: string;
   execute;
   constructor(customId: string, execute: (i: MessageComponentInteraction, context: T) => any) {
@@ -372,7 +372,7 @@ class CustomIdCommand<T> {
   }
 }
 
-new CustomIdCommand<{}>("test", async (interaction, app) => {
+new CustomIdCommand("test", async (interaction, app) => {
   interaction.reply("Button with custom id 'test' was clicked!");
 });
 ```
