@@ -4,7 +4,7 @@ import {
   ApplicationCommandOptionType,
   APIApplicationCommandSubcommandGroupOption,
 } from "discord.js";
-import { CommandMediator } from "../../command/CommandMediator";
+import { Mediator } from "../../command/Mediator";
 import APICommandProvider from "../../deployer/APICommandProvider";
 import { MasterCommand } from "./MasterCommand";
 import { SubCommand } from "./SubCommand";
@@ -12,9 +12,7 @@ import { SubCommand } from "./SubCommand";
 /**
  * Class representing a handler for sub-commands. Implements CommandMediator and APICommandProvider interfaces.
  */
-export default class SubCommandHandler
-  implements CommandMediator<SubCommand<any>>, APICommandProvider
-{
+export default class SubCommandHandler implements Mediator<SubCommand<any>>, APICommandProvider {
   private subCommands: Collection<string, SubCommand<any>> = new Collection();
   private masterCommands: Collection<string, MasterCommand<any>> = new Collection();
 

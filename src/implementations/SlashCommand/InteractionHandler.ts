@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, BaseInteraction } from "discord.js";
-import { CommandMediator } from "../../command/CommandMediator";
+import { Mediator } from "../../command/Mediator";
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
 import { SlashCommand } from "./Command";
 import { Skeleton } from "../../main";
@@ -9,7 +9,7 @@ import { Skeleton } from "../../main";
  * These get mapped to the correct {@link SlashCommand} which are then executed.
  */
 export default class SlashCommandInteractionHandler extends InteractionHandler<ChatInputCommandInteraction> {
-  constructor(public mediator: CommandMediator<SlashCommand<any>>) {
+  constructor(public mediator: Mediator<SlashCommand<any>>) {
     super();
   }
 

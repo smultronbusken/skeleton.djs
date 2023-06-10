@@ -1,5 +1,5 @@
 import { BaseInteraction, Interaction, MessageComponentInteraction } from "discord.js";
-import { CommandMediator } from "../../command/CommandMediator";
+import { Mediator } from "../../command/Mediator";
 import { CustomIdCommand } from "./Command";
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
 import { Skeleton } from "../../Skeleton";
@@ -9,7 +9,7 @@ import { Skeleton } from "../../Skeleton";
  * {@link CustomIdCommand} will be executed depending on the custom id of the interaction.
  */
 export default class CustomIdCommandInteractionHandler extends InteractionHandler<MessageComponentInteraction> {
-  constructor(public mediator: CommandMediator<CustomIdCommand<any>>) {
+  constructor(public mediator: Mediator<CustomIdCommand<any>>) {
     super();
   }
 

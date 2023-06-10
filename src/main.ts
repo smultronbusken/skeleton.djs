@@ -9,7 +9,7 @@ export {
   CommandBase,
   CommandInput,
 } from "./command/BaseCommand";
-export { CommandMediator } from "./command/CommandMediator";
+export { Mediator as CommandMediator } from "./command/Mediator";
 export { InteractionHandler } from "./eventhandlers/InteractionHandler";
 export {
   ContextMenuCommand,

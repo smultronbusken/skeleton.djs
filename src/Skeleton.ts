@@ -1,5 +1,5 @@
 import { Snowflake, Client, Interaction, Events, ModalSubmitInteraction } from "discord.js";
-import { CommandMediator } from "./command/CommandMediator";
+import { Mediator } from "./command/Mediator";
 import APICommandProvider from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
 import { InteractionHandler } from "./eventhandlers/InteractionHandler";
@@ -8,17 +8,14 @@ import {
   UserCommand,
   MessageCommand,
 } from "./implementations/ContextMenuCommand/Command";
-import ContextMenuCommandHandler from "./implementations/ContextMenuCommand/CommandHandler";
 import {
   UserCommandImportHandler,
   MessageCommandImportHandler,
 } from "./implementations/ContextMenuCommand/ImportHandler";
 import { CustomIdCommand } from "./implementations/CustomId/Command";
-import CustomIdCommandHandler from "./implementations/CustomId/CommandHandler";
 import { CustomIdCommandImportHandler } from "./implementations/CustomId/ImportHandler";
 import CustomIdCommandInteractionHandler from "./implementations/CustomId/InteractionHandler";
 import { SlashCommand } from "./implementations/SlashCommand/Command";
-import SlashCommandHandler from "./implementations/SlashCommand/CommandHandler";
 import { SlashCommandImportHandler } from "./implementations/SlashCommand/ImportHandler";
 import SlashCommandInteractionHandler from "./implementations/SlashCommand/InteractionHandler";
 import SubCommandHandler from "./implementations/SubCommand/CommandHandler";
@@ -35,6 +32,8 @@ import ContextMentInteractionHandler from "./implementations/ContextMenuCommand/
 import ModalInteractionHandler, {
   ModalSubmitCommand,
 } from "./implementations/Modal/InteractionHandler";
+import CommandMediator from "./command/CommandCollection";
+import CustomIdCommandHandler from "./implementations/CustomId/CommandHandler";
 
 export class Skeleton<T> {
   private interactionHandlers: InteractionHandler<any>[] = [];
@@ -43,9 +42,9 @@ export class Skeleton<T> {
   private importer: Importer;
   private deployer: Deployer;
 
-  private cxtMenuCommandHandler: CommandMediator<ContextMenuCommand<T>> & APICommandProvider;
-  private slashCommandHandler: CommandMediator<SlashCommand<T>> & APICommandProvider;
-  private customIdCommandHandler: CommandMediator<CustomIdCommand<T>>;
+  private cxtMenuCommandHandler: Mediator<ContextMenuCommand<T>> & APICommandProvider;
+  private slashCommandHandler: Mediator<SlashCommand<T>> & APICommandProvider;
+  private customIdCommandHandler: Mediator<CustomIdCommand<T>>;
   private subCommandHandler: SubCommandHandler;
   private modalSubmitInteractionHandler: ModalInteractionHandler;
 
@@ -54,7 +53,7 @@ export class Skeleton<T> {
     this.deployer = new Deployer();
 
     // Set up ContextMenu handlers
-    this.cxtMenuCommandHandler = new ContextMenuCommandHandler();
+    this.cxtMenuCommandHandler = new CommandMediator<UserCommand<T>>();
     let cxtMenuInteractionHandler = new ContextMentInteractionHandler(this.cxtMenuCommandHandler);
     let userCxtMenuImportHandler = new UserCommandImportHandler(this.cxtMenuCommandHandler);
     let messageCxtMenuImportHandler = new MessageCommandImportHandler(this.cxtMenuCommandHandler);
@@ -64,7 +63,7 @@ export class Skeleton<T> {
     this.addCommandProvider(this.cxtMenuCommandHandler);
 
     // Set up SlashCommand handlers
-    this.slashCommandHandler = new SlashCommandHandler();
+    this.slashCommandHandler = new CommandMediator<SlashCommand<T>>();
     let slashImportHandler = new SlashCommandImportHandler(this.slashCommandHandler);
     let slashInteractionHandler = new SlashCommandInteractionHandler(this.slashCommandHandler);
     this.addCommandProvider(this.slashCommandHandler);
