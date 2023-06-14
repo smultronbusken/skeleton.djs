@@ -141,7 +141,6 @@ export class Skeleton {
       for (let handler of this.interactionHandlers) {
         if (await handler.performCheck(interaction, this.context)) {
           await handler.performExecute(interaction, this.context, this);
-          return;
         }
       }
       console.log(interaction);
