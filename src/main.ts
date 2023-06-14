@@ -2,6 +2,7 @@ export { Skeleton } from "./Skeleton";
 export * from "./builders/options";
 export * from "./builders/components";
 export * from "./importer/ImportHandler";
+export { Importable } from "./importer/Importer";
 export * from "./deployer/APICommandProvider";
 export {
   InteractionExecutableContainer,
