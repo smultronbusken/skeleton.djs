@@ -3,6 +3,7 @@ import {
   APIApplicationCommandSubcommandOption,
   ApplicationCommandOptionType,
   ApplicationCommandType,
+  BaseInteraction,
   CommandInteraction,
   MessageContextMenuCommandInteraction,
   UserContextMenuCommandInteraction,
@@ -12,11 +13,17 @@ import { Skeleton } from "../main";
 import { CollectionMediator } from "./Mediator";
 import APICommandProvider from "../deployer/APICommandProvider";
 
+export type Executable<T extends BaseInteraction> = (
+  interaction: T,
+  context: any,
+  skeleton: Skeleton,
+) => any;
+
 /**
  * Defines a class which  has a  executable in an interaction.
  */
 export class InteractionExecutableContainer {
-  constructor(public execute: (interaction: any, context: any, skeleton?: Skeleton) => any) {}
+  constructor(public execute: Executable<BaseInteraction>) {}
 }
 
 /**
