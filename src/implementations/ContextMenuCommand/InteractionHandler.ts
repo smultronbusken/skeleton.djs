@@ -1,7 +1,7 @@
 import { ContextMenuCommandInteraction, BaseInteraction } from "discord.js";
 import { Mediator } from "../../command/Mediator";
 import { InteractionHandler } from "../../eventhandlers/InteractionHandler";
-import { UserCommand } from "./Command";
+import { ContextMenuCommand, UserCommand } from "./Command";
 import { Skeleton } from "../../main";
 
 /**
@@ -9,7 +9,7 @@ import { Skeleton } from "../../main";
  * ser and message commands.
  */
 export default class ContextMentInteractionHandler extends InteractionHandler<ContextMenuCommandInteraction> {
-  constructor(public mediator: Mediator<UserCommand>) {
+  constructor(public mediator: Mediator<ContextMenuCommand>) {
     super();
   }
 

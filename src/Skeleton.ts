@@ -35,6 +35,7 @@ import {
   ChannelSelectCommand,
   MentionableSelectCommand,
   RoleSelectCommand,
+  SelectBoxCommand,
   StringSelectCommand,
   UserSelectCommand,
 } from "./implementations/Component/Command";
@@ -106,49 +107,38 @@ export class Skeleton {
     this.addImportHandler(buttonImportHandler);
     this.addInteractionHandler(buttonInteractionHandler);
 
+    // Common select component handler
+    let selectCommandHandler = new CollectionMediator<SelectBoxCommand<any>>();
+
     // String select handlers
-    let stringSelectCommandHandler = new CollectionMediator<StringSelectCommand>();
-    let stringSelectImportHandler = new StringSelectCommandImportHandler(
-      stringSelectCommandHandler,
-    );
-    let stringSelectInteractionHandler = new StringSelectInteractionHandler(
-      stringSelectCommandHandler,
-    );
+    let stringSelectImportHandler = new StringSelectCommandImportHandler(selectCommandHandler);
+    let stringSelectInteractionHandler = new StringSelectInteractionHandler(selectCommandHandler);
     this.addImportHandler(stringSelectImportHandler);
     this.addInteractionHandler(stringSelectInteractionHandler);
 
     // Role select handlers
-    let roleSelectCommandHandler = new CollectionMediator<RoleSelectCommand>();
-    let roleSelectImportHandler = new RoleSelectCommandImportHandler(roleSelectCommandHandler);
-    let roleSelectInteractionHandler = new RoleSelectInteractionHandler(roleSelectCommandHandler);
+    let roleSelectImportHandler = new RoleSelectCommandImportHandler(selectCommandHandler);
+    let roleSelectInteractionHandler = new RoleSelectInteractionHandler(selectCommandHandler);
     this.addImportHandler(roleSelectImportHandler);
     this.addInteractionHandler(roleSelectInteractionHandler);
 
-    // Channel select handlers
-    let channelSelectCommandHandler = new CollectionMediator<ChannelSelectCommand>();
-    let channelSelectImportHandler = new ChannelSelectCommandImportHandler(
-      channelSelectCommandHandler,
-    );
-    let channelSelectInteractionHandler = new ChannelSelectInteractionHandler(
-      channelSelectCommandHandler,
-    );
+    let channelSelectImportHandler = new ChannelSelectCommandImportHandler(selectCommandHandler);
+    let channelSelectInteractionHandler = new ChannelSelectInteractionHandler(selectCommandHandler);
     this.addImportHandler(channelSelectImportHandler);
     this.addInteractionHandler(channelSelectInteractionHandler);
 
     // User select handlers
-    let userSelectCommandHandler = new CollectionMediator<UserSelectCommand>();
-    let userSelectImportHandler = new UserSelectCommandImportHandler(userSelectCommandHandler);
-    let userSelectInteractionHandler = new UserSelectInteractionHandler(userSelectCommandHandler);
+    let userSelectImportHandler = new UserSelectCommandImportHandler(selectCommandHandler);
+    let userSelectInteractionHandler = new UserSelectInteractionHandler(selectCommandHandler);
     this.addImportHandler(userSelectImportHandler);
     this.addInteractionHandler(userSelectInteractionHandler);
 
     // Mentionable select handlers
-    let mentionableSelectCommandHandler = new CollectionMediator<MentionableSelectCommand>();
     let mentionableSelectImportHandler = new MentionableSelectCommandImportHandler(
-      mentionableSelectCommandHandler,
+      selectCommandHandler,
     );
     let mentionableSelectInteractionHandler = new MentionableSelectInteractionHandler(
-      mentionableSelectCommandHandler,
+      selectCommandHandler,
     );
     this.addImportHandler(mentionableSelectImportHandler);
     this.addInteractionHandler(mentionableSelectInteractionHandler);
