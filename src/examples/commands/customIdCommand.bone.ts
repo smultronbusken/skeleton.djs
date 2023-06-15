@@ -1,6 +1,6 @@
-import { ComponentCommand } from "../../implementations/Component/Command";
+import { ButtonCommand, ComponentCommand } from "../../implementations/Component/Command";
 
-export default new ComponentCommand(
+export default new ButtonCommand(
   {
     customId: "test",
   },

@@ -34,6 +34,10 @@ export class ComponentCommandImportHandler<T extends ComponentCommand> implement
   };
 }
 
+export class ButtonCommandImportHandler extends ComponentCommandImportHandler<ButtonCommand> {
+  classToBeImported = ButtonCommand;
+}
+
 export class SelectCommandImportHandler<
   I extends AnySelectMenuInteraction,
   T extends SelectBoxCommand<I>,

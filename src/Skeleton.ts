@@ -48,6 +48,7 @@ import {
   UserSelectInteractionHandler,
 } from "./implementations/Component/InteractionHandler";
 import {
+  ButtonCommandImportHandler,
   ChannelSelectCommandImportHandler,
   ComponentCommandImportHandler,
   MentionableSelectCommandImportHandler,
@@ -101,9 +102,7 @@ export class Skeleton {
     // Button component handlers
     let buttonCommandHandler = new CollectionMediator<ButtonCommand>();
     let buttonInteractionHandler = new ButtonCommandInteractionHandler(buttonCommandHandler);
-    let buttonImportHandler = new ComponentCommandImportHandler<ButtonCommand>(
-      buttonCommandHandler,
-    );
+    let buttonImportHandler = new ButtonCommandImportHandler(buttonCommandHandler);
     this.addImportHandler(buttonImportHandler);
     this.addInteractionHandler(buttonInteractionHandler);
 
@@ -122,6 +121,7 @@ export class Skeleton {
     this.addImportHandler(roleSelectImportHandler);
     this.addInteractionHandler(roleSelectInteractionHandler);
 
+    // Channel select handlers
     let channelSelectImportHandler = new ChannelSelectCommandImportHandler(selectCommandHandler);
     let channelSelectInteractionHandler = new ChannelSelectInteractionHandler(selectCommandHandler);
     this.addImportHandler(channelSelectImportHandler);
