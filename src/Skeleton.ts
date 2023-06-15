@@ -1,4 +1,4 @@
-import { Snowflake, Client, Events, Interaction } from "discord.js";
+import { Snowflake, Client, Events, Interaction, Component } from "discord.js";
 import { Mediator, CollectionMediator } from "./command/Mediator";
 import APICommandProvider from "./deployer/APICommandProvider";
 import { Deployer } from "./deployer/Deployer";
@@ -53,7 +53,7 @@ export class Skeleton {
     let messageCxtMenuImportHandler = new MessageCommandImportHandler(cxtCommandMediator);
     this.addImportHandler(messageCxtMenuImportHandler);
     this.addImportHandler(userCxtMenuImportHandler);
-    this.registerInteractionHandler(cxtMenuInteractionHandler);
+    this.addInteractionHandler(cxtMenuInteractionHandler);
     this.addCommandProvider(cxtCommandMediator);
 
     // Set up SlashCommand handlers
@@ -62,7 +62,7 @@ export class Skeleton {
     let slashInteractionHandler = new SlashCommandInteractionHandler(slashCommandHandler);
     this.addImportHandler(slashImportHandler);
     this.addCommandProvider(slashCommandHandler);
-    this.registerInteractionHandler(slashInteractionHandler);
+    this.addInteractionHandler(slashInteractionHandler);
 
     // Set up CustomIdCommand handlers
     let componentCommandHandler = new CollectionMediator<ComponentCommand>();
@@ -71,7 +71,7 @@ export class Skeleton {
       componentCommandHandler,
     );
     this.addImportHandler(componentCommandImportHandler);
-    this.registerInteractionHandler(componentCommandInteractionHandler);
+    this.addInteractionHandler(componentCommandInteractionHandler);
 
     // Set up CustomIdCommand handlers
     let subCommandHandler = new SubCommandHandler();
@@ -81,11 +81,11 @@ export class Skeleton {
     this.addCommandProvider(subCommandHandler);
     this.addImportHandler(subCommandImportHandler);
     this.addImportHandler(masterCommandImportHandler);
-    this.registerInteractionHandler(subCommandInteractionHandler);
+    this.addInteractionHandler(subCommandInteractionHandler);
 
     // Modal
     this.modalSubmitInteractionHandler = new ModalInteractionHandler();
-    this.registerInteractionHandler(this.modalSubmitInteractionHandler);
+    this.addInteractionHandler(this.modalSubmitInteractionHandler);
   }
 
   handleModalSubmit(customId: string, func: ModalSubmitCommand) {
@@ -97,6 +97,11 @@ export class Skeleton {
   }
 
   async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {
+    if (!this.context)
+      console.warn(
+        "No context for commands was provided. The context parameter will be undefined. Call skeleton.setContext().",
+      );
+
     console.log("~~~~~ Login in ~~~~~");
 
     try {
@@ -138,20 +143,24 @@ export class Skeleton {
 
   private async onInteraction(interaction: Interaction) {
     try {
+      let didHandle = false;
       for (let handler of this.interactionHandlers) {
-        if (await handler.performCheck(interaction, this.context)) {
-          await handler.performExecute(interaction, this.context, this);
+        if (handler.performCheck(interaction, this.context)) {
+          didHandle = true;
+          handler.performExecute(interaction, this.context, this);
         }
       }
-      console.log(interaction);
-      console.log(`Unsupported interaction type, ${interaction.toString()}`);
+
+      if (!didHandle) {
+        console.log(`Did not handle interaction, ${interaction.id}`);
+      }
     } catch (err) {
       console.error(err);
       // send an error message to the user if possible
     }
   }
 
-  public registerInteractionHandler(handler: InteractionHandler<any>) {
+  public addInteractionHandler(handler: InteractionHandler<any>) {
     this.interactionHandlers.push(handler);
   }
 
