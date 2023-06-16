@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 import { UserCommand } from "../../../implementations/ContextMenuCommand/Command";
 
 export default new UserCommand(

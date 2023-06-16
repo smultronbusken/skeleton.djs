@@ -36,7 +36,7 @@ abstract class ComponentInteractionHandler<
   getCommand(interactionCustomId: string): C | undefined {
     let commands = this.mediator.getAll();
     let commandFound = commands.find(c => {
-      c?.regex.test(interactionCustomId) || c?.customId === interactionCustomId;
+      return c.regex?.test(interactionCustomId) || c.customId == interactionCustomId;
     });
     return commandFound;
   }

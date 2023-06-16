@@ -42,7 +42,7 @@ export class Importer {
       let importedObject = await this.import(filePath);
       let nameOfObject = this.getNameOfObject(importedObject);
 
-      console.log("Imported " + importedObject.constructor.name + " from " + file + ".");
+      //console.log("Imported " + importedObject.constructor.name + " from " + file + ".");
 
       this.handleImport(importedObject, nameOfObject);
     }

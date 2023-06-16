@@ -60,14 +60,14 @@ import {
 
 export class Skeleton {
   private interactionHandlers: InteractionHandler<any>[] = [];
-  private context: any;
+  public context: any;
 
-  private importer: Importer;
-  private deployer: Deployer;
+  public importer: Importer;
+  public deployer: Deployer;
 
   private modalSubmitInteractionHandler: ModalInteractionHandler;
 
-  constructor() {
+  constructor(public client: Client) {
     this.importer = new Importer();
     this.deployer = new Deployer();
 
@@ -146,6 +146,8 @@ export class Skeleton {
     // Modal
     this.modalSubmitInteractionHandler = new ModalInteractionHandler();
     this.addInteractionHandler(this.modalSubmitInteractionHandler);
+
+    this.client.on("interactionCreate", async i => this.onInteraction(i));
   }
 
   handleModalSubmit(customId: string, func: ModalSubmitCommand) {
@@ -156,7 +158,11 @@ export class Skeleton {
     this.importer.addImportHandler(importHandler);
   }
 
-  async run(options: { token: string; appId: string; guildId?: Snowflake; client: Client }) {
+  async run(
+    options: { token: string; appId: string; guildId?: Snowflake },
+    shouldImport?: boolean,
+    shouldDeploy?: boolean,
+  ) {
     if (!this.context)
       console.warn(
         "No context for commands was provided. The context parameter will be undefined. Call skeleton.setContext().",
@@ -165,21 +171,22 @@ export class Skeleton {
     console.log("~~~~~ Login in ~~~~~");
 
     try {
-      options.client.login(options.token);
+      this.client.login(options.token);
     } catch (error) {
       throw error;
     }
 
-    options.client.once(Events.ClientReady, async (c: Client) => {
+    this.client.once(Events.ClientReady, async (c: Client) => {
       console.log("Successfully logged in.");
 
-      options.client.on("interactionCreate", async i => this.onInteraction(i));
-
-      console.log("~~~~~ Importer ~~~~~");
-      await this.importer.run();
-
-      console.log("~~~~~ Deployer ~~~~~");
-      await this.deployer.deploy(options);
+      if (shouldImport) {
+        console.log("~~~~~ Importer ~~~~~");
+        await this.importer.run();
+      }
+      if (shouldDeploy) {
+        console.log("~~~~~ Deployer ~~~~~");
+        await this.deployer.deploy(options);
+      }
     });
   }
 

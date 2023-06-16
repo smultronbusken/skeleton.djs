@@ -10,9 +10,8 @@ import { Modal, text } from "../../../builders/components";
 import { string, integer } from "../../../builders/options";
 import { SubCommand } from "../../../main";
 
-export default new SubCommand(
+export default new SlashCommand(
   {
-    master: "mastercommand",
     name: "subcommand",
     description: "A subcommand example.",
   },
