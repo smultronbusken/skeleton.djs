@@ -1,6 +1,6 @@
 {
   "name": "skeleton.djs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Lightweight extension for discord.js with minimal set up.",
   "exports": "./dist/main.js",
   "main": "./dist/main.js",
@@ -11,14 +11,16 @@
     "watch": "pnpm build -- --watch",
     "build": "rimraf out && pnpm format && tsc",
     "lint": "prettier --check src/**/*.ts",
+    "test": "jest",
     "format": "prettier --write src/**/*.ts"
   },
   "dependencies": {
     "@discordjs/builders": "^1.6.3",
     "@discordjs/rest": "1.7.1",
     "discord-api-types": "^0.37.43",
-    "discord.js": "^14.11.0 ",
+    "discord.js": "^14.11.0",
     "fast-glob": "^3.2.12",
+    "lorem-ipsum": "^2.0.8",
     "reflect-metadata": "^0.1.13"
   },
   "keywords": [
@@ -32,14 +34,17 @@
   ],
   "peerDependencies": {
     "@discordjs/builders": "^1.6.3",
-    "discord-api-types": "^0.37.43",  
+    "discord-api-types": "^0.37.43",
     "discord.js": "^14.11.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.2",
     "@types/node": "^20.2.5",
+    "jest": "^29.5.0",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.1",
+    "ts-jest": "^29.1.0"
   },
   "repository": {
     "type": "git",

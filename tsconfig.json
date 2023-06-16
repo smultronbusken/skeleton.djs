@@ -19,7 +19,9 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "outDir": "./dist",
-      "noImplicitAny": true, //
+      "rootDir": "./src",
+      "baseUrl": "src/",
+        "~/*": ["*"]
   }
   
 }
