@@ -160,8 +160,8 @@ export class Skeleton {
 
   async run(
     options: { token: string; appId: string; guildId?: Snowflake },
-    shouldImport?: boolean,
-    shouldDeploy?: boolean,
+    shouldImport: boolean = true,
+    shouldDeploy: boolean = true,
   ) {
     if (!this.context)
       console.warn(

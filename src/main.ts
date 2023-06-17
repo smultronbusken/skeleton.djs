@@ -21,3 +21,11 @@ export { ComponentCommand } from "./implementations/Component/Command";
 export { SlashCommand } from "./implementations/SlashCommand/Command";
 export { MasterCommand } from "./implementations/SubCommand/MasterCommand";
 export { SubCommand, SubcommandBase } from "./implementations/SubCommand/SubCommand";
+export {
+  ButtonCommand,
+  ChannelSelectCommand,
+  MentionableSelectCommand,
+  RoleSelectCommand,
+  StringSelectCommand,
+  UserSelectCommand,
+} from "./implementations/Component/Command";
