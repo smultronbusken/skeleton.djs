@@ -23,9 +23,9 @@ if (require.main === module) {
     // This loads all command files and deploys them
     skeleton.run({
       appId: config["APP_ID"],
-      client: client,
       token: config["APP_TOKEN"],
       guildId: config["DEV_GUILD_ID"], // Optional, if youre using a dev guild.
+      client,
     });
   });
 }

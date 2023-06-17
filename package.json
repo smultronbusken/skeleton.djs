@@ -1,6 +1,6 @@
 {
   "name": "skeleton.djs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Lightweight extension for discord.js with minimal set up.",
   "exports": "./dist/main.js",
   "main": "./dist/main.js",
